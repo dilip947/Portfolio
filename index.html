@@ -3,103 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Dilip's Portfolio - Transforming Data into Decisions">
-  <title>Dilip Choudhary | Portfolio</title>
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
-  <!-- CSS -->
+  <title>Dilip's Portfolio</title>
   <link rel="stylesheet" href="css/style.css">
-
-  <!-- GSAP -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
-
-  <!-- Three.js for 3D Skills Globe -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 </head>
 <body>
-  <!-- HERO SECTION -->
+
+  <!-- Hero Section -->
   <section id="hero">
     <div class="hero-content">
-      <div class="profile-container">
-        <img src="images/profile.jpg" alt="Profile Photo" class="profile-photo">
-        <h1 class="hero-title">Dilip Choudhary</h1>
-        <p class="hero-tagline">Transforming data into decisions — one insight at a time</p>
-      </div>
-      <nav class="floating-nav">
-        <a href="#about">About</a>
-        <a href="#skills">Skills</a>
-        <a href="#projects">Projects</a>
-        <a href="#resume">Resume</a>
-        <a href="#contact">Contact</a>
-      </nav>
+      <img src="Images/Profile.JPG" alt="Profile Photo" class="profile-pic">
+      <h1>Hello, I'm <span>Dilip Choudhary</span></h1>
+      <p>Business Analyst | Data Enthusiast | Problem Solver</p>
+      <a href="#projects" class="btn">View My Work</a>
     </div>
   </section>
 
-  <!-- ABOUT SECTION -->
-  <section id="about">
-    <div class="about-container">
-      <h2>About Me</h2>
-      <p>
-        I'm a Business Analytics graduate passionate about data storytelling, dashboard design, and driving business decisions with insights.  
-        My mission is to bridge the gap between complex data and actionable strategy, with a focus on delivering high-value analytics solutions.
-      </p>
-      <div class="timeline" id="timeline"></div>
-    </div>
-  </section>
-
-  <!-- SKILLS SECTION -->
+  <!-- Skills Section -->
   <section id="skills">
-    <h2>Skills</h2>
-    <div id="skills-globe"></div>
-    <div id="skills-list"></div>
+    <h2>My Skills</h2>
+    <div class="skills-grid" id="skills-grid">
+      <!-- Skills will be loaded dynamically -->
+    </div>
   </section>
 
-  <!-- PROJECTS SECTION -->
+  <!-- Projects Section -->
   <section id="projects">
     <h2>Projects</h2>
-    <div class="projects-gallery" id="projects-gallery"></div>
-  </section>
-
-  <!-- RESUME SECTION -->
-  <section id="resume">
-    <h2>Resume</h2>
-    <div class="resume-container">
-      <iframe src="resume.pdf" frameborder="0"></iframe>
-      <a href="resume.pdf" class="download-btn" download>Download Resume</a>
+    <div class="projects-grid" id="projects-grid">
+      <!-- Projects will be loaded dynamically -->
     </div>
   </section>
 
-  <!-- CONTACT SECTION -->
+  <!-- Resume Section -->
+  <section id="resume">
+    <h2>My Resume</h2>
+    <iframe src="resume.pdf" class="resume-viewer"></iframe>
+  </section>
+
+  <!-- Contact Section -->
   <section id="contact">
     <h2>Contact Me</h2>
     <form id="contact-form">
-      <div class="chat-field">
-        <label>Hey! What's your name?</label>
-        <input type="text" name="name" required>
-      </div>
-      <div class="chat-field">
-        <label>Nice to meet you! What's your email?</label>
-        <input type="email" name="email" required>
-      </div>
-      <div class="chat-field">
-        <label>Tell me about the role or project you're hiring for.</label>
-        <textarea name="message" required></textarea>
-      </div>
-      <button type="submit">Send Message</button>
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <textarea placeholder="Your Message" required></textarea>
+      <button type="submit" class="btn">Send</button>
     </form>
-    <div id="form-status"></div>
   </section>
 
-  <!-- FOOTER -->
-  <footer>
-    <p>&copy; 2025 Dilip Choudhary. Built with ❤️ and data.</p>
-  </footer>
-
-  <!-- JS -->
-  <script src="js/animations.js" defer></script>
-  <script src="js/main.js" defer></script>
+  <script src="js/main.js"></script>
+  <script src="js/animation.js"></script>
 </body>
 </html>
