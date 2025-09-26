@@ -1,7 +1,36 @@
-[
-  { "name": "Excel" },
-  { "name": "Power BI" },
-  { "name": "Tableau" },
-  { "name": "SQL" },
-  { "name": "BRD" }
-]
+{
+  "skills": [
+    {
+      "category": "Data Visualization",
+      "items": [
+        { "name": "Power BI", "level": 90, "icon": "fas fa-chart-bar" },
+        { "name": "Tableau", "level": 85, "icon": "fas fa-chart-pie" },
+        { "name": "Excel", "level": 95, "icon": "fas fa-table" }
+      ]
+    },
+    {
+      "category": "Programming & Databases",
+      "items": [
+        { "name": "SQL", "level": 88, "icon": "fas fa-database" },
+        { "name": "Python", "level": 75, "icon": "fab fa-python" },
+        { "name": "R", "level": 70, "icon": "fas fa-chart-line" }
+      ]
+    },
+    {
+      "category": "Business Analytics",
+      "items": [
+        { "name": "Financial Modeling", "level": 85, "icon": "fas fa-calculator" },
+        { "name": "Risk Analysis", "level": 82, "icon": "fas fa-chart-line" },
+        { "name": "Statistical Analysis", "level": 80, "icon": "fas fa-chart-area" }
+      ]
+    },
+    {
+      "category": "Tools & Technologies",
+      "items": [
+        { "name": "Git", "level": 78, "icon": "fab fa-git-alt" },
+        { "name": "JIRA", "level": 75, "icon": "fab fa-jira" },
+        { "name": "Azure DevOps", "level": 70, "icon": "fab fa-microsoft" }
+      ]
+    }
+  ]
+}
