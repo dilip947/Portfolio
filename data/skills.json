@@ -1,10 +1,7 @@
-{
-  "skills": [
-    {"name":"Excel","desc":"Power Query, Advanced formulas, Power Pivot","pos":[1,0.6,-0.8]},
-    {"name":"Power BI","desc":"DAX, Data modelling, Visualisations","pos":[-1,0.3,1]},
-    {"name":"SQL","desc":"Joins, Window functions, ETL","pos":[0.7,1,0.5]},
-    {"name":"Python","desc":"Pandas, Scripting, Automations","pos":[-0.8,-0.9,-0.6]},
-    {"name":"Tableau","desc":"Storytelling & Viz","pos":[0.5,-0.7,1.2]},
-    {"name":"R","desc":"Stats, analysis","pos":[1.2,-0.4,0.2]}
-  ]
-}
+[
+  { "name": "Excel" },
+  { "name": "Power BI" },
+  { "name": "Tableau" },
+  { "name": "SQL" },
+  { "name": "BRD" }
+]
