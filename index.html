@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name | Premium Portfolio</title>
+    <title>Dilip Choudhary | Business Analytics Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* CSS Variables for Design System */
@@ -109,6 +109,7 @@
             width: 100%;
             z-index: 1000;
             transition: all var(--dur-med) var(--ease-smooth);
+            padding: var(--spacing-sm) 0;
         }
 
         header.compact {
@@ -120,8 +121,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-top: var(--spacing-sm);
-            padding-bottom: var(--spacing-sm);
         }
 
         .profile-avatar {
@@ -441,6 +440,7 @@
             transition: all var(--dur-med) var(--ease-smooth);
             position: relative;
             height: 300px;
+            cursor: pointer;
         }
 
         .project-card:hover {
@@ -488,6 +488,84 @@
             padding: 4px 8px;
             background: var(--glass-light);
             border-radius: var(--radius-full);
+        }
+
+        /* Project Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: var(--dark-secondary);
+            margin: 5% auto;
+            width: 90%;
+            max-width: 1000px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .modal-header {
+            padding: var(--spacing-lg);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: var(--spacing-lg);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .project-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: transform var(--dur-short) var(--ease-fast);
+        }
+
+        .gallery-image:hover {
+            transform: scale(1.05);
+        }
+
+        .project-details h3 {
+            margin-bottom: var(--spacing-sm);
+            color: var(--accent-cyan);
+        }
+
+        .project-details ul {
+            padding-left: var(--spacing-lg);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .project-details li {
+            margin-bottom: var(--spacing-xs);
+            color: var(--text-secondary);
         }
 
         /* Contact Section */
@@ -657,6 +735,12 @@
             
             nav ul {
                 gap: var(--spacing-md);
+                font-size: 0.9rem;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
             }
         }
 
@@ -673,6 +757,14 @@
                 flex-wrap: wrap;
                 justify-content: center;
                 gap: var(--spacing-sm);
+            }
+            
+            .name-overlay {
+                font-size: 2.5rem;
+            }
+            
+            .tagline {
+                font-size: 1.2rem;
             }
         }
     </style>
@@ -694,7 +786,7 @@
     <header>
         <div class="container">
             <div class="profile-avatar">
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Profile Avatar">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Dilip Choudhary">
             </div>
             <nav>
                 <ul>
@@ -714,15 +806,16 @@
         <canvas class="particles" id="particles"></canvas>
         <div class="container">
             <div class="hero-content">
-                <h1 class="name-overlay">Alex Morgan</h1>
-                <p class="tagline">Digital Designer & Frontend Developer</p>
+                <h1 class="name-overlay">Dilip Choudhary</h1>
+                <p class="tagline">Business Analytics Professional</p>
                 <div class="hero-badges">
-                    <span class="badge">UI/UX Design</span>
-                    <span class="badge">Web Development</span>
-                    <span class="badge">Brand Identity</span>
+                    <span class="badge">Power BI</span>
+                    <span class="badge">Data Analysis</span>
+                    <span class="badge">UAT Coordination</span>
+                    <span class="badge">Financial Modeling</span>
                 </div>
                 <div class="cta-buttons">
-                    <a href="#projects" class="btn btn-primary">Explore Projects</a>
+                    <a href="#projects" class="btn btn-primary">View Projects</a>
                     <a href="#contact" class="btn btn-secondary">Get In Touch</a>
                 </div>
             </div>
@@ -735,13 +828,16 @@
             <div class="about-content">
                 <div class="about-text">
                     <h2>About Me</h2>
-                    <p>I'm a passionate digital designer and frontend developer with over 5 years of experience creating beautiful, functional digital experiences. My work focuses on the intersection of aesthetics and usability.</p>
-                    <p>I believe that great design solves problems while creating emotional connections. My approach combines strategic thinking with meticulous attention to detail.</p>
-                    <p>When I'm not designing or coding, you can find me exploring new technologies, contributing to open-source projects, or enjoying the outdoors.</p>
+                    <p>Business Analytics fresher with hands-on experience in requirements gathering, UAT coordination, stakeholder communication, and dashboard development. Skilled in Excel, Power BI, Agile, KPI tracking, and sprint planning.</p>
+                    <p>Delivered insights that improved processes, reduced risk, and supported data-driven decisions. Currently pursuing a Bachelor of Business Analytics with Finance Specialization at Avinash College of Commerce, Hyderabad.</p>
+                    <p>My goal is to leverage data analytics to drive business growth and create impactful solutions for organizations.</p>
+                    <div class="cta-buttons">
+                        <a href="resume.pdf" class="btn btn-primary" target="_blank">Download Resume</a>
+                    </div>
                 </div>
                 <div class="hologram-avatar">
                     <div class="avatar-container glass">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Profile Image">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Dilip Choudhary">
                         <div class="avatar-glow"></div>
                     </div>
                 </div>
@@ -754,36 +850,36 @@
         <div class="container">
             <div class="skills-header">
                 <h2>Skills & Expertise</h2>
-                <p>Combining creative vision with technical execution</p>
+                <p>Combining analytical thinking with technical execution</p>
             </div>
             <div class="skills-container">
                 <div class="skill-card glass">
                     <div class="skill-icon">
-                        <i class="fas fa-palette"></i>
+                        <i class="fas fa-chart-bar"></i>
                     </div>
-                    <h3>UI/UX Design</h3>
-                    <p>Creating intuitive user interfaces and seamless user experiences through research, prototyping, and testing.</p>
+                    <h3>Business Analysis</h3>
+                    <p>Requirements Gathering, Stakeholder Management, UAT Coordination, Process Optimization</p>
                 </div>
                 <div class="skill-card glass">
                     <div class="skill-icon">
-                        <i class="fas fa-code"></i>
+                        <i class="fas fa-project-diagram"></i>
                     </div>
-                    <h3>Frontend Development</h3>
-                    <p>Building responsive, performant websites and applications using modern technologies and best practices.</p>
+                    <h3>Project Management</h3>
+                    <p>Agile Methodologies, Sprint Planning, Project Documentation (MS Office)</p>
                 </div>
                 <div class="skill-card glass">
                     <div class="skill-icon">
-                        <i class="fas fa-mobile-alt"></i>
+                        <i class="fas fa-database"></i>
                     </div>
-                    <h3>Responsive Design</h3>
-                    <p>Ensuring optimal viewing experiences across a wide range of devices and screen sizes.</p>
+                    <h3>Data Analysis</h3>
+                    <p>Financial Modeling, Risk Assessment, KPI Development, Trend Analysis</p>
                 </div>
                 <div class="skill-card glass">
                     <div class="skill-icon">
-                        <i class="fas fa-bullseye"></i>
+                        <i class="fas fa-tools"></i>
                     </div>
-                    <h3>Brand Identity</h3>
-                    <p>Developing cohesive visual systems that communicate brand values and resonate with target audiences.</p>
+                    <h3>Tools & Technologies</h3>
+                    <p>Power BI (DAX, Power Query), Excel (Advanced), SQL (Basic), Tableau</p>
                 </div>
             </div>
         </div>
@@ -794,39 +890,39 @@
         <div class="container">
             <div class="projects-header">
                 <h2>Featured Projects</h2>
-                <p>A selection of my recent work</p>
+                <p>A showcase of my analytical work and dashboard development</p>
             </div>
             <div class="projects-grid">
-                <div class="project-card glass">
-                    <img src="https://images.unsplash.com/photo-1558655146-9f40138edfeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Project 1" class="project-image">
+                <div class="project-card glass" data-project="p3abc">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Customer Payment Dashboard" class="project-image">
                     <div class="project-overlay">
-                        <h3 class="project-title">Nexus Dashboard</h3>
+                        <h3 class="project-title">Customer Payment & Revenue Insights Dashboard</h3>
                         <div class="project-tags">
-                            <span class="project-tag">UI Design</span>
-                            <span class="project-tag">Web App</span>
-                            <span class="project-tag">Dashboard</span>
+                            <span class="project-tag">Power BI</span>
+                            <span class="project-tag">Excel</span>
+                            <span class="project-tag">UAT</span>
                         </div>
                     </div>
                 </div>
-                <div class="project-card glass">
-                    <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Project 2" class="project-image">
+                <div class="project-card glass" data-project="crypto">
+                    <img src="https://images.unsplash.com/photo-1621761191319-c6fb62004040?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Crypto Market Dashboard" class="project-image">
                     <div class="project-overlay">
-                        <h3 class="project-title">E-commerce Platform</h3>
+                        <h3 class="project-title">Crypto Market Risk & Sentiment Dashboard</h3>
                         <div class="project-tags">
-                            <span class="project-tag">E-commerce</span>
-                            <span class="project-tag">Mobile First</span>
-                            <span class="project-tag">UX Research</span>
+                            <span class="project-tag">Power BI</span>
+                            <span class="project-tag">DAX</span>
+                            <span class="project-tag">KPI</span>
                         </div>
                     </div>
                 </div>
-                <div class="project-card glass">
-                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Project 3" class="project-image">
+                <div class="project-card glass" data-project="ecommerce">
+                    <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="E-commerce Dashboard" class="project-image">
                     <div class="project-overlay">
-                        <h3 class="project-title">Brand Identity System</h3>
+                        <h3 class="project-title">E-Commerce Sales & Order Insights Dashboard</h3>
                         <div class="project-tags">
-                            <span class="project-tag">Branding</span>
-                            <span class="project-tag">Visual Design</span>
-                            <span class="project-tag">Strategy</span>
+                            <span class="project-tag">Power BI</span>
+                            <span class="project-tag">Power Query</span>
+                            <span class="project-tag">Excel</span>
                         </div>
                     </div>
                 </div>
@@ -834,12 +930,30 @@
         </div>
     </section>
 
+    <!-- Project Modals -->
+    <div id="project-modal" class="modal">
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h2 id="modal-title">Project Title</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="project-gallery" id="modal-gallery">
+                    <!-- Gallery images will be inserted here -->
+                </div>
+                <div class="project-details" id="modal-details">
+                    <!-- Project details will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Contact Section -->
     <section id="contact">
         <div class="container">
             <div class="contact-content">
                 <h2>Get In Touch</h2>
-                <p>Have a project in mind or want to collaborate? I'd love to hear from you.</p>
+                <p>Interested in collaborating or have questions about my work? Reach out to me!</p>
                 <form class="contact-form">
                     <div class="form-group">
                         <label for="name">Name</label>
@@ -863,17 +977,92 @@
     <footer>
         <div class="container">
             <div class="social-links">
+                <a href="mailto:choudharydilip947@gmail.com" class="social-link"><i class="fas fa-envelope"></i></a>
+                <a href="tel:+919346053750" class="social-link"><i class="fas fa-phone"></i></a>
                 <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
                 <a href="#" class="social-link"><i class="fab fa-github"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-dribbble"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
             </div>
-            <p class="copyright">© 2023 Alex Morgan. All rights reserved.</p>
+            <p class="copyright">© 2023 Dilip Choudhary. All rights reserved.</p>
         </div>
     </footer>
 
     <script>
+        // Project data
+        const projects = {
+            p3abc: {
+                title: "Customer Payment & Revenue Insights Dashboard",
+                images: [
+                    "projects/P3ABC/1.png",
+                    "projects/P3ABC/sprint.png",
+                    "projects/P3ABC/uat.png",
+                    "projects/P3ABC/uat_results.png",
+                    "projects/P3ABC/uat_scenario.png",
+                    "projects/P3ABC/uat_signoff.png",
+                    "projects/P3ABC/test_case.png"
+                ],
+                details: `
+                    <h3>Project Overview</h3>
+                    <p>Developed a comprehensive Power BI dashboard to analyze customer payment patterns and revenue insights.</p>
+                    
+                    <h3>Key Achievements</h3>
+                    <ul>
+                        <li>Gathered and documented requirements, creating a BRD with 5 key needs, improving project clarity</li>
+                        <li>Built a Power BI dashboard analyzing 100+ invoices, tracking ₹3,864,000 revenue and ₹813,500 at risk with 100% accuracy</li>
+                        <li>Managed UAT with stakeholders, preparing test cases and earning a 100% result, saving time on revisions</li>
+                        <li>Shared data analysis insights (e.g., ₹706,000 USA risk) and maintained records with MS Office</li>
+                    </ul>
+                    
+                    <h3>Technologies Used</h3>
+                    <p>Power BI, Excel, Power Query, DAX, BRD, UAT</p>
+                `
+            },
+            crypto: {
+                title: "Crypto Market Risk & Sentiment Dashboard",
+                images: [
+                    "projects/project_crypto/1.png",
+                    "projects/project_crypto/2.png",
+                    "projects/project_crypto/3.png"
+                ],
+                details: `
+                    <h3>Project Overview</h3>
+                    <p>Created a dashboard to monitor cryptocurrency market risks and sentiment analysis for informed decision-making.</p>
+                    
+                    <h3>Key Achievements</h3>
+                    <ul>
+                        <li>Designed KPIs (CAGR, volatility) cutting manual work by 40%, saving time for better focus</li>
+                        <li>Implemented real-time data feeds for up-to-date market analysis</li>
+                        <li>Developed sentiment analysis algorithms to gauge market trends</li>
+                    </ul>
+                    
+                    <h3>Technologies Used</h3>
+                    <p>Power BI, Power Query, Excel, DAX</p>
+                `
+            },
+            ecommerce: {
+                title: "E-Commerce Sales & Order Insights Dashboard",
+                images: [
+                    "projects/project_ec/1.png",
+                    "projects/project_ec/2.png",
+                    "projects/project_ec/3.png",
+                    "projects/project_ec/4.png"
+                ],
+                details: `
+                    <h3>Project Overview</h3>
+                    <p>Developed an analytics dashboard to track e-commerce sales performance and order management efficiency.</p>
+                    
+                    <h3>Key Achievements</h3>
+                    <ul>
+                        <li>Analyzed 128,000+ orders, spotting a 20% higher cancellation rate, improving process efficiency</li>
+                        <li>Identified key customer segments for targeted marketing campaigns</li>
+                        <li>Created predictive models for sales forecasting</li>
+                    </ul>
+                    
+                    <h3>Technologies Used</h3>
+                    <p>Power BI, Power Query, Excel, DAX</p>
+                `
+            }
+        };
+
         // Custom Cursor
         document.addEventListener('DOMContentLoaded', function() {
             const cursor = document.querySelector('.cursor');
@@ -1015,6 +1204,54 @@
                     behavior: 'smooth'
                 });
             });
+        });
+
+        // Project Modal functionality
+        const modal = document.getElementById('project-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalGallery = document.getElementById('modal-gallery');
+        const modalDetails = document.getElementById('modal-details');
+        const closeModal = document.querySelector('.close-modal');
+        
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const projectId = this.getAttribute('data-project');
+                const project = projects[projectId];
+                
+                modalTitle.textContent = project.title;
+                
+                // Clear previous gallery images
+                modalGallery.innerHTML = '';
+                
+                // Add new gallery images (using placeholder if images don't exist)
+                project.images.forEach(img => {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = img;
+                    imgElement.alt = project.title;
+                    imgElement.classList.add('gallery-image');
+                    imgElement.onerror = function() {
+                        this.src = 'https://via.placeholder.com/300x200/0b0b12/66F0FF?text=Project+Image';
+                    };
+                    modalGallery.appendChild(imgElement);
+                });
+                
+                modalDetails.innerHTML = project.details;
+                
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        
+        closeModal.addEventListener('click', function() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        window.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
         });
 
         // Form submission
