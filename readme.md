@@ -10,5 +10,3 @@ A modern, responsive portfolio website showcasing my skills and projects in Busi
 - **Project Gallery**: Interactive project showcases
 - **Contact Form**: Functional contact form with validation
 - **Smooth Scrolling**: Enhanced user experience
-
-## 📁 Project Structure
