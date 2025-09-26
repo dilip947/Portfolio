@@ -1,51 +1,17 @@
-{
-  "projects": [
-    {
-      "id": "P3ABC",
-      "title": "P3ABC — Revenue Insights",
-      "subtitle": "Automated invoices, DSO trends & delivery analysis",
-      "description": "Replaced manual invoice tracking with an automated ETL + dashboard solution. Key KPIs: Average Order Value, DSO, Return Rate, Cancellation Rate. Identified delivery partner issues and optimized invoice cycle.",
-      "folder": "projects/P3ABC/",
-      "images": [
-        "projects/P3ABC/1.png",
-        "projects/P3ABC/Sprint.png",
-        "projects/P3ABC/UAT Results.png",
-        "projects/P3ABC/UAT Scenario.png",
-        "projects/P3ABC/UAT Signoff.png",
-        "projects/P3ABC/UAT.png",
-        "projects/P3ABC/test_case.png"
-      ],
-      "tags": ["Power BI", "Excel", "ETL"],
-      "year": 2025
-    },
-    {
-      "id": "Projectcrypto",
-      "title": "Crypto Analysis — Momentum & Risk",
-      "subtitle": "Backtests, risk heatmaps and momentum metrics",
-      "description": "Exploratory analysis of crypto markets with backtests and risk visualization. Built prototype dashboards to show strategy performance and drawdowns.",
-      "folder": "projects/Projectcrypto/",
-      "images": [
-        "projects/Projectcrypto/1.png",
-        "projects/Projectcrypto/2.png",
-        "projects/Projectcrypto/3.png"
-      ],
-      "tags": ["Python", "Data Analysis"],
-      "year": 2024
-    },
-    {
-      "id": "Projectec",
-      "title": "Electricity Consumption Forecast",
-      "subtitle": "Time-series forecasting & anomaly detection",
-      "description": "Built a forecasting pipeline and monitoring dashboard for operations that helps detect anomalies and predict load.",
-      "folder": "projects/Projectec/",
-      "images": [
-        "projects/Projectec/1.png",
-        "projects/Projectec/2.png",
-        "projects/Projectec/3.png",
-        "projects/Projectec/4.png"
-      ],
-      "tags": ["Time Series", "Forecasting"],
-      "year": 2024
-    }
-  ]
-}
+[
+  {
+    "title": "P3ABC",
+    "description": "Revenue Insights Dashboard with UAT and sprint planning.",
+    "images": ["projects/P3ABC/1.png", "projects/P3ABC/sprint.png", "projects/P3ABC/uat_results.png"]
+  },
+  {
+    "title": "Project Crypto",
+    "description": "Cryptocurrency analytics dashboard with live ticker.",
+    "images": ["projects/project_crypto/1.png", "projects/project_crypto/2.png", "projects/project_crypto/3.png"]
+  },
+  {
+    "title": "Project EC",
+    "description": "E-commerce dashboard for sales optimization.",
+    "images": ["projects/project_ec/1.png", "projects/project_ec/2.png", "projects/project_ec/3.png"]
+  }
+]
