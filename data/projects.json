@@ -1,17 +1,17 @@
 [
   {
-    "title": "P3ABC",
-    "description": "Revenue Insights Dashboard with UAT and sprint planning.",
-    "images": ["projects/P3ABC/1.png", "projects/P3ABC/sprint.png", "projects/P3ABC/uat_results.png"]
+    "name": "Revenue Insights Dashboard",
+    "image": "Projects/P3ABC/1.png",
+    "description": "Automated revenue tracking and DSO analysis dashboard."
   },
   {
-    "title": "Project Crypto",
-    "description": "Cryptocurrency analytics dashboard with live ticker.",
-    "images": ["projects/project_crypto/1.png", "projects/project_crypto/2.png", "projects/project_crypto/3.png"]
+    "name": "Crypto Analytics",
+    "image": "Projects/Projectcrypto/1.png",
+    "description": "Crypto market trend analysis and portfolio insights."
   },
   {
-    "title": "Project EC",
-    "description": "E-commerce dashboard for sales optimization.",
-    "images": ["projects/project_ec/1.png", "projects/project_ec/2.png", "projects/project_ec/3.png"]
+    "name": "E-commerce Analytics",
+    "image": "Projects/Projectec/1.png",
+    "description": "Customer behavior and sales performance dashboard."
   }
 ]
