@@ -1,36 +1,49 @@
 {
-  "skills": [
+  "categories": [
     {
-      "category": "Data Visualization",
-      "items": [
-        { "name": "Power BI", "level": 90, "icon": "fas fa-chart-bar" },
-        { "name": "Tableau", "level": 85, "icon": "fas fa-chart-pie" },
-        { "name": "Excel", "level": 95, "icon": "fas fa-table" }
+      "title": "Business Analysis",
+      "icon": "users",
+      "skills": [
+        { "name": "Requirements Gathering", "level": 90 },
+        { "name": "Stakeholder Management", "level": 85 },
+        { "name": "UAT Coordination", "level": 95 },
+        { "name": "Process Optimization", "level": 80 }
       ]
     },
     {
-      "category": "Programming & Databases",
-      "items": [
-        { "name": "SQL", "level": 88, "icon": "fas fa-database" },
-        { "name": "Python", "level": 75, "icon": "fab fa-python" },
-        { "name": "R", "level": 70, "icon": "fas fa-chart-line" }
+      "title": "Project Management",
+      "icon": "settings",
+      "skills": [
+        { "name": "Agile Methodologies", "level": 85 },
+        { "name": "Sprint Planning", "level": 80 },
+        { "name": "Project Documentation", "level": 90 },
+        { "name": "MS Office Suite", "level": 95 }
       ]
     },
     {
-      "category": "Business Analytics",
-      "items": [
-        { "name": "Financial Modeling", "level": 85, "icon": "fas fa-calculator" },
-        { "name": "Risk Analysis", "level": 82, "icon": "fas fa-chart-line" },
-        { "name": "Statistical Analysis", "level": 80, "icon": "fas fa-chart-area" }
+      "title": "Data Analysis",
+      "icon": "bar-chart",
+      "skills": [
+        { "name": "Financial Modeling", "level": 85 },
+        { "name": "Risk Assessment", "level": 80 },
+        { "name": "KPI Development", "level": 90 },
+        { "name": "Trend Analysis", "level": 85 }
       ]
     },
     {
-      "category": "Tools & Technologies",
-      "items": [
-        { "name": "Git", "level": 78, "icon": "fab fa-git-alt" },
-        { "name": "JIRA", "level": 75, "icon": "fab fa-jira" },
-        { "name": "Azure DevOps", "level": 70, "icon": "fab fa-microsoft" }
+      "title": "Tools & Technologies",
+      "icon": "database",
+      "skills": [
+        { "name": "Power BI (DAX, Power Query)", "level": 90 },
+        { "name": "Excel (Advanced)", "level": 95 },
+        { "name": "SQL (Basic)", "level": 70 },
+        { "name": "Tableau", "level": 75 }
       ]
     }
+  ],
+  "achievements": [
+    { "value": "100%", "label": "UAT Success Rate" },
+    { "value": "40%", "label": "Reduction in Manual Work" },
+    { "value": "₹38.6L", "label": "Revenue Tracked & Analyzed" }
   ]
 }
