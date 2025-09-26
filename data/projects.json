@@ -1,17 +1,75 @@
-[
-  {
-    "name": "Revenue Insights Dashboard",
-    "image": "Projects/P3ABC/1.png",
-    "description": "Automated revenue tracking and DSO analysis dashboard."
-  },
-  {
-    "name": "Crypto Analytics",
-    "image": "Projects/Projectcrypto/1.png",
-    "description": "Crypto market trend analysis and portfolio insights."
-  },
-  {
-    "name": "E-commerce Analytics",
-    "image": "Projects/Projectec/1.png",
-    "description": "Customer behavior and sales performance dashboard."
-  }
-]
+{
+  "projects": [
+    {
+      "id": "project1",
+      "title": "E-Commerce Sales Insights",
+      "description": "Comprehensive analysis of e-commerce order data with insights into cancellation drivers and sales performance optimization.",
+      "images": [
+        "Projects/Projectec/1.png",
+        "Projects/Projectec/2.png",
+        "Projects/Projectec/3.png",
+        "Projects/Projectec/4.png"
+      ],
+      "technologies": ["Power BI", "Excel", "SQL", "Data Visualization"],
+      "category": "Business Analytics",
+      "date": "2024-01-15",
+      "liveLink": "#",
+      "githubLink": "#",
+      "downloadLink": "https://drive.google.com/drive/folders/1ujHD_MZVCvIBBHDwB72kwxqbdRDrXSyg",
+      "features": [
+        "Sales performance tracking by product category and region",
+        "Customer segmentation and behavior analysis",
+        "Order cancellation pattern identification",
+        "Inventory optimization recommendations"
+      ]
+    },
+    {
+      "id": "project2",
+      "title": "Crypto Market Risk Dashboard",
+      "description": "Power BI dashboard analyzing cryptocurrency volatility and market sentiment to assess risk factors and investment opportunities.",
+      "images": [
+        "Projects/Projectcrypto/1.png",
+        "Projects/Projectcrypto/2.png",
+        "Projects/Projectcrypto/3.png"
+      ],
+      "technologies": ["Power BI", "Python", "API Integration", "Financial Analysis"],
+      "category": "Financial Analytics",
+      "date": "2024-02-20",
+      "liveLink": "#",
+      "githubLink": "#",
+      "downloadLink": "https://drive.google.com/drive/folders/1cvIZ0nbRI022NNEHhLUcRlc6VFNQEGCo",
+      "features": [
+        "Real-time cryptocurrency price tracking",
+        "Volatility analysis and risk scoring",
+        "Market sentiment indicators",
+        "Portfolio optimization recommendations"
+      ]
+    },
+    {
+      "id": "project3",
+      "title": "P3ABC Project",
+      "description": "Comprehensive project management and testing documentation including UAT scenarios, sprint planning, and test cases.",
+      "images": [
+        "Projects/P3ABC/1.png",
+        "Projects/P3ABC/Sprint.png",
+        "Projects/P3ABC/UAT.png",
+        "Projects/P3ABC/UAT Results.png",
+        "Projects/P3ABC/UAT Scenario.png",
+        "Projects/P3ABC/UAT Signoff.png",
+        "Projects/P3ABC/test_case.png"
+      ],
+      "technologies": ["Project Management", "UAT Testing", "Documentation", "Agile Methodology"],
+      "category": "Project Management",
+      "date": "2024-03-10",
+      "liveLink": "#",
+      "githubLink": "#",
+      "downloadLink": "Projects/P3ABC/",
+      "features": [
+        "Detailed sprint planning and tracking",
+        "User Acceptance Testing (UAT) scenarios and results",
+        "Comprehensive test case documentation",
+        "Project signoff and approval processes"
+      ]
+    }
+  ]
+}
