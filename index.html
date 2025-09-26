@@ -3,404 +3,370 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dilip Choudhary | Business Analytics & Data Visualization Specialist</title>
-    <meta name="description" content="Dilip Choudhary - Business Analytics professional specializing in financial markets, risk analysis, and data-driven decision-making with expertise in Power BI, Tableau, and SQL.">
+    <title>Dilip Choudhary - Business Analytics Professional</title>
+    <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Animated Background with Glassmorphism -->
-    <div class="glass-bg"></div>
-    <div class="glass-overlay"></div>
-    <div class="floating-elements" id="floatingElements"></div>
-
-    <!-- Mobile Navigation -->
-    <div class="mobile-nav" id="mobileNav">
-        <a href="#home" class="mobile-nav-link">Home</a>
-        <a href="#about" class="mobile-nav-link">About</a>
-        <a href="#projects" class="mobile-nav-link">Projects</a>
-        <a href="#services" class="mobile-nav-link">Services</a>
-        <a href="#resume" class="mobile-nav-link">Resume</a>
-        <a href="#contact" class="mobile-nav-link">Contact</a>
-    </div>
-
-    <!-- Header -->
-    <header id="header">
-        <div class="container nav-container">
-            <a href="#" class="logo">
-                <img src="Images/Profile.JPG" alt="Dilip Choudhary" class="logo-img">
-                <span>Dilip Choudhary</span>
-            </a>
-
-            <button class="mobile-menu-btn" id="mobileMenuBtn">
-                <i class="fas fa-bars"></i>
-            </button>
-
-            <nav class="nav-links" id="navLinks">
-                <a href="#home" class="nav-link active">Home</a>
-                <a href="#about" class="nav-link">About</a>
-                
-                <div class="dropdown">
-                    <a href="#projects" class="nav-link">Projects ▾</a>
-                    <div class="dropdown-menu">
-                        <a href="#project1" class="dropdown-item">E-Commerce Sales Insights</a>
-                        <a href="#project2" class="dropdown-item">Crypto Market Risk Dashboard</a>
-                        <a href="#project3" class="dropdown-item">P3ABC Project</a>
-                    </div>
-                </div>
-                
-                <a href="#services" class="nav-link">Services</a>
-                <a href="#resume" class="nav-link">Resume</a>
-                <a href="#contact" class="nav-link">Contact</a>
-                <button class="theme-toggle" id="themeToggle">
-                    <i class="fas fa-sun"></i>
-                </button>
-            </nav>
+    <!-- Particle System Background -->
+    <canvas id="particleCanvas"></canvas>
+    
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">DC</div>
+            <ul class="nav-menu">
+                <li><a href="#hero" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
         </div>
-    </header>
+    </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="container hero-container">
-            <div class="hero-content">
-                <h1 class="hero-title" id="heroTitle">Dilip Choudhary</h1>
-                <p class="hero-description">Business Analytics professional specializing in financial markets, risk analysis, and data-driven decision-making.</p>
-                <div class="hero-buttons">
-                    <a href="#contact" class="btn btn-primary">
-                        <i class="fas fa-paper-plane"></i> Get In Touch
-                    </a>
-                    <a href="#projects" class="btn btn-secondary">
-                        <i class="fas fa-eye"></i> View My Work
-                    </a>
-                </div>
+    <section id="hero" class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    <span class="title-line">DILIP</span>
+                    <span class="title-line">CHOUDHARY</span>
+                </h1>
+                <p class="hero-subtitle">Business Analytics Professional</p>
+                <p class="hero-tagline">Transforming Data into Strategic Insights</p>
             </div>
-            <div class="hero-image">
-                <div class="hero-img-container glass-edge">
-                    <img src="Images/Profile.JPG" alt="Dilip Choudhary" class="hero-img">
-                </div>
+            <div class="hero-cta">
+                <button class="cta-button primary" onclick="scrollToSection('projects')">
+                    <span>View My Work</span>
+                    <div class="button-glow"></div>
+                </button>
+                <button class="cta-button secondary" onclick="scrollToSection('contact')">
+                    <span>Let's Connect</span>
+                </button>
             </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-dot"></div>
+            <div class="scroll-line"></div>
         </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="section about">
-        <div class="container about-container">
-            <div class="about-content">
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
                 <h2 class="section-title">About Me</h2>
-                <p class="about-text animate-on-scroll">I'm a Business Analytics student focused on financial markets, risk analysis, and data-driven decision-making. I transform messy datasets into clear insights and dashboards that empower stakeholders to act.</p>
-                <p class="about-text animate-on-scroll">My expertise includes financial modeling, data visualization, and creating interactive dashboards that tell compelling stories with data. I'm passionate about using analytics to solve complex business problems and drive strategic decisions.</p>
-                <div class="about-skills animate-on-scroll">
-                    <span class="skill">Power BI</span>
-                    <span class="skill">Tableau</span>
-                    <span class="skill">Excel</span>
-                    <span class="skill">SQL</span>
-                    <span class="skill">Financial Analysis</span>
-                    <span class="skill">Data Visualization</span>
-                    <span class="skill">Dashboarding</span>
-                    <span class="skill">Risk Analysis</span>
-                </div>
-                <a href="#contact" class="btn btn-primary glass-edge">
-                    <i class="fas fa-comment"></i> Let's Discuss
-                </a>
+                <div class="section-subtitle">Data-Driven Professional</div>
             </div>
-            <div class="about-image">
-                <img src="Images/Profile.JPG" alt="Dilip Choudhary" class="about-img glass-edge">
+            <div class="about-content">
+                <div class="about-text">
+                    <p class="about-description">
+                        Business Analytics professional with hands-on experience in requirements gathering, 
+                        UAT coordination, stakeholder communication, and dashboard development. Skilled in 
+                        Excel, Power BI, Agile methodologies, KPI tracking, and sprint planning.
+                    </p>
+                    <p class="about-description">
+                        I specialize in transforming complex data into actionable insights that drive 
+                        business growth and improve decision-making processes. My approach combines 
+                        technical expertise with strategic thinking to deliver measurable results.
+                    </p>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="stat-number">3</div>
+                            <div class="stat-label">Major Projects</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">UAT Success Rate</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">40%</div>
+                            <div class="stat-label">Process Efficiency Gain</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Services Section -->
-    <section id="services" class="section">
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
         <div class="container">
-            <div class="section-header center">
-                <h2 class="section-title">What I Do</h2>
-                <p class="text-lead">Transforming complex data into actionable insights through cutting-edge visualization techniques</p>
+            <div class="section-header">
+                <h2 class="section-title">Skills & Expertise</h2>
+                <div class="section-subtitle">Interactive Skill Sphere</div>
             </div>
-            <div class="services-grid">
-                <div class="service-card glass-card animate-on-scroll">
-                    <div class="service-icon">
-                        <i class="fas fa-chart-line"></i>
+            <div class="skills-content">
+                <div class="skills-sphere-container">
+                    <div class="skills-sphere" id="skillsSphere">
+                        <!-- Skills will be dynamically generated -->
                     </div>
-                    <h3 class="service-title">Data & Dashboarding</h3>
-                    <p class="service-description">Creating insightful Power BI and Tableau dashboards that transform complex data into actionable business intelligence.</p>
                 </div>
-                <div class="service-card glass-card animate-on-scroll">
-                    <div class="service-icon">
-                        <i class="fas fa-chart-pie"></i>
+                <div class="skills-info">
+                    <div class="skill-category active" data-category="business">
+                        <h3>Business Analysis</h3>
+                        <ul>
+                            <li>Requirements Gathering</li>
+                            <li>Stakeholder Management</li>
+                            <li>UAT Coordination</li>
+                            <li>Process Optimization</li>
+                        </ul>
                     </div>
-                    <h3 class="service-title">Financial Modeling</h3>
-                    <p class="service-description">Building robust financial models in Excel for valuations, scenario analysis, and business case development.</p>
-                </div>
-                <div class="service-card glass-card animate-on-scroll">
-                    <div class="service-icon">
-                        <i class="fas fa-database"></i>
+                    <div class="skill-category" data-category="project">
+                        <h3>Project Management</h3>
+                        <ul>
+                            <li>Agile Methodologies</li>
+                            <li>Sprint Planning</li>
+                            <li>Project Documentation</li>
+                            <li>MS Office Suite</li>
+                        </ul>
                     </div>
-                    <h3 class="service-title">Data Analysis</h3>
-                    <p class="service-description">Extracting meaningful insights from complex datasets using SQL and statistical analysis techniques.</p>
+                    <div class="skill-category" data-category="data">
+                        <h3>Data Analysis</h3>
+                        <ul>
+                            <li>Financial Modeling</li>
+                            <li>Risk Assessment</li>
+                            <li>KPI Development</li>
+                            <li>Trend Analysis</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category" data-category="tools">
+                        <h3>Tools & Technologies</h3>
+                        <ul>
+                            <li>Power BI (DAX, Power Query)</li>
+                            <li>Excel (Advanced)</li>
+                            <li>SQL (Basic)</li>
+                            <li>Tableau</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Projects Section -->
-    <section id="projects" class="section projects">
+    <section id="projects" class="projects">
         <div class="container">
-            <div class="section-header center">
+            <div class="section-header">
                 <h2 class="section-title">Featured Projects</h2>
-                <p class="text-lead">Showcasing my expertise through practical applications of data analytics</p>
+                <div class="section-subtitle">Digital Gallery</div>
             </div>
-            <div class="projects-container">
-                <div class="projects-grid" id="projectsGrid">
-                    <!-- Project 1: E-Commerce Sales Insights -->
-                    <div id="project1" class="project-card glass-card animate-on-scroll">
+            <div class="projects-gallery">
+                <div class="project-panel" data-project="payment">
+                    <div class="project-preview">
                         <div class="project-image">
-                            <img src="Projects/Projectec/1.png" alt="E-Commerce Sales Insights" class="project-img">
-                            <div class="project-overlay">
-                                <button class="btn btn-primary view-project-btn" data-project="project1">
-                                    <i class="fas fa-external-link-alt"></i> View Project
-                                </button>
-                            </div>
+                            <div class="project-placeholder">📊</div>
                         </div>
-                        <div class="project-content">
-                            <h3 class="project-title">E-Commerce Sales Insights</h3>
-                            <p class="project-description">Comprehensive analysis of e-commerce order data with insights into cancellation drivers and sales performance optimization.</p>
-                            <div class="project-actions">
-                                <button class="btn btn-primary view-project-btn" data-project="project1">
-                                    <i class="fas fa-eye"></i> View Project
-                                </button>
-                                <a href="https://drive.google.com/drive/folders/1ujHD_MZVCvIBBHDwB72kwxqbdRDrXSyg" class="btn btn-secondary" target="_blank">
-                                    <i class="fas fa-download"></i> Download
-                                </a>
+                        <div class="project-info">
+                            <h3>Customer Payment Dashboard</h3>
+                            <p>Power BI dashboard analyzing 100+ invoices, tracking ₹38.64L revenue</p>
+                            <div class="project-tags">
+                                <span>Power BI</span>
+                                <span>DAX</span>
+                                <span>UAT</span>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Project 2: Crypto Market Risk Dashboard -->
-                    <div id="project2" class="project-card glass-card animate-on-scroll">
-                        <div class="project-image">
-                            <img src="Projects/Projectcrypto/1.png" alt="Crypto Market Risk Dashboard" class="project-img">
-                            <div class="project-overlay">
-                                <button class="btn btn-primary view-project-btn" data-project="project2">
-                                    <i class="fas fa-external-link-alt"></i> View Project
-                                </button>
-                            </div>
-                        </div>
+                    <div class="project-details">
                         <div class="project-content">
-                            <h3 class="project-title">Crypto Market Risk Dashboard</h3>
-                            <p class="project-description">Power BI dashboard analyzing cryptocurrency volatility and market sentiment to assess risk factors and investment opportunities.</p>
-                            <div class="project-actions">
-                                <button class="btn btn-primary view-project-btn" data-project="project2">
-                                    <i class="fas fa-eye"></i> View Project
-                                </button>
-                                <a href="https://drive.google.com/drive/folders/1cvIZ0nbRI022NNEHhLUcRlc6VFNQEGCo" class="btn btn-secondary" target="_blank">
-                                    <i class="fas fa-download"></i> Download
-                                </a>
+                            <h3>Customer Payment & Revenue Insights Dashboard</h3>
+                            <p class="project-description">
+                                Comprehensive Power BI dashboard that transformed invoice management and revenue tracking. 
+                                Built with advanced DAX formulas and interactive visualizations to provide real-time 
+                                insights into payment patterns and revenue at risk.
+                            </p>
+                            <div class="project-achievements">
+                                <div class="achievement">
+                                    <strong>₹38,64,000</strong>
+                                    <span>Total Revenue Tracked</span>
+                                </div>
+                                <div class="achievement">
+                                    <strong>₹8,13,500</strong>
+                                    <span>Revenue at Risk Identified</span>
+                                </div>
+                                <div class="achievement">
+                                    <strong>100%</strong>
+                                    <span>UAT Success Rate</span>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Project 3: P3ABC Project -->
-                    <div id="project3" class="project-card glass-card animate-on-scroll">
-                        <div class="project-image">
-                            <img src="Projects/P3ABC/1.png" alt="P3ABC Project" class="project-img">
-                            <div class="project-overlay">
-                                <button class="btn btn-primary view-project-btn" data-project="project3">
-                                    <i class="fas fa-external-link-alt"></i> View Project
-                                </button>
-                            </div>
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">P3ABC Project</h3>
-                            <p class="project-description">Comprehensive project management and testing documentation including UAT scenarios, sprint planning, and test cases.</p>
-                            <div class="project-actions">
-                                <button class="btn btn-primary view-project-btn" data-project="project3">
-                                    <i class="fas fa-eye"></i> View Project
-                                </button>
-                                <a href="Projects/P3ABC/" class="btn btn-secondary" target="_blank">
-                                    <i class="fas fa-download"></i> View Files
-                                </a>
+                            <div class="project-tech">
+                                <h4>Technologies Used:</h4>
+                                <ul>
+                                    <li>Power BI with advanced DAX formulas</li>
+                                    <li>Power Query for data transformation</li>
+                                    <li>Excel for data validation</li>
+                                    <li>BRD documentation</li>
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Project Navigation for Mobile -->
-                <div class="project-nav" id="projectNav">
-                    <button class="project-nav-btn active" data-index="0"></button>
-                    <button class="project-nav-btn" data-index="1"></button>
-                    <button class="project-nav-btn" data-index="2"></button>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Project Gallery Modals -->
-    <!-- E-Commerce Project Gallery -->
-    <div id="project1-gallery" class="project-gallery">
-        <div class="gallery-content glass-card">
-            <div class="gallery-header">
-                <h3>E-Commerce Sales Insights</h3>
-                <button class="close-gallery">&times;</button>
-            </div>
-            <div class="gallery-body">
-                <div class="gallery-images">
-                    <img src="Projects/Projectec/1.png" alt="E-Commerce Dashboard 1" class="gallery-img">
-                    <img src="Projects/Projectec/2.png" alt="E-Commerce Dashboard 2" class="gallery-img">
-                    <img src="Projects/Projectec/3.png" alt="E-Commerce Dashboard 3" class="gallery-img">
-                    <img src="Projects/Projectec/4.png" alt="E-Commerce Dashboard 4" class="gallery-img">
+                <div class="project-panel" data-project="ecommerce">
+                    <div class="project-preview">
+                        <div class="project-image">
+                            <div class="project-placeholder">🛒</div>
+                        </div>
+                        <div class="project-info">
+                            <h3>E-Commerce Analytics</h3>
+                            <p>Analysis of 128,000+ orders revealing 20% higher cancellation rates</p>
+                            <div class="project-tags">
+                                <span>Power BI</span>
+                                <span>Excel</span>
+                                <span>Analytics</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-details">
+                        <div class="project-content">
+                            <h3>E-Commerce Sales & Order Insights Dashboard</h3>
+                            <p class="project-description">
+                                Deep dive analysis into e-commerce operations, focusing on order patterns, 
+                                cancellation rates, and sales trends. Identified critical bottlenecks and 
+                                provided actionable recommendations for process improvement.
+                            </p>
+                            <div class="project-achievements">
+                                <div class="achievement">
+                                    <strong>128,000+</strong>
+                                    <span>Orders Analyzed</span>
+                                </div>
+                                <div class="achievement">
+                                    <strong>20%</strong>
+                                    <span>Higher Cancellation Rate Found</span>
+                                </div>
+                                <div class="achievement">
+                                    <strong>15%</strong>
+                                    <span>Process Efficiency Improvement</span>
+                                </div>
+                            </div>
+                            <div class="project-tech">
+                                <h4>Key Insights Delivered:</h4>
+                                <ul>
+                                    <li>Order fulfillment optimization strategies</li>
+                                    <li>Customer behavior pattern analysis</li>
+                                    <li>Seasonal trend identification</li>
+                                    <li>Revenue leakage prevention</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="gallery-details">
-                    <h4>Project Details</h4>
-                    <p>This e-commerce analytics dashboard provides insights into sales performance, customer behavior, and operational efficiency. Key features include:</p>
-                    <ul>
-                        <li>Sales performance tracking by product category and region</li>
-                        <li>Customer segmentation and behavior analysis</li>
-                        <li>Order cancellation pattern identification</li>
-                        <li>Inventory optimization recommendations</li>
-                    </ul>
-                    <p>The dashboard helps e-commerce businesses optimize their operations and increase profitability through data-driven insights.</p>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Crypto Project Gallery -->
-    <div id="project2-gallery" class="project-gallery">
-        <div class="gallery-content glass-card">
-            <div class="gallery-header">
-                <h3>Crypto Market Risk Dashboard</h3>
-                <button class="close-gallery">&times;</button>
-            </div>
-            <div class="gallery-body">
-                <div class="gallery-images">
-                    <img src="Projects/Projectcrypto/1.png" alt="Crypto Dashboard 1" class="gallery-img">
-                    <img src="Projects/Projectcrypto/2.png" alt="Crypto Dashboard 2" class="gallery-img">
-                    <img src="Projects/Projectcrypto/3.png" alt="Crypto Dashboard 3" class="gallery-img">
-                </div>
-                <div class="gallery-details">
-                    <h4>Project Details</h4>
-                    <p>This Power BI dashboard provides comprehensive analysis of cryptocurrency market trends, volatility patterns, and risk assessment metrics. The project includes:</p>
-                    <ul>
-                        <li>Real-time cryptocurrency price tracking</li>
-                        <li>Volatility analysis and risk scoring</li>
-                        <li>Market sentiment indicators</li>
-                        <li>Portfolio optimization recommendations</li>
-                    </ul>
-                    <p>The dashboard helps investors make data-driven decisions by visualizing complex market data in an intuitive interface.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- P3ABC Project Gallery -->
-    <div id="project3-gallery" class="project-gallery">
-        <div class="gallery-content glass-card">
-            <div class="gallery-header">
-                <h3>P3ABC Project</h3>
-                <button class="close-gallery">&times;</button>
-            </div>
-            <div class="gallery-body">
-                <div class="gallery-images">
-                    <img src="Projects/P3ABC/1.png" alt="P3ABC Dashboard 1" class="gallery-img">
-                    <img src="Projects/P3ABC/Sprint.png" alt="Sprint Planning" class="gallery-img">
-                    <img src="Projects/P3ABC/UAT.png" alt="UAT Documentation" class="gallery-img">
-                    <img src="Projects/P3ABC/UAT Results.png" alt="UAT Results" class="gallery-img">
-                    <img src="Projects/P3ABC/UAT Scenario.png" alt="UAT Scenario" class="gallery-img">
-                    <img src="Projects/P3ABC/UAT Signoff.png" alt="UAT Signoff" class="gallery-img">
-                    <img src="Projects/P3ABC/test_case.png" alt="Test Cases" class="gallery-img">
-                </div>
-                <div class="gallery-details">
-                    <h4>Project Details</h4>
-                    <p>This comprehensive project showcases my expertise in project management, testing methodologies, and documentation. The project includes:</p>
-                    <ul>
-                        <li>Detailed sprint planning and tracking</li>
-                        <li>User Acceptance Testing (UAT) scenarios and results</li>
-                        <li>Comprehensive test case documentation</li>
-                        <li>Project signoff and approval processes</li>
-                    </ul>
-                    <p>This project demonstrates my ability to manage complex projects from planning through execution and delivery.</p>
+                <div class="project-panel" data-project="crypto">
+                    <div class="project-preview">
+                        <div class="project-image">
+                            <div class="project-placeholder">₿</div>
+                        </div>
+                        <div class="project-info">
+                            <h3>Crypto Market Analysis</h3>
+                            <p>Risk assessment dashboard with CAGR and volatility KPIs</p>
+                            <div class="project-tags">
+                                <span>Power BI</span>
+                                <span>Risk Analysis</span>
+                                <span>KPI</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-details">
+                        <div class="project-content">
+                            <h3>Crypto Market Risk & Sentiment Dashboard</h3>
+                            <p class="project-description">
+                                Sophisticated cryptocurrency market analysis tool featuring advanced risk metrics, 
+                                sentiment analysis, and volatility tracking. Automated manual processes and 
+                                provided real-time market insights for informed decision-making.
+                            </p>
+                            <div class="project-achievements">
+                                <div class="achievement">
+                                    <strong>40%</strong>
+                                    <span>Reduction in Manual Work</span>
+                                </div>
+                                <div class="achievement">
+                                    <strong>5+</strong>
+                                    <span>Risk KPIs Designed</span>
+                                </div>
+                                <div class="achievement">
+                                    <strong>Real-time</strong>
+                                    <span>Market Sentiment Tracking</span>
+                                </div>
+                            </div>
+                            <div class="project-tech">
+                                <h4>Advanced Analytics Features:</h4>
+                                <ul>
+                                    <li>CAGR calculation and visualization</li>
+                                    <li>Volatility index development</li>
+                                    <li>Sentiment correlation analysis</li>
+                                    <li>Risk-adjusted return metrics</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Resume Section -->
-    <section id="resume" class="section">
-        <div class="container resume-container">
-            <div class="section-header center">
-                <h2 class="section-title">My Resume</h2>
-                <p class="text-lead">Download my complete resume to learn more about my experience, education, and skills</p>
-            </div>
-            <a href="resume.pdf" download class="resume-download glass-edge">
-                <i class="fas fa-download"></i> Download Resume
-            </a>
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="section">
+    <section id="contact" class="contact">
         <div class="container">
-            <div class="section-header center">
-                <h2 class="section-title">Get In Touch</h2>
-                <p class="text-lead">Let's discuss how data analytics can transform your business decisions</p>
+            <div class="section-header">
+                <h2 class="section-title">Let's Connect</h2>
+                <div class="section-subtitle">Start a Conversation</div>
             </div>
-            <div class="contact-container">
+            <div class="contact-content">
                 <div class="contact-info">
-                    <div class="contact-item animate-on-scroll">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
                         <div class="contact-details">
-                            <h3>Email</h3>
-                            <a href="mailto:choudharydilip947@gmail.com">choudharydilip947@gmail.com</a>
+                            <h4>Email</h4>
+                            <p>choudharydilip947@gmail.com</p>
                         </div>
                     </div>
-                    <div class="contact-item animate-on-scroll">
-                        <div class="contact-icon">
-                            <i class="fas fa-phone"></i>
-                        </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📱</div>
                         <div class="contact-details">
-                            <h3>Phone</h3>
-                            <a href="tel:+919346053750">+91 9346053750</a>
+                            <h4>Phone</h4>
+                            <p>+91-9346053750</p>
                         </div>
                     </div>
-                    <div class="contact-item animate-on-scroll">
-                        <div class="contact-icon">
-                            <i class="fab fa-linkedin"></i>
-                        </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📍</div>
                         <div class="contact-details">
-                            <h3>LinkedIn</h3>
-                            <a href="https://linkedin.com/in/dilip-choudhary-analytics" target="_blank">linkedin.com/in/dilip-choudhary-analytics</a>
+                            <h4>Location</h4>
+                            <p>Hyderabad, India</p>
                         </div>
                     </div>
-                    <div class="contact-item animate-on-scroll">
-                        <div class="contact-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">💼</div>
                         <div class="contact-details">
-                            <h3>Location</h3>
-                            <p>India</p>
+                            <h4>LinkedIn</h4>
+                            <p>linkedin.com/in/dilip-choudhary</p>
                         </div>
                     </div>
                 </div>
-                <div class="contact-form glass-card animate-on-scroll">
+                <div class="contact-form">
                     <form id="contactForm">
                         <div class="form-group">
-                            <label for="name" class="form-label">Your Name</label>
-                            <input type="text" id="name" class="form-input" required>
+                            <label for="name">What should I call you?</label>
+                            <input type="text" id="name" name="name" placeholder="Your name..." required>
                         </div>
                         <div class="form-group">
-                            <label for="email" class="form-label">Your Email</label>
-                            <input type="email" id="email" class="form-input" required>
+                            <label for="email">Where can I reach you?</label>
+                            <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
                         </div>
                         <div class="form-group">
-                            <label for="message" class="form-label">Your Message</label>
-                            <textarea id="message" class="form-input" required></textarea>
+                            <label for="subject">What's on your mind?</label>
+                            <input type="text" id="subject" name="subject" placeholder="Project idea, collaboration, or just saying hi...">
                         </div>
-                        <button type="submit" class="btn btn-primary glass-edge" style="width: 100%;">
-                            <i class="fas fa-paper-plane"></i> Send Message
+                        <div class="form-group">
+                            <label for="message">Tell me more...</label>
+                            <textarea id="message" name="message" rows="5" placeholder="Share your thoughts, project requirements, or any questions you have. I'm all ears!" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-button">
+                            <span>Send Message</span>
+                            <div class="button-glow"></div>
                         </button>
                     </form>
                 </div>
@@ -409,31 +375,15 @@
     </section>
 
     <!-- Footer -->
-    <footer>
+    <footer class="footer">
         <div class="container">
-            <div class="footer-content">
-                <div class="logo">
-                    <img src="Images/Profile.JPG" alt="Dilip Choudhary" class="logo-img">
-                    <span>Dilip Choudhary</span>
-                </div>
-                <div class="social-links">
-                    <a href="mailto:choudharydilip947@gmail.com" class="social-link glass-edge">
-                        <i class="fas fa-envelope"></i>
-                    </a>
-                    <a href="https://linkedin.com/in/dilip-choudhary-analytics" class="social-link glass-edge" target="_blank">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="resume.pdf" class="social-link glass-edge" target="_blank">
-                        <i class="fas fa-file-pdf"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>© 2025 Dilip Choudhary. All rights reserved.</p>
-            </div>
+            <p>&copy; 2024 Dilip Choudhary. Crafted with precision and passion.</p>
         </div>
     </footer>
 
+    <script src="js/particles.js"></script>
+    <script src="js/skills-sphere.js"></script>
+    <script src="js/projects.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>
