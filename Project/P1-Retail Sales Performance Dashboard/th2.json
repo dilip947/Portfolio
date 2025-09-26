@@ -1,0 +1,15 @@
+{
+  "name": "Amazon Minimal Theme",
+  "dataColors": [
+    "#FF9900",
+    "#232F3E",
+    "#146EB4",
+    "#F3F4F6",
+    "#F58536",
+    "#B12704",
+    "#007185"
+  ],
+  "background": "#FDF7F1",
+  "foreground": "#232F3E",
+  "tableAccent": "#FF9900"
+}

@@ -1,0 +1,177 @@
+/* Reset and base styling */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  color: #fff;
+  background: #0a0a0a;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  text-align: center;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Hero Section */
+#hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #000, #1a1a1a);
+  text-align: center;
+  position: relative;
+}
+
+.profile-pic {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 3px solid #00ffe0;
+  box-shadow: 0 0 15px #00ffe0;
+}
+
+.tagline {
+  font-size: 1.2rem;
+  margin-top: 10px;
+  color: #aaa;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+.nav-links li a {
+  padding: 10px 15px;
+  border: 1px solid #00ffe0;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.nav-links li a:hover {
+  background: #00ffe0;
+  color: #000;
+}
+
+/* Sections */
+section {
+  padding: 60px 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.skills-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.skill {
+  background: #1a1a1a;
+  padding: 15px 25px;
+  border: 1px solid #00ffe0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+.skill:hover {
+  background: #00ffe0;
+  color: #000;
+}
+
+/* Projects */
+.project-grid {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.project-card {
+  background: #1a1a1a;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 300px;
+  transition: 0.3s;
+  border: 1px solid #333;
+}
+
+.project-card:hover {
+  border: 1px solid #00ffe0;
+  box-shadow: 0 0 10px #00ffe0;
+}
+
+.project-card img {
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+/* Resume */
+iframe {
+  border: none;
+  margin-top: 20px;
+}
+
+.download-btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #00ffe0;
+  color: #000;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.download-btn:hover {
+  background: #fff;
+}
+
+/* Contact */
+form {
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  margin: auto;
+  gap: 15px;
+}
+
+form input, form textarea, form button {
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+}
+
+form button {
+  background: #00ffe0;
+  color: #000;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+form button:hover {
+  background: #fff;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #1a1a1a;
+  margin-top: 40px;
+}
