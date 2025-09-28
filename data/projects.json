@@ -1,39 +1,111 @@
 [
   {
     "id": "project1",
-    "title": "E-Commerce Sales Insights",
-    "short": "Order cancellations & delivery insights",
-    "description": "Comprehensive analysis of e-commerce order data with insights into cancellation drivers and sales performance optimization.",
+    "title": "Customer Payment & Revenue Insights Dashboard",
+    "description": "Comprehensive Power BI dashboard analyzing customer payment patterns and revenue streams. Built with advanced DAX formulas and achieved 100% UAT success rate. Tracked ₹3,864,000 revenue with ₹813,500 identified at risk.",
     "images": [
-      "Image/Projectec/1.png",
-      "Image/Projectec/2.png",
-      "Image/Projectec/3.png",
-      "Image/Projectec/4.png"
+      "Projects/P3ABC/1.png",
+      "Projects/P3ABC/Sprint.png",
+      "Projects/P3ABC/UAT Results.png",
+      "Projects/P3ABC/UAT Scenario.png",
+      "Projects/P3ABC/UAT Signoff.png",
+      "Projects/P3ABC/UAT.png",
+      "Projects/P3ABC/test_case.png"
     ],
-    "download": "https://drive.google.com/drive/folders/1ujHD_MZVCvIBBHDwB72kwxqbdRDrXSyg"
+    "technologies": [
+      "Power BI",
+      "Excel",
+      "DAX",
+      "Power Query",
+      "BRD",
+      "UAT"
+    ],
+    "folder": "P3ABC",
+    "category": "Business Intelligence",
+    "duration": "3 months",
+    "impact": "Improved process clarity and boosted profitability through risk identification",
+    "keyFeatures": [
+      "Advanced DAX calculations for revenue analysis",
+      "Comprehensive UAT framework with 100% success rate",
+      "Real-time risk assessment dashboard",
+      "Stakeholder requirement documentation (BRD)",
+      "Automated reporting and insights generation"
+    ],
+    "metrics": {
+      "invoicesAnalyzed": "100+",
+      "totalRevenue": "₹3,864,000",
+      "riskAmount": "₹813,500",
+      "uatSuccessRate": "100%"
+    }
   },
   {
     "id": "project2",
-    "title": "Crypto Market Risk Dashboard",
-    "short": "Volatility & sentiment risk scoring",
-    "description": "Power BI dashboard analyzing cryptocurrency volatility and market sentiment to assess risk factors and investment opportunities.",
+    "title": "E-Commerce Sales & Order Insights Dashboard",
+    "description": "Comprehensive analysis of 128,000+ e-commerce orders identifying cancellation patterns and process optimization opportunities. Discovered 20% higher cancellation rate leading to improved efficiency.",
     "images": [
-      "Image/Projectcrypto/1.png",
-      "Image/Projectcrypto/2.png",
-      "Image/Projectcrypto/3.png"
+      "Projects/Projectec/1.png",
+      "Projects/Projectec/2.png",
+      "Projects/Projectec/3.png",
+      "Projects/Projectec/4.png"
     ],
-    "download": "https://drive.google.com/drive/folders/1cvIZ0nbRI022NNEHhLUcRlc6VFNQEGCo"
+    "technologies": [
+      "Power BI",
+      "Power Query",
+      "Excel",
+      "DAX",
+      "Data Modeling"
+    ],
+    "folder": "Projectec",
+    "category": "E-Commerce Analytics",
+    "duration": "2 months",
+    "impact": "Identified process inefficiencies leading to 20% improvement in order completion",
+    "keyFeatures": [
+      "Large-scale order data processing (128K+ records)",
+      "Cancellation pattern analysis and insights",
+      "Interactive dashboard with drill-down capabilities",
+      "Customer behavior segmentation",
+      "Automated alert system for high cancellation rates"
+    ],
+    "metrics": {
+      "ordersAnalyzed": "128,000+",
+      "cancellationRate": "20% higher identified",
+      "efficiencyImprovement": "Process optimization achieved",
+      "dataPoints": "Multiple customer touchpoints"
+    }
   },
   {
     "id": "project3",
-    "title": "P3ABC — Process Improvement",
-    "short": "UAT, test cases & sprint artifacts",
-    "description": "Project focused on process optimization, user acceptance testing, and sprint reporting.",
+    "title": "Crypto Market Risk & Sentiment Dashboard",
+    "description": "Advanced cryptocurrency market analysis dashboard featuring volatility tracking, risk assessment, and sentiment analysis. Implemented custom KPIs including CAGR and volatility metrics, reducing manual work by 40%.",
     "images": [
-      "Image/Projects/P3ABC/1.png",
-      "Image/Projects/P3ABC/Sprint.png",
-      "Image/Projects/P3ABC/UAT.png"
+      "Projects/Projectcrypto/1.png",
+      "Projects/Projectcrypto/2.png",
+      "Projects/Projectcrypto/3.png"
     ],
-    "download": ""
+    "technologies": [
+      "Power BI",
+      "Power Query",
+      "Excel",
+      "DAX",
+      "Financial Modeling",
+      "Risk Analysis"
+    ],
+    "folder": "Projectcrypto",
+    "category": "Financial Analytics",
+    "duration": "1.5 months",
+    "impact": "Reduced manual analysis work by 40% and improved investment decision-making",
+    "keyFeatures": [
+      "Real-time cryptocurrency price tracking",
+      "Custom volatility and CAGR calculations",
+      "Risk scoring algorithm implementation",
+      "Market sentiment analysis integration",
+      "Portfolio optimization recommendations"
+    ],
+    "metrics": {
+      "manualWorkReduction": "40%",
+      "cryptoCurrencies": "Multiple tracked",
+      "kpiMetrics": "CAGR, Volatility, Risk Score",
+      "updateFrequency": "Real-time data integration"
+    }
   }
 ]
