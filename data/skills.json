@@ -1,14 +1,14 @@
-[
-  "Power BI",
-  "Tableau",
-  "Advanced Excel",
-  "SQL",
-  "Financial Modeling",
-  "Agile Methodologies",
-  "UAT Coordination",
-  "Requirements Gathering",
-  "Stakeholder Communication",
-  "Data Visualization",
-  "Risk Analysis",
-  "KPI Development"
-]
+{
+  "skills": [
+    { "name": "Power BI (DAX, Power Query)", "category": "Tools" },
+    { "name": "Excel (Advanced)", "category": "Tools" },
+    { "name": "SQL (Intermediate)", "category": "Tools" },
+    { "name": "Tableau", "category": "Tools" },
+    { "name": "Python (Pandas)", "category": "Tools" },
+    { "name": "Financial Modeling", "category": "Domain" },
+    { "name": "Risk Assessment", "category": "Domain" },
+    { "name": "KPI Development", "category": "Domain" },
+    { "name": "Stakeholder Management", "category": "Soft" },
+    { "name": "Requirements Gathering", "category": "Soft" }
+  ]
+}
