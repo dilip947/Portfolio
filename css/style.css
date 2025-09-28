@@ -860,16 +860,16 @@ body.dark-mode .glass-effect {
     justify-content: center;
 }
 
-/* Contact Section */
+/* Contact Section - iOS Style Glass Design */
 .contact-section {
-    padding: 6rem 0;
+    padding: 8rem 0;
     background: var(--bg-secondary);
 }
 
 .contact-links {
     display: flex;
     justify-content: center;
-    gap: 2rem;
+    gap: 3rem;
     flex-wrap: wrap;
 }
 
@@ -877,24 +877,74 @@ body.dark-mode .glass-effect {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2rem;
-    border-radius: 20px;
+    padding: 3rem 2rem;
+    border-radius: 25px;
     text-decoration: none;
     color: var(--text-primary);
-    transition: var(--transition-fast);
-    min-width: 150px;
+    transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    min-width: 180px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+        0 25px 80px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.contact-link:hover::before {
+    left: 100%;
+}
+
+.contact-link:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 
+        0 40px 120px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.15);
 }
 
 .contact-link i {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    transition: var(--transition-fast);
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    color: var(--text-primary);
 }
 
 .contact-link:hover i {
-    transform: scale(1.2);
-    color: var(--text-secondary);
+    transform: scale(1.2) translateY(-5px);
+    color: var(--text-primary);
+    filter: brightness(1.2);
 }
+
+.contact-link span {
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.contact-link:hover span {
+    transform: translateY(-2px);
+}
+
+/* Specific contact link colors for better visual hierarchy */
+.contact-link:nth-child(1) i { color: #0077B5; } /* LinkedIn */
+.contact-link:nth-child(2) i { color: #EA4335; } /* Email */
+.contact-link:nth-child(3) i { color: #34A853; } /* Phone */
+.contact-link:nth-child(4) i { color: #FF6B35; } /* Resume */
 
 /* Modal */
 .project-modal {
