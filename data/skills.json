@@ -1,10 +1,5 @@
-[
-  {"name": "Power BI" },
-  {"name": "Tableau"},
-  {"name": "Excel" },
-  {"name": "SQL" },
-  {"name": "Financial Analysis" },
-  {"name": "Data Visualization" },
-  {"name": "Dashboarding"},
-  {"name": "Risk Analysis"}
-]
+{
+  "tools": ["Power BI", "Tableau", "Excel (Advanced)", "Power Query", "SQL"],
+  "analysis": ["Financial Modeling", "Risk Analysis", "Dashboarding", "KPI Design"],
+  "soft": ["Stakeholder Management", "Requirements Gathering", "UAT Coordination"]
+}
