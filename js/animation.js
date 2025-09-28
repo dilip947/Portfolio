@@ -1,236 +1,186 @@
-// Ambient hum
-const ambientHum = new Howl({
-    src: ['https://freesound.org/data/previews/242/242501_2052072-lq.mp3'], // Placeholder hum sound
-    loop: true,
-    volume: 0.2
-});
-ambientHum.play();
+/* js/animation.js
+   Entrance choreography + hero-to-header transformations + tile background
+   - Lightweight, vanilla JS
+   - Touch & wheel-supported
+*/
 
-// Chime sound
-const chime = new Howl({
-    src: ['https://freesound.org/data/previews/919/91926_7037-lq.mp3']
-});
+(function () {
+  // small helpers
+  const $ = (s, ctx = document) => ctx.querySelector(s);
+  const $$ = (s, ctx = document) => Array.from(ctx.querySelectorAll(s));
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
-// Cosmic background nebula (inspired by DEV.to and CodePen)
-const cosmicCanvas = document.getElementById('cosmic-background');
-const ctx = cosmicCanvas.getContext('2d');
-cosmicCanvas.width = window.innerWidth;
-cosmicCanvas.height = window.innerHeight;
-let particles = [];
-for (let i = 0; i < 200; i++) {
-    particles.push({
-        x: Math.random() * cosmicCanvas.width,
-        y: Math.random() * cosmicCanvas.height,
-        radius: Math.random() * 2 + 1,
-        color: `rgba(${Math.random()*255}, ${Math.random()*255}, 255, 0.5)`,
-        speed: Math.random() * 0.5 + 0.1
+  // Create a full-screen intro overlay that shows the big name then profile then allows scroll to shrink
+  function createIntroOverlay() {
+    if (document.getElementById('introOverlay')) return;
+
+    const overlay = document.createElement('div');
+    overlay.id = 'introOverlay';
+    Object.assign(overlay.style, {
+      position: 'fixed',
+      inset: '0',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 3000,
+      background: 'var(--background)',
+      transition: 'opacity 0.8s ease',
+      pointerEvents: 'auto'
     });
-}
-function animateNebula() {
-    ctx.clearRect(0, 0, cosmicCanvas.width, cosmicCanvas.height);
-    particles.forEach(p => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.fill();
-        p.y -= p.speed;
-        if (p.y < 0) p.y = cosmicCanvas.height;
+
+    // big name text
+    const bigName = document.createElement('div');
+    bigName.id = 'introBigName';
+    bigName.textContent = 'Dilip Choudhary';
+    Object.assign(bigName.style, {
+      fontSize: '6.2vw',
+      fontWeight: 900,
+      color: 'var(--text)',
+      opacity: '0',
+      transform: 'translateY(10px)',
+      transition: 'opacity 0.8s ease, transform 0.8s ease'
     });
-    requestAnimationFrame(animateNebula);
-}
-animateNebula();
 
-// Parallax stars layer (simple div with background)
-const starsLayer = document.querySelector('.stars-layer');
-starsLayer.style.background = 'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAJElEQVQoU2NkwA/6z8D/BwADeQESY3zZUQAAAABJRU5ErkJggg==) repeat'; // Tiny stars pattern
-
-// Cursor glowing orb with particle trail (inspired by DEV.to)
-const cursor = document.getElementById('customCursor');
-const trailCanvas = document.getElementById('particle-trail');
-const trailCtx = trailCanvas.getContext('2d');
-trailCanvas.width = window.innerWidth;
-trailCanvas.height = window.innerHeight;
-let trailParticles = [];
-document.addEventListener('mousemove', (e) => {
-    cursor.style.transform = `translate(${e.clientX - 15}px, ${e.clientY - 15}px)`;
-    trailParticles.push({x: e.clientX, y: e.clientY, life: 30, radius: 5});
-});
-function animateTrail() {
-    trailCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
-    trailParticles = trailParticles.filter(p => p.life > 0);
-    trailParticles.forEach(p => {
-        trailCtx.beginPath();
-        trailCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        trailCtx.fillStyle = `rgba(0, 191, 255, ${p.life / 30})`;
-        trailCtx.fill();
-        p.life--;
-        p.radius *= 0.95;
+    // profile container (hidden initially)
+    const profileWrap = document.createElement('div');
+    profileWrap.id = 'introProfile';
+    Object.assign(profileWrap.style, {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '1rem',
+      opacity: '0',
+      transform: 'scale(1.03)',
+      transition: 'opacity 0.8s ease 0.25s, transform 0.8s ease 0.25s'
     });
-    requestAnimationFrame(animateTrail);
-}
-animateTrail();
 
-// Letter reveal for name (GSAP TextPlugin)
-gsap.registerPlugin(TextPlugin);
-gsap.from('#heroName', { duration: 2, text: '', stagger: 0.05, ease: 'power1.out' });
-
-// 3D Grok model in about (placeholder sphere)
-const aboutScene = new THREE.Scene();
-const aboutCamera = new THREE.PerspectiveCamera(75, window.innerWidth / 400, 0.1, 1000);
-const aboutRenderer = new THREE.WebGLRenderer({ alpha: true });
-aboutRenderer.setSize(window.innerWidth / 2, 400);
-document.getElementById('about3dModel').appendChild(aboutRenderer.domElement);
-const aboutGeometry = new THREE.SphereGeometry(5, 32, 32);
-const aboutMaterial = new THREE.MeshBasicMaterial({ color: 0x00BFFF, wireframe: true });
-const aboutSphere = new THREE.Mesh(aboutGeometry, aboutMaterial);
-aboutScene.add(aboutSphere);
-aboutCamera.position.z = 10;
-function animateAboutModel() {
-    requestAnimationFrame(animateAboutModel);
-    aboutSphere.rotation.y += 0.005;
-    aboutRenderer.render(aboutScene, aboutCamera);
-}
-animateAboutModel();
-
-// Skills 3D globe with orbiting planets (inspired by GitHub solar-system)
-const skillsScene = new THREE.Scene();
-const skillsCamera = new THREE.PerspectiveCamera(75, window.innerWidth / 600, 0.1, 1000);
-const skillsRenderer = new THREE.WebGLRenderer({ alpha: true });
-skillsRenderer.setSize(window.innerWidth, 600);
-document.getElementById('skillsGlobe').appendChild(skillsRenderer.domElement);
-const centralOrb = new THREE.Mesh(new THREE.SphereGeometry(2, 32, 32), new THREE.MeshBasicMaterial({ color: 0xFF4500 }));
-skillsScene.add(centralOrb);
-const orbits = [];
-fetch('data/skills.json').then(res => res.json()).then(skills => {
-    skills.forEach((skill, i) => {
-        const planet = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 16), new THREE.MeshBasicMaterial({ color: 0x00BFFF }));
-        planet.position.x = Math.cos(i) * (3 + i);
-        planet.position.z = Math.sin(i) * (3 + i);
-        const label = new THREE.CSS2DObject(document.createElement('div'));
-        label.element.textContent = skill.name;
-        label.position.copy(planet.position);
-        skillsScene.add(planet);
-        skillsScene.add(label);
-        orbits.push({ planet, label, angle: i * Math.PI / skills.length });
+    const profilePic = document.createElement('img');
+    profilePic.src = 'Image/Profile.JPG';
+    profilePic.alt = 'Dilip';
+    Object.assign(profilePic.style, {
+      width: '220px',
+      height: '220px',
+      borderRadius: '50%',
+      objectFit: 'cover',
+      border: '6px solid rgba(255,255,255,0.08)',
+      boxShadow: '0 20px 50px rgba(0,0,0,0.45)'
     });
-});
-skillsCamera.position.z = 20;
-function animateSkillsGlobe() {
-    requestAnimationFrame(animateSkillsGlobe);
-    orbits.forEach(o => {
-        o.angle += 0.01;
-        o.planet.position.x = Math.cos(o.angle) * 5;
-        o.planet.position.z = Math.sin(o.angle) * 5;
-        o.label.position.copy(o.planet.position);
+
+    const nameSmall = document.createElement('div');
+    nameSmall.textContent = 'Dilip Choudhary';
+    Object.assign(nameSmall.style, {
+      fontSize: '1.4rem',
+      color: 'var(--text-light)',
+      fontWeight: 700,
+      letterSpacing: '0.4px'
     });
-    skillsRenderer.render(skillsScene, skillsCamera);
-}
-animateSkillsGlobe();
 
-// Merge to center for skills/projects (GSAP)
-function mergeToCenter(sectionId, itemsSelector, centerSelector) {
-    const section = document.getElementById(sectionId);
-    const observer = new IntersectionObserver(entries => {
-        if (entries[0].isIntersecting) {
-            const items = document.querySelectorAll(itemsSelector);
-            const center = document.querySelector(centerSelector);
-            items.forEach(item => {
-                const clone = item.cloneNode(true);
-                document.body.appendChild(clone);
-                const rect = item.getBoundingClientRect();
-                const centerRect = center.getBoundingClientRect();
-                clone.style.position = 'fixed';
-                clone.style.left = `${rect.left}px`;
-                clone.style.top = `${rect.top}px`;
-                item.style.opacity = 0;
-                gsap.to(clone, {
-                    x: centerRect.left + centerRect.width / 2 - rect.left - rect.width / 2,
-                    y: centerRect.top + centerRect.height / 2 - rect.top - rect.height / 2,
-                    scale: 0.2,
-                    duration: 1,
-                    ease: 'power3.inOut',
-                    onComplete: () => {
-                        clone.remove();
-                        chime.play();
-                        center.classList.add('pulse');
-                        setTimeout(() => center.classList.remove('pulse'), 1000);
-                    }
-                });
-            });
-            observer.disconnect();
-        }
-    }, { threshold: 0.5 });
-    observer.observe(section);
-}
-mergeToCenter('skills', '.skill-node', '#fusionOrb');
-mergeToCenter('projects', '.project-card', '.section-title'); // Adjust center
+    profileWrap.appendChild(profilePic);
+    profileWrap.appendChild(nameSmall);
 
-// Magnetic buttons (inspired by Medium)
-const magneticButtons = document.querySelectorAll('.magnetic-button');
-document.addEventListener('mousemove', (e) => {
-    magneticButtons.forEach(btn => {
-        const rect = btn.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        const dist = Math.sqrt(x*x + y*y);
-        if (dist < 100) {
-            const force = (100 - dist) / 100;
-            btn.style.transform = `translate(${x * force * 0.2}px, ${y * force * 0.2}px)`;
-        } else {
-            btn.style.transform = 'translate(0, 0)';
-        }
-    });
-});
+    overlay.appendChild(bigName);
+    overlay.appendChild(profileWrap);
+    document.body.appendChild(overlay);
 
-// Ripple click effect (canvas, inspired by CSS Script)
-document.addEventListener('click', (e) => {
-    const ripple = document.createElement('div');
-    ripple.classList.add('ripple');
-    ripple.style.left = `${e.clientX}px`;
-    ripple.style.top = `${e.clientY}px`;
-    document.body.appendChild(ripple);
-    setTimeout(() => ripple.remove(), 1000);
-});
+    // staged sequence
+    setTimeout(() => {
+      bigName.style.opacity = '1';
+      bigName.style.transform = 'translateY(0)';
+    }, 80);
 
-// Konami code (from StackOverflow)
-const konami = [38,38,40,40,37,39,37,39,66,65];
-let kIndex = 0;
-document.addEventListener('keydown', (e) => {
-    if (e.keyCode === konami[kIndex++]) {
-        if (kIndex === konami.length) {
-            document.getElementById('easterEggModal').style.display = 'flex';
-            kIndex = 0;
-        }
-    } else {
-        kIndex = 0;
+    // after 1.1s fade big name, show profile
+    setTimeout(() => {
+      bigName.style.opacity = '0';
+      bigName.style.transform = 'translateY(-10px)';
+      profileWrap.style.opacity = '1';
+      profileWrap.style.transform = 'scale(1)';
+    }, 1200);
+
+    // after 2.4s keep profile, but allow scroll/swipe to continue into page
+    // We'll remove overlay when user scrolls or after timeout fallback
+    function removeIntro() {
+      if (!overlay) return;
+      overlay.style.opacity = '0';
+      overlay.style.pointerEvents = 'none';
+      setTimeout(() => {
+        if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+      }, 700);
     }
-});
 
-// Parallax
-window.addEventListener('scroll', () => {
-    const scroll = window.scrollY;
-    document.querySelectorAll('.parallax-layer').forEach(layer => {
-        layer.style.transform = `translateY(${scroll * layer.dataset.speed}px)`;
-    });
-});
+    // if user scrolls or swipes up -> start morph sequence
+    let handled = false;
+    const startMorph = () => {
+      if (handled) return;
+      handled = true;
+      // animate profile -> shrink + move name to header
+      // we will trigger a custom event so main.js can handle header morph
+      const ev = new CustomEvent('intro:morph');
+      window.dispatchEvent(ev);
+      // hide overlay gradually
+      setTimeout(removeIntro, 900);
+    };
 
-// Resize handling
-window.addEventListener('resize', () => {
-    cosmicCanvas.width = window.innerWidth;
-    cosmicCanvas.height = window.innerHeight;
-    trailCanvas.width = window.innerWidth;
-    trailCanvas.height = window.innerHeight;
-    // Adjust renderers
-});
+    let wheelHandler = (e) => {
+      if (e.deltaY > 5) startMorph();
+    };
+    let touchStartY = 0;
+    let touchHandler = (e) => {
+      if (e.type === 'touchstart') touchStartY = e.touches[0].clientY;
+      if (e.type === 'touchmove') {
+        let dy = touchStartY - e.touches[0].clientY;
+        if (dy > 30) startMorph();
+      }
+    };
 
-// Device tilt for 3D (optional, using DeviceOrientationEvent)
-if (window.DeviceOrientationEvent) {
-    window.addEventListener('deviceorientation', (e) => {
-        const tiltX = e.beta / 90;
-        const tiltY = e.gamma / 90;
-        // Apply to avatars or models
-        document.querySelectorAll('.tilt-3d').forEach(el => {
-            el.style.transform = `rotateX(${tiltX * 10}deg) rotateY(${tiltY * 10}deg)`;
-        });
-    });
-}
+    window.addEventListener('wheel', wheelHandler, { passive: true });
+    window.addEventListener('touchstart', touchHandler, { passive: true });
+    window.addEventListener('touchmove', touchHandler, { passive: true });
+
+    // Fallback auto dismiss after 6s with morph
+    setTimeout(startMorph, 6000);
+
+    // expose removeIntro for external calls
+    return {
+      removeIntro
+    };
+  }
+
+  // tile background behind hero profile
+  function createTileBackground() {
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+    let tileWrap = document.createElement('div');
+    tileWrap.id = 'tileWrap';
+    tileWrap.style.position = 'absolute';
+    tileWrap.style.inset = '0';
+    tileWrap.style.display = 'grid';
+    tileWrap.style.gridTemplateColumns = 'repeat(40, 1fr)';
+    tileWrap.style.gridAutoRows = '16px';
+    tileWrap.style.gap = '3px';
+    tileWrap.style.pointerEvents = 'none';
+    tileWrap.style.opacity = '1';
+    tileWrap.style.transition = 'opacity 0.5s ease';
+    tileWrap.style.zIndex = '0';
+
+    // small black tiles
+    for (let i = 0; i < 40 * 18; i++) {
+      const t = document.createElement('div');
+      t.style.background = 'rgba(0,0,0,0.18)';
+      t.style.borderRadius = '2px';
+      tileWrap.appendChild(t);
+    }
+    hero.appendChild(tileWrap);
+  }
+
+  // call creation at load
+  document.addEventListener('DOMContentLoaded', () => {
+    createTileBackground();
+    createIntroOverlay();
+  });
+
+  // expose utilities for main.js
+  window._siteAnimation = {
+    createIntroOverlay // reference (if needed)
+  };
+
+})();
