@@ -1,438 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Dilip Choudhary | Business Analytics & Data Visualization Specialist</title>
-  <meta name="description" content="Dilip Choudhary - Business Analytics professional specializing in financial markets, risk analysis, and data-driven decision-making with expertise in Power BI, Tableau, and SQL.">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <style>
-    /* ========== Variables ========== */
-    :root{
-      --primary:#6c5ce7;
-      --accent:#00cec9;
-      --bg-dark:#0f1115;
-      --bg:#1a1b26;
-      --card-bg: rgba(36,40,59,0.65);
-      --glass-border: rgba(255,255,255,0.06);
-      --text: #f5f6fa;
-      --muted: #a5b1c2;
-      --transition: all 0.45s cubic-bezier(.2,.9,.24,1);
-      --radius: 16px;
-    }
-
-    .light-mode{
-      --bg: #ffffff;
-      --bg-dark: #f4f5f7;
-      --card-bg: rgba(255,255,255,0.85);
-      --text: #111217;
-      --muted: #4a5561;
-    }
-
-    html,body{height:100%;margin:0;font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
-
-    *{box-sizing:border-box}
-
-    /* ========== Animated background / fixed tiles ========== */
-    .glass-bg{ position:fixed; inset:0; z-index:-4; background:linear-gradient(180deg,#0b0b0d 0%, #12121a 60%); }
-    .glass-overlay{ position:fixed; inset:0; backdrop-filter: blur(36px); -webkit-backdrop-filter: blur(36px); z-index:-3; opacity:0.65; }
-
-    /* Floating tiny cubes at hero base (tileWrap created by animation.js) */
-    .floating-elements{ position:fixed; inset:0; z-index:-2; pointer-events:none; }
-
-    /* ========== Header ========== */
-    header{ position:fixed; top:0; left:0; right:0; z-index:1100; background: rgba(26,27,38,0.75); backdrop-filter: blur(14px); border-bottom:1px solid rgba(255,255,255,0.04); padding:18px 0; transition:var(--transition); }
-    header.scrolled{ padding:10px 0; box-shadow:0 8px 30px rgba(0,0,0,0.28); }
-    .container{ max-width:1280px; margin:0 auto; padding:0 20px; }
-    .nav-container{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
-    .logo{ display:flex; gap:12px; align-items:center; text-decoration:none; color:var(--text); font-weight:700; }
-    .logo-img{ width:44px; height:44px; border-radius:50%; object-fit:cover; border:1px solid var(--glass-border); }
-    .logo span{ font-size:1.05rem; transition:var(--transition); transform-origin:left center; }
-
-    nav.nav-links{ display:flex; align-items:center; gap:18px; }
-    .nav-link{ color:var(--muted); text-decoration:none; font-weight:600; padding:6px 8px; border-radius:8px; transition:var(--transition); opacity:0; transform:translateY(6px); }
-    .nav-link.active{ color:var(--text); }
-    .nav-link:hover{ color:var(--text); background: rgba(255,255,255,0.02); }
-
-    .theme-toggle{ width:40px;height:40px;border-radius:50%; display:inline-grid; place-items:center; background:var(--card-bg); border:1px solid var(--glass-border); cursor:pointer; }
-
-    /* mobile */
-    .mobile-menu-btn{ display:none; background:none; border:none; color:var(--text); font-size:20px; }
-
-    @media (max-width:880px){
-      nav.nav-links{ display:none; }
-      .mobile-menu-btn{ display:block; }
-    }
-
-    /* ========== Intro overlay is injected by animation.js; site hero below ========== */
-
-    /* ========== HERO ========== */
-    .hero{ min-height:100vh; display:flex; align-items:center; justify-content:center; position:relative; padding-top:96px; overflow:hidden; }
-    .hero-inner{ max-width:1180px; width:100%; display:grid; grid-template-columns: 1fr 420px; gap:36px; align-items:center; padding:36px 20px; position:relative; z-index:10; }
-    @media (max-width:920px){ .hero-inner{ grid-template-columns: 1fr; } }
-
-    /* left group contains name and role; right contains profile image */
-    .hero-left{ padding:24px; z-index:12; }
-    .hero-name-large{
-      font-weight:900; font-size:clamp(36px, 9vw, 96px); line-height:0.85; letter-spacing:-1px;
-      color:var(--text); transition: var(--transition); transform-origin:left center;
-      mix-blend-mode:normal;
-    }
-    .hero-role{ margin-top:12px; font-weight:600; color:var(--muted); font-size:1.05rem; transition:var(--transition); opacity:0.9; }
-
-    /* hero-right / profile */
-    .hero-right{ position:relative; display:flex; align-items:flex-start; justify-content:center; padding-top:12px; }
-    .hero-img-container{ width:420px; height:420px; border-radius:20px; overflow:hidden; display:flex; align-items:center; justify-content:center; transition: transform 0.9s cubic-bezier(.2,.9,.24,1), opacity 0.9s; box-shadow: 0 40px 90px rgba(0,0,0,0.55); border:1px solid var(--glass-border); background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); }
-    .hero-img{ width:100%; height:100%; object-fit:cover; display:block; }
-
-    /* overlay name that overlaps bottom 30% of profile image */
-    .hero-img-title{
-      position:absolute; left:50%; transform:translateX(-50%); bottom:18%; color:var(--text); font-weight:900; font-size:clamp(20px,4vw,46px); pointer-events:none; text-align:center;
-      text-shadow: 0 6px 22px rgba(0,0,0,0.6);
-      transition:var(--transition);
-    }
-
-    /* ensure mobile padding constraints */
-    @media (max-width:420px){
-      .hero-img-container{ width:84vw; height:84vw; border-radius:14px; }
-      .hero-img-title{ font-size:clamp(18px,6vw,36px); bottom:12%; left:50%; }
-    }
-
-    /* chessboard tiny tiles at very back (tileWrap created by animation.js) */
-    .hero::before{
-      content:''; position:absolute; inset:0; z-index:0; background-image: linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(0deg, rgba(0,0,0,0.05) 1px, transparent 1px);
-      background-size: 12px 12px; opacity:1; transition: opacity 0.6s ease;
-    }
-
-    /* as hero shrinks, we'll add 'hero-shrunk' to body to style transitions */
-    body.hero-shrunk .hero-img-container{ transform: scale(0.42) translateY(-26px); opacity:0.0; pointer-events:none; }
-    body.hero-shrunk .hero-name-large{ transform: translateY(-8px) scale(1.06); }
-    body.hero-shrunk .hero-img-title{ transform: translate(-50%, -28px) scale(0.9); opacity:0; }
-
-    /* final header small name */
-    .header-small-name{ display:inline-block; font-weight:800; font-size:1rem; opacity:1; margin-left:6px; }
-
-    /* ========== Sections ========== */
-    .section{ padding:96px 0; position:relative; }
-    .section .section-title{ font-size:clamp(26px,3.2vw,36px); margin-bottom:12px; display:inline-block; }
-
-    /* about & skills */
-    .about-container{ display:grid; grid-template-columns: 1fr 420px; gap:36px; align-items:start; max-width:1180px; margin:0 auto; padding:0 20px; }
-    @media (max-width:920px){ .about-container{ grid-template-columns: 1fr; } }
-    .about-text{ color:var(--muted); line-height:1.6; }
-
-    .about-skills{ display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
-    .skill{ padding:8px 14px; border-radius:999px; background:var(--card-bg); border:1px solid var(--glass-border); color:var(--text); font-weight:600; cursor:pointer; transition: var(--transition); box-shadow: 0 6px 18px rgba(0,0,0,0.25); }
-    .skill:hover{ transform: translateY(-6px) scale(1.02); box-shadow: 0 18px 40px rgba(0,0,0,0.36); background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-color: rgba(255,255,255,0.10); }
-
-    /* projects grid */
-    .projects-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:22px; max-width:1180px; margin:0 auto; padding:0 20px; }
-    @media (max-width:980px){ .projects-grid{ grid-template-columns: 1fr; } }
-    .project-card{ background:var(--card-bg); border-radius:14px; overflow:hidden; border:1px solid var(--glass-border); transition:var(--transition); position:relative; padding-bottom:72px; }
-    .project-card:hover{ transform: translateY(-8px); box-shadow: 0 28px 60px rgba(0,0,0,0.45); border-color: rgba(255,255,255,0.12); }
-    .project-image{ height:220px; overflow:hidden; position:relative; }
-    .project-img{ width:100%; height:100%; object-fit:cover; display:block; transition: transform 0.6s; }
-    .project-card:hover .project-img{ transform: scale(1.06); }
-    .project-overlay{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; opacity:0; transition:var(--transition); }
-    .project-card:hover .project-overlay{ opacity:1; background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.45)); }
-
-    .project-content{ padding:18px; color:var(--muted); }
-    .project-title{ color:var(--text); font-weight:800; margin-bottom:8px; }
-    .project-description{ color:var(--muted); font-size:0.95rem; margin-bottom:12px; }
-
-    /* thumbs */
-    .project-thumbs{ position:absolute; left:12px; right:12px; bottom:12px; display:flex; gap:8px; justify-content:center; align-items:center; }
-
-    /* resume button styling */
-    .resume-download{ display:inline-flex; gap:8px; align-items:center; padding:12px 20px; background:linear-gradient(135deg,var(--primary),#4c42c3); color:white; border-radius:999px; text-decoration:none; font-weight:700; border:0; }
-
-    /* contact */
-    .contact-grid{ display:grid; grid-template-columns: 1fr 420px; gap:28px; max-width:1180px; margin:0 auto; padding:0 20px; }
-    @media (max-width:920px){ .contact-grid{ grid-template-columns: 1fr; } }
-
-    .contact-icons{ display:flex; gap:12px; align-items:center; }
-
-    footer{ padding:44px 0; color:var(--muted); border-top:1px solid rgba(255,255,255,0.03); margin-top:48px; background:transparent; }
-
-    /* small helpers */
-    .center{ text-align:center; }
-    .glass-card{ background:var(--card-bg); border-radius:12px; border:1px solid var(--glass-border); }
-    .btn{ padding:10px 16px; border-radius:999px; border:0; cursor:pointer; font-weight:700; }
-    .btn-primary{ background:linear-gradient(135deg,var(--primary),#5649c2); color:white; }
-    .btn-secondary{ background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--text); }
-
-    /* scroll animations (intersection toggles .visible) */
-    .animate-on-scroll{ opacity:0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .animate-on-scroll.visible{ opacity:1; transform: translateY(0); }
-
-    /* small accessibility */
-    a[download]{ text-decoration:none; }
-
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dilip Choudhary | Business Analytics Specialist</title>
+    <meta name="description" content="Dilip Choudhary - Business Analytics professional specializing in financial markets, risk analysis, and data-driven decision-making.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
-  <!-- background layers -->
-  <div class="glass-bg"></div>
-  <div class="glass-overlay"></div>
-  <div class="floating-elements" id="floatingElements"></div>
-
-  <!-- Mobile Navigation (slide-in) -->
-  <div class="mobile-nav" id="mobileNav" style="position:fixed; top:0; right:-100%; width:78%; height:100vh; background:var(--card-bg); backdrop-filter:blur(16px); z-index:1500; padding:6rem 18px; transition:right .45s cubic-bezier(.2,.9,.24,1);">
-    <a href="#home" class="mobile-nav-link" style="display:block;margin-bottom:12px;color:var(--text)">Home</a>
-    <a href="#about" class="mobile-nav-link" style="display:block;margin-bottom:12px;color:var(--text)">About</a>
-    <a href="#projects" class="mobile-nav-link" style="display:block;margin-bottom:12px;color:var(--text)">Projects</a>
-    <a href="#skills" class="mobile-nav-link" style="display:block;margin-bottom:12px;color:var(--text)">Skills</a>
-    <a href="#resume" class="mobile-nav-link" style="display:block;margin-bottom:12px;color:var(--text)">Resume</a>
-    <a href="#contact" class="mobile-nav-link" style="display:block;margin-bottom:12px;color:var(--text)">Contact</a>
-    <div style="height:28px"></div>
-    <button id="mobileThemeToggle" class="theme-toggle" style="margin-top:8px;"> <i class="fas fa-sun"></i> </button>
-  </div>
-
-  <!-- Header -->
-  <header id="header">
-    <div class="container nav-container">
-      <a class="logo" href="#home">
-        <img src="Image/Profile.JPG" class="logo-img" alt="Dilip">
-        <span><span class="header-small-name">Dilip Choudhary</span></span>
-      </a>
-
-      <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
-
-      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
-        <a class="nav-link" href="#home">Home</a>
-        <a class="nav-link" href="#about">About</a>
-        <div class="dropdown" style="position:relative;">
-          <a class="nav-link" href="#projects">Projects ▾</a>
-          <div class="dropdown-menu glass-card" style="display:none; position:absolute; top:110%; left:0; min-width:220px; padding:8px;">
-            <a class="dropdown-item" href="#project1">E-Commerce Sales Insights</a>
-            <a class="dropdown-item" href="#project2">Crypto Market Risk Dashboard</a>
-          </div>
-        </div>
-        <a class="nav-link" href="#skills">Skills</a>
-        <a class="nav-link" href="#resume">Resume</a>
-        <a class="nav-link" href="#contact">Contact</a>
-
-        <button class="theme-toggle" id="themeToggle" title="Toggle theme">
-          <i class="fas fa-sun"></i>
-        </button>
-      </nav>
-    </div>
-  </header>
-
-  <!-- HERO (big welcome handled by animation.js overlay) -->
-  <main>
-    <section id="home" class="hero" aria-label="Home">
-      <div class="hero-inner">
-        <div class="hero-left">
-          <div class="hero-name-large" id="heroTitle">Dilip Choudhary</div>
-          <div class="hero-role" id="heroRole">Business Analyst • Data Science • Financial Analysis</div>
-        </div>
-
-        <div class="hero-right" aria-hidden="false">
-          <div class="hero-img-container glass-edge" id="heroImageWrap" aria-hidden="true">
-            <img src="Image/Profile.JPG" alt="Dilip Choudhary" class="hero-img" id="heroImg">
-            <div class="hero-img-title" id="heroImgTitle">Dilip Choudhary</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ABOUT + SKILLS -->
-    <section id="about" class="section">
-      <div class="container about-container">
-        <div>
-          <h2 class="section-title">About Me</h2>
-          <p class="about-text animate-on-scroll">I'm a Business Analytics student focused on financial markets, risk analysis, and data-driven decision-making. I transform messy datasets into clear insights and dashboards that empower stakeholders to act.</p>
-          <p class="about-text animate-on-scroll">I enjoy building dashboards and models that highlight risks and opportunities. My main tools are Power BI, Excel, and SQL — I love making complex data human-readable.</p>
-
-          <h3 style="margin-top:22px;">Skills</h3>
-          <div class="about-skills animate-on-scroll" id="skillsContainer">
-            <!-- Skills are injected from data/skills.json -->
-            <!-- fallback sample (will be replaced) -->
-            <span class="skill">Power BI</span>
-            <span class="skill">Tableau</span>
-            <span class="skill">Excel</span>
-            <span class="skill">SQL</span>
-          </div>
-        </div>
-
-        <div>
-          <!-- Timeline / Story -->
-          <h3 class="section-title">My Story</h3>
-          <div class="glass-card" style="padding:18px;">
-            <div style="display:flex;gap:10px;align-items:flex-start;">
-              <div style="font-weight:800; min-width:74px;">2023</div>
-              <div style="color:var(--muted);">Started Bachelor's in Business Analytics. Focused on foundations of finance and data basics.</div>
-            </div>
-
-            <div style="height:12px"></div>
-            <div style="display:flex;gap:10px;align-items:flex-start;">
-              <div style="font-weight:800; min-width:74px;">2024</div>
-              <div style="color:var(--muted);">Learned Power BI, Excel advanced, and started projects on e-commerce analytics and crypto.</div>
-            </div>
-
-            <div style="height:12px"></div>
-            <div style="display:flex;gap:10px;align-items:flex-start;">
-              <div style="font-weight:800; min-width:74px;">2025</div>
-              <div style="color:var(--muted);">Published dashboards and refined models — building a portfolio for placements and freelance work.</div>
-            </div>
-
-            <div style="margin-top:12px;">
-              <a class="resume-download" href="Dilip_ch_resume.pdf" target="_blank" rel="noopener"> <i class="fas fa-file-pdf"></i> View Resume </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PROJECTS -->
-    <section id="projects" class="section">
-      <div class="container">
-        <div class="center section-header">
-          <h2 class="section-title">Featured Projects</h2>
-          <p class="text-lead" style="color:var(--muted)">Showcasing my applied analytics work</p>
-        </div>
-
-        <div class="projects-grid" id="projectsGrid">
-          <!-- The three primary project cards are dynamically created by js/main.js (from data/projects.json).
-               If JS fails, keep static fallbacks below (optional). -->
-        </div>
-
-      </div>
-    </section>
-
-    <!-- RESUME SECTION (repeat with anchor) -->
-    <section id="resume" class="section">
-      <div class="container center">
-        <h2 class="section-title">Resume</h2>
-        <p class="text-lead" style="color:var(--muted)">Download the full resume for details on education, projects, and certifications.</p>
-        <a class="resume-download" href="Dilip_ch_resume.pdf" target="_blank" rel="noopener"><i class="fas fa-download"></i> Download Resume</a>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="section">
-      <div class="container contact-grid">
-        <div>
-          <h2 class="section-title">Let's Discuss Your Project</h2>
-          <p style="color:var(--muted)">Tell me your requirements — I'll reply within reasonable time.</p>
-
-          <form id="contactForm" class="glass-card" style="padding:18px; margin-top:12px;">
-            <div style="display:flex; gap:12px; margin-bottom:12px;">
-              <input id="name" required placeholder="Your name" style="flex:1; padding:10px; border-radius:8px; border:1px solid var(--glass-border); background:transparent; color:var(--text)" />
-              <input id="email" required placeholder="Email" style="flex:1; padding:10px; border-radius:8px; border:1px solid var(--glass-border); background:transparent; color:var(--text)" />
-            </div>
-            <div style="margin-bottom:12px;">
-              <textarea id="message" required placeholder="Project / requirements" style="width:100%; min-height:120px; padding:12px; border-radius:8px; border:1px solid var(--glass-border); background:transparent; color:var(--text)"></textarea>
-            </div>
-
-            <div style="display:flex; gap:12px; align-items:center;">
-              <button type="submit" class="btn btn-primary">Send Requirements</button>
-              <a class="btn btn-secondary" href="mailto:choudharydilip947@gmail.com"><i class="fas fa-envelope"></i> Email</a>
-            </div>
-          </form>
-
-          <div style="margin-top:16px; color:var(--muted);">
-            <strong>Quick contact</strong>
-            <div class="contact-icons" style="margin-top:8px;">
-              <a href="mailto:choudharydilip947@gmail.com" title="Email" style="color:var(--text)"><i class="fas fa-envelope"></i></a>
-              <a href="tel:+919346053750" title="Phone" style="color:var(--text)"><i class="fas fa-phone"></i></a>
-              <a href="https://www.linkedin.com/in/dilip-choudhary-analytics" target="_blank" rel="noopener" title="LinkedIn" style="color:var(--text)"><i class="fab fa-linkedin"></i></a>
-              <a href="Dilip_ch_resume.pdf" title="Resume" target="_blank" rel="noopener" style="color:var(--text)"><i class="fas fa-file-pdf"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <h3 class="section-title">More about the process</h3>
-          <p style="color:var(--muted)">I deliver dashboards and insights with a focus on clarity and actionability. Provide your data or requirements and I’ll propose an approach.</p>
-
-          <div style="height:24px"></div>
-
-          <div class="glass-card" style="padding:16px;">
-            <h4 style="margin:0 0 8px 0">Availability</h4>
-            <p style="color:var(--muted)">Open for freelance/part-time work and placement opportunities. Message me with details of scope and timelines.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="container" style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
-      <div style="display:flex; gap:12px; align-items:center;">
-        <img src="Image/Profile.JPG" alt="logo" style="width:44px;height:44px;border-radius:50%;border:1px solid var(--glass-border)" />
-        <div>
-          <div style="font-weight:800">Dilip Choudhary</div>
-          <div style="color:var(--muted); font-size:0.9rem">Hyderabad • Business Analytics</div>
-        </div>
-      </div>
-
-      <div style="display:flex; gap:12px; align-items:center;">
-        <a href="mailto:choudharydilip947@gmail.com" class="social-link" style="color:var(--text)"><i class="fas fa-envelope"></i></a>
-        <a href="https://www.linkedin.com/in/dilip-choudhary-analytics" target="_blank" rel="noopener" class="social-link" style="color:var(--text)"><i class="fab fa-linkedin"></i></a>
-        <a href="Dilip_ch_resume.pdf" class="social-link" style="color:var(--text)"><i class="fas fa-file-pdf"></i></a>
-      </div>
+    <!-- Welcome Screen -->
+    <div id="welcomeScreen" class="welcome-screen">
+        <h1 class="welcome-text">Welcome</h1>
     </div>
 
-    <div style="text-align:center; margin-top:18px; color:var(--muted);">© 2025 Dilip Choudhary. All rights reserved.</div>
-  </footer>
+    <!-- Chess Board Background -->
+    <div id="chessBackground" class="chess-background"></div>
 
-  <!-- Scripts: animation first, then main logic -->
-  <script src="js/animation.js"></script>
-  <script src="js/main.js" defer></script>
+    <!-- Navigation Header -->
+    <header id="navbar" class="navbar">
+        <div class="nav-content">
+            <div class="logo" id="navLogo">
+                <span>Dilip Choudhary</span>
+            </div>
+            <nav class="nav-links">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#about" class="nav-link">About</a>
+                <div class="nav-dropdown">
+                    <a href="#projects" class="nav-link">Projects <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown-menu" id="projectsDropdown">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="#contact" class="nav-link">Contact</a>
+                <a href="#discuss" class="nav-link">Let's Discuss</a>
+            </nav>
+            <div class="theme-controls">
+                <button id="themeToggle" class="theme-toggle">
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
+        </div>
+    </header>
 
-  <script>
-    /* small dropdown toggle (kept here because it's tiny) */
-    (function(){
-      const drop = document.querySelector('.dropdown');
-      if(!drop) return;
-      const menu = drop.querySelector('.dropdown-menu');
-      drop.addEventListener('mouseenter', ()=> menu.style.display = 'block');
-      drop.addEventListener('mouseleave', ()=> menu.style.display = 'none');
+    <!-- Main Content -->
+    <main id="mainContent">
+        <!-- Hero Section -->
+        <section id="home" class="hero-section">
+            <div class="profile-container" id="profileContainer">
+                <div class="profile-image-wrapper">
+                    <img src="Image/Profile.JPG" alt="Dilip Choudhary" id="profileImage" class="profile-image">
+                </div>
+                <div class="profile-info" id="profileInfo">
+                    <h1 class="profile-name" id="profileName">Dilip Choudhary</h1>
+                    <div class="profile-roles" id="profileRoles">
+                        <span class="role">Business Analyst</span>
+                        <span class="role">Data Scientist</span>
+                        <span class="role">Finance Specialist</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-      // mobile menu open/close
-      const mobileBtn = document.getElementById('mobileMenuBtn');
-      const mobileNav = document.getElementById('mobileNav');
-      mobileBtn?.addEventListener('click', ()=>{
-        const active = mobileNav.style.right === '0px';
-        mobileNav.style.right = active ? '-100%' : '0px';
-      });
+        <!-- Skills Section -->
+        <section id="skills" class="skills-section">
+            <div class="container">
+                <h2 class="section-title">Skills & Expertise</h2>
+                <div class="skills-grid" id="skillsGrid">
+                    <!-- Skills will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
 
-      // Smooth scroll for anchor links
-      document.querySelectorAll('a[href^="#"]').forEach(a=>{
-        a.addEventListener('click', function(e){
-          const href = this.getAttribute('href');
-          if(href === '#') return;
-          const el = document.querySelector(href);
-          if(el){
-            e.preventDefault();
-            window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
-          }
-        });
-      });
+        <!-- Projects Section -->
+        <section id="projects" class="projects-section">
+            <div class="container">
+                <h2 class="section-title">Featured Projects</h2>
+                <div class="projects-container" id="projectsContainer">
+                    <!-- Projects will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
 
-      // Header compact on scroll
-      const header = document.getElementById('header');
-      window.addEventListener('scroll', ()=>{
-        if(window.scrollY > 60) header.classList.add('scrolled'); else header.classList.remove('scrolled');
+        <!-- Timeline Section -->
+        <section id="timeline" class="timeline-section">
+            <div class="container">
+                <h2 class="section-title">My Journey</h2>
+                <div class="timeline-container" id="timelineContainer">
+                    <!-- Timeline will be populated by JavaScript -->
+                </div>
+                <div class="resume-section">
+                    <button id="viewResumeBtn" class="view-resume-btn glass-effect">
+                        <i class="fas fa-file-pdf"></i>
+                        View Resume
+                    </button>
+                </div>
+            </div>
+        </section>
 
-        // At mid-scroll, add hero-shrunk class to body to trigger transitions to header
-        const hero = document.querySelector('.hero');
-        if(!hero) return;
-        const trigger = hero.getBoundingClientRect().bottom < (window.innerHeight * 0.6);
-        if(trigger) document.body.classList.add('hero-shrunk'); else document.body.classList.remove('hero-shrunk');
-      });
+        <!-- Discussion Section -->
+        <section id="discuss" class="discuss-section">
+            <div class="container">
+                <h2 class="section-title">Let's Discuss Your Project</h2>
+                <form id="projectForm" class="project-form">
+                    <div class="form-group">
+                        <label for="projectName">Project Name</label>
+                        <input type="text" id="projectName" name="projectName" class="form-input glass-effect" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="requirements">Your Requirements</label>
+                        <textarea id="requirements" name="requirements" class="form-textarea glass-effect" rows="5" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-input glass-effect" required>
+                    </div>
+                    <button type="submit" class="submit-btn glass-effect">
+                        <i class="fas fa-paper-plane"></i>
+                        Submit Requirements
+                    </button>
+                </form>
+            </div>
+        </section>
 
-    })();
-  </script>
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section">
+            <div class="container">
+                <h2 class="section-title">Get In Touch</h2>
+                <div class="contact-links">
+                    <a href="https://linkedin.com/in/dilip-choudhary-analytics" class="contact-link glass-effect" target="_blank">
+                        <i class="fab fa-linkedin"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="mailto:choudharydilip947@gmail.com" class="contact-link glass-effect">
+                        <i class="fas fa-envelope"></i>
+                        <span>Email</span>
+                    </a>
+                    <a href="tel:+919346053750" class="contact-link glass-effect">
+                        <i class="fas fa-phone"></i>
+                        <span>Mobile</span>
+                    </a>
+                    <a href="resume.pdf" class="contact-link glass-effect" target="_blank">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>Resume</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Dilip Choudhary. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Project Modal -->
+    <div id="projectModal" class="project-modal">
+        <div class="modal-content glass-effect">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-header">
+                <h3 id="modalTitle"></h3>
+            </div>
+            <div class="modal-body">
+                <div class="project-images" id="modalImages">
+                    <!-- Images will be populated by JavaScript -->
+                </div>
+                <div class="project-details" id="modalDetails">
+                    <!-- Details will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/animation.js"></script>
 </body>
 </html>
