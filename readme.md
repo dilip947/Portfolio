@@ -1,12 +1,27 @@
-# Dilip Choudhary - Portfolio Website
+# Dilip Choudhary Portfolio Website
 
-A modern, responsive portfolio website showcasing my skills and projects in Business Analytics and Data Visualization.
+A premium glassmorphic digital gallery showcasing business analytics skills and projects.
 
-## 🚀 Features
+## Structure
+- Image: Profile image
+- Projects: Project images in subfolders
+- css: Stylesheet
+- data: JSON data for skills and projects
+- js: JavaScript files for main logic and animations
+- index.html: Main page
+- resume.pdf: Resume file
 
-- **Modern Design**: Glassmorphism design with smooth animations
-- **Responsive Layout**: Works perfectly on all devices
-- **Dark/Light Mode**: Toggle between themes
-- **Project Gallery**: Interactive project showcases
-- **Contact Form**: Functional contact form with validation
-- **Smooth Scrolling**: Enhanced user experience
+## Setup
+Open index.html in a browser.
+
+## Features
+- Glassmorphic design
+- 3D skills globe
+- Dynamic project loading
+- Merge animations
+- Custom cursor
+- Parallax effects
+- Theme toggle
+- Responsive design
+
+Built with HTML, CSS, JS, GSAP, Three.js, Howler.js.
