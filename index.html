@@ -3,188 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dilip Choudhary | Business Analytics Specialist</title>
-    <meta name="description" content="Dilip Choudhary - Business Analytics professional specializing in financial markets, risk analysis, and data-driven decision-making.">
+    <title>Dilip Choudhary | Business Analytics & Data Visualization Specialist</title>
+    <meta name="description" content="Dilip Choudhary - Business Analytics professional specializing in financial markets, risk analysis, and data-driven decision-making">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <!-- Chessboard Background -->
+    <div class="chessboard-bg" id="chessboardBg"></div>
+    
     <!-- Welcome Screen -->
-    <div id="welcomeScreen" class="welcome-screen">
-        <h1 class="welcome-text">Welcome</h1>
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-content">
+            <h1 class="welcome-title">WELCOME</h1>
+        </div>
     </div>
 
-    <!-- Chess Board Background -->
-    <div id="chessBackground" class="chess-background"></div>
+    <!-- Glass Overlay -->
+    <div class="glass-overlay"></div>
+    <div class="floating-elements" id="floatingElements"></div>
 
-    <!-- Navigation Header -->
-    <header id="navbar" class="navbar">
-        <div class="nav-content">
-            <div class="logo" id="navLogo">
-                <span>Dilip Choudhary</span>
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <a href="#home" class="mobile-nav-link">Home</a>
+        <a href="#about" class="mobile-nav-link">About</a>
+        <a href="#skills" class="mobile-nav-link">Skills</a>
+        <a href="#projects" class="mobile-nav-link">Projects</a>
+        <a href="#story" class="mobile-nav-link">My Story</a>
+        <a href="#contact" class="mobile-nav-link">Contact</a>
+    </div>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="container nav-container">
+            <div class="logo-name" id="logoName">
+                <span>DILIP CHOUDHARY</span>
             </div>
-            <nav class="nav-links">
+
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <nav class="nav-links" id="navLinks">
                 <a href="#home" class="nav-link active">Home</a>
                 <a href="#about" class="nav-link">About</a>
-                <div class="nav-dropdown">
-                    <a href="#projects" class="nav-link">Projects <i class="fas fa-chevron-down"></i></a>
-                    <div class="dropdown-menu" id="projectsDropdown">
-                        <!-- Will be populated by JavaScript -->
+                <a href="#skills" class="nav-link">Skills</a>
+                
+                <div class="dropdown">
+                    <a href="#projects" class="nav-link">Projects ▾</a>
+                    <div class="dropdown-menu">
+                        <a href="#ecommerce-project" class="dropdown-item">E-Commerce Sales Insights</a>
+                        <a href="#crypto-project" class="dropdown-item">Crypto Market Risk Dashboard</a>
+                        <a href="#abc-project" class="dropdown-item">ABC Analytics Platform</a>
                     </div>
                 </div>
-                <a href="#skills" class="nav-link">Skills</a>
+                
+                <a href="#story" class="nav-link">My Story</a>
                 <a href="#contact" class="nav-link">Contact</a>
-                <a href="#discuss" class="nav-link">Let's Discuss</a>
-            </nav>
-            <div class="theme-controls">
-                <button id="themeToggle" class="theme-toggle">
-                    <i class="fas fa-sun"></i>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
                 </button>
-            </div>
+            </nav>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main id="mainContent">
-        <!-- Hero Section -->
-        <section id="home" class="hero-section">
-            <div class="profile-container" id="profileContainer">
-                <div class="profile-image-wrapper">
-                    <img src="Image/Profile.JPG" alt="Dilip Choudhary" id="profileImage" class="profile-image">
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container hero-container">
+            <div class="hero-profile">
+                <div class="profile-image-container" id="profileImageContainer">
+                    <img src="Image/Profile.JPG" alt="Dilip Choudhary" class="profile-img">
                 </div>
-                <div class="profile-info" id="profileInfo">
-                    <h1 class="profile-name" id="profileName">Dilip Choudhary</h1>
-                    <div class="profile-roles" id="profileRoles">
-                        <span class="role">Business Analyst</span>
-                        <span class="role">Data Scientist</span>
-                        <span class="role">Finance Specialist</span>
+                <div class="hero-text-content">
+                    <h1 class="hero-name" id="heroName">DILIP CHOUDHARY</h1>
+                    <div class="hero-roles" id="heroRoles">
+                        <span class="role-tag">Business Analyst</span>
+                        <span class="role-tag">Data Scientist</span>
+                        <span class="role-tag">Financial Analyst</span>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Skills Section -->
-        <section id="skills" class="skills-section">
-            <div class="container">
+    <!-- Skills Section -->
+    <section id="skills" class="section">
+        <div class="container">
+            <div class="section-header center">
                 <h2 class="section-title">Skills & Expertise</h2>
-                <div class="skills-grid" id="skillsGrid">
-                    <!-- Skills will be populated by JavaScript -->
-                </div>
             </div>
-        </section>
+            <div class="skills-grid" id="skillsGrid">
+                <!-- Skills will be loaded from JSON -->
+            </div>
+        </div>
+    </section>
 
-        <!-- Projects Section -->
-        <section id="projects" class="projects-section">
-            <div class="container">
+    <!-- Projects Section -->
+    <section id="projects" class="section projects-section">
+        <div class="container">
+            <div class="section-header center">
                 <h2 class="section-title">Featured Projects</h2>
-                <div class="projects-container" id="projectsContainer">
-                    <!-- Projects will be populated by JavaScript -->
+            </div>
+            <div class="projects-container">
+                <div class="projects-showcase" id="projectsShowcase">
+                    <!-- Projects will be loaded from JSON -->
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Timeline Section -->
-        <section id="timeline" class="timeline-section">
-            <div class="container">
+    <!-- Story Timeline -->
+    <section id="story" class="section story-section">
+        <div class="container">
+            <div class="section-header center">
                 <h2 class="section-title">My Journey</h2>
-                <div class="timeline-container" id="timelineContainer">
-                    <!-- Timeline will be populated by JavaScript -->
-                </div>
-                <div class="resume-section">
-                    <button id="viewResumeBtn" class="view-resume-btn glass-effect">
-                        <i class="fas fa-file-pdf"></i>
-                        View Resume
-                    </button>
-                </div>
             </div>
-        </section>
+            <div class="timeline" id="timeline">
+                <!-- Timeline will be loaded from JSON -->
+            </div>
+            <div class="resume-cta">
+                <button class="btn btn-primary resume-popup-btn" id="resumePopupBtn">
+                    <i class="fas fa-file-pdf"></i> View Resume
+                </button>
+            </div>
+        </div>
+    </section>
 
-        <!-- Discussion Section -->
-        <section id="discuss" class="discuss-section">
-            <div class="container">
+    <!-- Contact Section -->
+    <section id="contact" class="section contact-section">
+        <div class="container">
+            <div class="section-header center">
                 <h2 class="section-title">Let's Discuss Your Project</h2>
-                <form id="projectForm" class="project-form">
-                    <div class="form-group">
-                        <label for="projectName">Project Name</label>
-                        <input type="text" id="projectName" name="projectName" class="form-input glass-effect" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="requirements">Project Description & Requirements</label>
-                        <textarea id="requirements" name="requirements" class="form-textarea glass-effect" rows="6" required placeholder="Please describe your project requirements, goals, and any specific features you need..."></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Your Email Address</label>
-                        <input type="email" id="email" name="email" class="form-input glass-effect" required>
-                    </div>
-                    <button type="submit" class="submit-btn glass-effect">
-                        <i class="fas fa-paper-plane"></i>
-                        Send Project Inquiry
-                    </button>
-                </form>
             </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="contact-section">
-            <div class="container">
-                <h2 class="section-title">Get In Touch</h2>
-                <div class="contact-links">
-                    <a href="https://linkedin.com/in/dilip-choudhary-analytics" class="contact-link glass-effect" target="_blank">
-                        <i class="fab fa-linkedin"></i>
-                        <span>LinkedIn</span>
-                    </a>
-                    <a href="mailto:choudharydilip947@gmail.com" class="contact-link glass-effect">
-                        <i class="fas fa-envelope"></i>
-                        <span>Email</span>
-                    </a>
-                    <a href="tel:+919346053750" class="contact-link glass-effect">
-                        <i class="fas fa-phone"></i>
-                        <span>Mobile</span>
-                    </a>
-                    <a href="resume.pdf" class="contact-link glass-effect" target="_blank">
-                        <i class="fas fa-file-pdf"></i>
-                        <span>Resume</span>
-                    </a>
+            <div class="contact-container">
+                <div class="contact-form glass-card">
+                    <form id="projectForm">
+                        <div class="form-group">
+                            <label for="projectName" class="form-label">Project Name</label>
+                            <input type="text" id="projectName" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="projectType" class="form-label">Type of Project</label>
+                            <select id="projectType" class="form-input" required>
+                                <option value="">Select Project Type</option>
+                                <option value="data-analysis">Data Analysis</option>
+                                <option value="dashboard">Dashboard Development</option>
+                                <option value="financial-modeling">Financial Modeling</option>
+                                <option value="risk-analysis">Risk Analysis</option>
+                                <option value="business-intelligence">Business Intelligence</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="projectDescription" class="form-label">Project Description</label>
+                            <textarea id="projectDescription" class="form-input" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary glass-edge" style="width: 100%;">
+                            <i class="fas fa-paper-plane"></i> Submit Project
+                        </button>
+                    </form>
+                </div>
+                <div class="contact-info">
+                    <div class="contact-buttons">
+                        <a href="https://linkedin.com/in/dilip-choudhary-analytics" class="contact-btn glass-card" target="_blank">
+                            <i class="fab fa-linkedin"></i>
+                            <span>LinkedIn</span>
+                        </a>
+                        <a href="mailto:choudharydilip947@gmail.com" class="contact-btn glass-card">
+                            <i class="fas fa-envelope"></i>
+                            <span>Email</span>
+                        </a>
+                        <a href="tel:+919346053750" class="contact-btn glass-card">
+                            <i class="fas fa-phone"></i>
+                            <span>Call</span>
+                        </a>
+                        <button class="contact-btn glass-card resume-popup-btn">
+                            <i class="fas fa-file-pdf"></i>
+                            <span>Resume</span>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer>
         <div class="container">
-            <p>&copy; 2025 Dilip Choudhary. All rights reserved.</p>
+            <div class="footer-content">
+                <p>© 2025 Dilip Choudhary. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
-    <!-- Project Modal -->
-    <div id="projectModal" class="project-modal">
-        <div class="modal-content glass-effect">
-            <button class="modal-close" id="modalClose">&times;</button>
+    <!-- Resume Modal -->
+    <div class="modal-overlay" id="resumeModal">
+        <div class="modal-content glass-card">
             <div class="modal-header">
-                <h3 id="modalTitle"></h3>
+                <h3>My Resume</h3>
+                <button class="close-modal">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="project-images" id="modalImages">
-                    <!-- Images will be populated by JavaScript -->
-                </div>
-                <div class="project-details" id="modalDetails">
-                    <!-- Details will be populated by JavaScript -->
+                <iframe src="resume.pdf" class="resume-iframe"></iframe>
+                <div class="modal-actions">
+                    <a href="resume.pdf" download class="btn btn-primary">
+                        <i class="fas fa-download"></i> Download Resume
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="loading-overlay">
-        <div class="loader"></div>
+    <!-- Project Gallery Modal -->
+    <div class="modal-overlay project-gallery-modal" id="projectGalleryModal">
+        <div class="modal-content glass-card gallery-content">
+            <div class="modal-header">
+                <h3 id="galleryProjectTitle">Project Gallery</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="gallery-container">
+                    <div class="gallery-main-image">
+                        <img id="galleryMainImage" src="" alt="Project Image">
+                    </div>
+                    <div class="gallery-controls">
+                        <button class="gallery-nav-btn prev-btn">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <div class="gallery-thumbnails" id="galleryThumbnails"></div>
+                        <button class="gallery-nav-btn next-btn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Scripts -->
-    <script src="js/main.js"></script>
+    <script src="js/data.js"></script>
     <script src="js/animation.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
