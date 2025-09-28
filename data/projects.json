@@ -2,39 +2,36 @@
   {
     "id": "project-ec",
     "title": "E-Commerce Sales Insights",
-    "short": "Order cancellations, delivery & sales optimization dashboard.",
-    "description": "A Power BI dashboard analyzing orders, cancellations and delivery partner performance to reveal cost-quality trade-offs and actionable recommendations.",
+    "short": "Order cancellations & delivery insights",
+    "description": "Power BI dashboard analyzing order cancellations, delivery partner performance and order quality.",
     "images": [
       "Projects/Projectec/1.png",
       "Projects/Projectec/2.png",
       "Projects/Projectec/3.png",
       "Projects/Projectec/4.png"
-    ],
-    "download": ""
+    ]
   },
   {
     "id": "project-crypto",
     "title": "Crypto Market Risk Dashboard",
-    "short": "Volatility & sentiment scoring for crypto assets.",
-    "description": "Dashboard and risk model combining volatility, volume, and sentiment to prioritize watchlist and risk exposures.",
+    "short": "Volatility & sentiment tracking",
+    "description": "Dashboard assessing crypto volatility and sentiment for proactive risk management.",
     "images": [
       "Projects/Projectcrypto/1.png",
       "Projects/Projectcrypto/2.png",
       "Projects/Projectcrypto/3.png"
-    ],
-    "download": ""
+    ]
   },
   {
     "id": "project-p3abc",
     "title": "P3ABC — Process Improvement",
-    "short": "UAT, test cases, sprint artifacts & reporting.",
-    "description": "A project focused on process optimisation and UAT lifecycle with artifacts, results and test coverage insights.",
+    "short": "UAT, sprint, and test artifacts",
+    "description": "Improving process visibility with UAT artifacts and sprint analytics.",
     "images": [
       "Projects/P3ABC/1.png",
       "Projects/P3ABC/Sprint.png",
       "Projects/P3ABC/UAT.png",
       "Projects/P3ABC/UAT Results.png"
-    ],
-    "download": ""
+    ]
   }
 ]
