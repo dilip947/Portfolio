@@ -1,311 +1,117 @@
-class AnimationEngine {
-    constructor() {
-        this.scrollY = 0;
-        this.lastScrollY = 0;
-        this.scrollDirection = 0;
-        this.autoDarkMode = true;
-        this.manualThemeOverride = false;
-        
-        this.init();
-    }
-    
-    init() {
-        this.setupWelcomeAnimation();
-        this.setupScrollAnimations();
-        this.setupSmoothScrolling();
-        this.setupParallaxEffects();
-        this.setupIntersectionObserver();
-    }
-    
-    // Welcome Screen Animation
-    setupWelcomeAnimation() {
-        const welcomeScreen = document.getElementById('welcomeScreen');
-        const chessboardBg = document.getElementById('chessboardBg');
-        
-        setTimeout(() => {
-            welcomeScreen.classList.add('fade-out');
-            
-            setTimeout(() => {
-                welcomeScreen.style.display = 'none';
-                chessboardBg.classList.add('fade-out');
-                
-                // Start main animations
-                this.startMainAnimations();
-            }, 1500);
-        }, 2000);
-    }
-    
-    // Start Main Animations
-    startMainAnimations() {
-        const header = document.getElementById('header');
-        const profileContainer = document.getElementById('profileImageContainer');
-        const heroName = document.getElementById('heroName');
-        const heroRoles = document.getElementById('heroRoles');
-        const logoName = document.getElementById('logoName');
-        
-        // Show header with delay
-        setTimeout(() => {
-            header.classList.add('visible');
-        }, 500);
-        
-        // Initial animations
-        this.animateElements([
-            { element: profileContainer, delay: 300 },
-            { element: heroName, delay: 600 },
-            { element: heroRoles, delay: 900 }
-        ]);
-    }
-    
-    // Scroll-triggered Animations
-    setupScrollAnimations() {
-        let ticking = false;
-        
-        const updateScrollAnimations = () => {
-            this.scrollY = window.scrollY;
-            this.scrollDirection = this.scrollY > this.lastScrollY ? 1 : -1;
-            
-            this.updateHeroSection();
-            this.updateThemeTransition();
-            this.updateHeaderEffects();
-            this.updateParallax();
-            
-            this.lastScrollY = this.scrollY;
-            ticking = false;
-        };
-        
-        const requestTick = () => {
-            if (!ticking) {
-                requestAnimationFrame(updateScrollAnimations);
-                ticking = true;
-            }
-        };
-        
-        window.addEventListener('scroll', requestTick, { passive: true });
-    }
-    
-    // Hero Section Scroll Animations
-    updateHeroSection() {
-        const hero = document.getElementById('home');
-        const profileContainer = document.getElementById('profileImageContainer');
-        const heroName = document.getElementById('heroName');
-        const heroRoles = document.getElementById('heroRoles');
-        const logoName = document.getElementById('logoName');
-        
-        if (!hero) return;
-        
-        const heroRect = hero.getBoundingClientRect();
-        const scrollProgress = Math.max(0, Math.min(1, -heroRect.top / heroRect.height));
-        
-        // Profile image scaling
-        if (profileContainer) {
-            const scale = Math.max(0.3, 1 - scrollProgress * 0.7);
-            profileContainer.style.transform = `scale(${scale})`;
-            profileContainer.style.opacity = Math.max(0, 1 - scrollProgress * 1.5);
-        }
-        
-        // Name text scaling and movement
-        if (heroName) {
-            const nameScale = Math.max(0.5, 1 + scrollProgress * 0.5);
-            const nameTranslateX = scrollProgress * -100;
-            
-            heroName.style.transform = `scale(${nameScale}) translateX(${nameTranslateX}px)`;
-            heroName.style.opacity = Math.max(0, 1 - scrollProgress * 2);
-        }
-        
-        // Roles fade out
-        if (heroRoles) {
-            heroRoles.style.opacity = Math.max(0, 1 - scrollProgress * 3);
-        }
-        
-        // Logo name appearance
-        if (logoName && scrollProgress > 0.3) {
-            logoName.style.opacity = Math.min(1, (scrollProgress - 0.3) * 3);
-        }
-    }
-    
-    // Auto Dark Mode Transition
-    updateThemeTransition() {
-        if (this.manualThemeOverride || !this.autoDarkMode) return;
-        
-        const scrollY = window.scrollY;
-        const heroHeight = document.getElementById('home').offsetHeight;
-        const transitionPoint = heroHeight * 0.6;
-        
-        if (scrollY > transitionPoint && !document.body.classList.contains('light-mode')) {
-            document.body.classList.add('light-mode');
-            this.updateThemeIcon();
-        } else if (scrollY <= transitionPoint && document.body.classList.contains('light-mode')) {
-            document.body.classList.remove('light-mode');
-            this.updateThemeIcon();
-        }
-    }
-    
-    // Update Theme Icon
-    updateThemeIcon() {
-        const themeIcon = document.querySelector('#themeToggle i');
-        if (themeIcon) {
-            if (document.body.classList.contains('light-mode')) {
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-            } else {
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
-            }
-        }
-    }
-    
-    // Header Effects
-    updateHeaderEffects() {
-        const header = document.getElementById('header');
-        
-        if (this.scrollY > 100) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
-        }
-    }
-    
-    // Parallax Effects
-    updateParallax() {
-        const floatingElements = document.querySelectorAll('.floating-element');
-        
-        floatingElements.forEach((element, index) => {
-            const speed = (index % 3 + 1) * 0.5;
-            const yPos = -(this.scrollY * speed * 0.1);
-            element.style.transform = `translateY(${yPos}px)`;
-        });
-    }
-    
-    // Smooth Element Animations
-    animateElements(elements) {
-        elements.forEach(({ element, delay = 0 }) => {
-            setTimeout(() => {
-                element.style.opacity = '1';
-                element.style.transform = 'translateY(0)';
-            }, delay);
-        });
-    }
-    
-    // Intersection Observer for Scroll Animations
-    setupIntersectionObserver() {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    
-                    // Stagger children animations
-                    const children = entry.target.querySelectorAll('.animate-child');
-                    children.forEach((child, index) => {
-                        setTimeout(() => {
-                            child.classList.add('visible');
-                        }, index * 100);
-                    });
-                }
-            });
-        }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        });
-        
-        // Observe elements
-        document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
-        document.querySelectorAll('.timeline-item').forEach(el => observer.observe(el));
-    }
-    
-    // Smooth Scrolling
-    setupSmoothScrolling() {
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', (e) => {
-                e.preventDefault();
-                
-                const targetId = anchor.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    const headerHeight = document.getElementById('header').offsetHeight;
-                    const targetPosition = targetElement.offsetTop - headerHeight - 20;
-                    
-                    window.scrollTo({
-                        top: targetPosition,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-    }
-    
-    // Parallax Setup
-    setupParallaxEffects() {
-        this.createFloatingElements();
-    }
-    
-    // Create Floating Background Elements
-    createFloatingElements() {
-        const container = document.getElementById('floatingElements');
-        const elementCount = 12;
-        
-        for (let i = 0; i < elementCount; i++) {
-            const element = document.createElement('div');
-            element.classList.add('floating-element');
-            
-            // Random properties
-            const size = Math.random() * 100 + 50;
-            const posX = Math.random() * 100;
-            const posY = Math.random() * 100;
-            const delay = Math.random() * 10;
-            const duration = Math.random() * 20 + 20;
-            const opacity = Math.random() * 0.1 + 0.05;
-            
-            element.style.cssText = `
-                width: ${size}px;
-                height: ${size}px;
-                left: ${posX}%;
-                top: ${posY}%;
-                animation-delay: ${delay}s;
-                animation-duration: ${duration}s;
-                opacity: ${opacity};
-            `;
-            
-            container.appendChild(element);
-        }
-    }
-    
-    // Manual Theme Toggle
-    toggleManualTheme() {
-        this.manualThemeOverride = true;
-        this.autoDarkMode = false;
-        
-        document.body.classList.toggle('light-mode');
-        this.updateThemeIcon();
-        
-        // Save preference
-        localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
-        localStorage.setItem('autoDarkMode', 'false');
-    }
-    
-    // Restore Theme Preferences
-    restoreThemePreferences() {
-        const savedTheme = localStorage.getItem('theme');
-        const savedAutoDarkMode = localStorage.getItem('autoDarkMode');
-        
-        if (savedAutoDarkMode === 'false') {
-            this.autoDarkMode = false;
-            this.manualThemeOverride = true;
-        }
-        
-        if (savedTheme === 'light' && !document.body.classList.contains('light-mode')) {
-            document.body.classList.add('light-mode');
-        }
-        
-        this.updateThemeIcon();
-    }
-}
-
-// Initialize Animation Engine
-let animationEngine;
-
 document.addEventListener('DOMContentLoaded', () => {
-    animationEngine = new AnimationEngine();
-    animationEngine.restoreThemePreferences();
+    // --- Welcome Screen ---
+    const welcomeScreen = document.getElementById('welcomeScreen');
+    setTimeout(() => {
+        welcomeScreen.classList.add('hidden');
+        document.getElementById('heroContent').classList.add('visible');
+    }, 1200); // Total duration of the welcome animation
+
+    // --- Hero Name & Header Scroll Animation ---
+    const heroName = document.getElementById('heroName');
+    const heroProfileImg = document.getElementById('heroProfileImg');
+    const header = document.getElementById('header');
+    const headerLogo = document.getElementById('headerLogo');
+
+    let isDarkModeSetOnScroll = false;
+
+    window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        
+        // Header styling on scroll
+        header.classList.toggle('scrolled', scrollY > 50);
+
+        // Auto-switch to dark mode on first scroll, if not manually set
+        if (scrollY > 100 && !isDarkModeSetOnScroll && localStorage.getItem('theme') !== 'light') {
+             if (!document.body.classList.contains('light-mode')) {
+                // This logic is for future use if you want a default light theme that switches
+             }
+            isDarkModeSetOnScroll = true; // Prevents this from running again
+        }
+
+        // Hero Name Animation Logic
+        const heroRect = heroName.getBoundingClientRect();
+        const triggerPoint = window.innerHeight * 0.5;
+
+        if (heroRect.top < triggerPoint && scrollY > 0) {
+            const progress = 1 - Math.max(0, heroRect.top / triggerPoint);
+            
+            // Shrink name and image
+            const scale = Math.max(0.2, 1 - progress * 0.8);
+            heroName.style.transform = `scale(${scale})`;
+            heroProfileImg.style.transform = `scale(${1 - progress})`;
+            heroProfileImg.style.opacity = `${1 - progress}`;
+
+            // Fade in header logo
+            headerLogo.style.opacity = `${Math.min(1, progress * 2)}`;
+
+        } else {
+            // Reset styles when scrolling back up
+            heroName.style.transform = 'scale(1)';
+            heroProfileImg.style.transform = 'scale(1)';
+            heroProfileImg.style.opacity = '1';
+            headerLogo.style.opacity = '0';
+        }
+    });
+
+    // --- General Scroll-Triggered Animations ---
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.animate-on-scroll, .project-card').forEach(el => observer.observe(el));
+
+
+    // --- Project Card Hover Preview Animation ---
+    let hoverTimeout;
+    projectsGrid.addEventListener('mouseover', async (e) => {
+        const card = e.target.closest('.project-card');
+        if (!card) return;
+
+        hoverTimeout = setTimeout(async () => {
+            const projectId = card.dataset.projectId;
+            const previewContainer = card.querySelector('.project-gallery-preview');
+            
+            // Avoid re-fetching if images are already there
+            if (previewContainer.children.length > 0) return;
+
+            const response = await fetch('data/projects.json');
+            const projects = await response.json();
+            const project = projects.find(p => p.id === projectId);
+            
+            if (project && project.gallery.length > 1) {
+                const imagesToShow = project.gallery.slice(1, 6); // Show up to 5 preview images
+                
+                imagesToShow.forEach((imgSrc, i) => {
+                    const img = document.createElement('img');
+                    img.src = imgSrc;
+                    img.className = 'preview-img';
+                    previewContainer.appendChild(img);
+                    
+                    // Position images in an arc
+                    const angle = (i - (imagesToShow.length - 1) / 2) * 30; // 30 degrees apart
+                    const radius = 100; // pixels from center
+                    const x = Math.sin(angle * Math.PI / 180) * radius;
+                    const y = -Math.cos(angle * Math.PI / 180) * radius;
+
+                    setTimeout(() => {
+                        img.style.opacity = '1';
+                        img.style.transform = `translate(${x}px, ${y}px) scale(1) rotate(${angle/5}deg)`;
+                    }, 50 * i);
+                });
+            }
+        }, 500); // 0.5-second delay before animation starts
+    });
+
+    projectsGrid.addEventListener('mouseout', (e) => {
+        clearTimeout(hoverTimeout);
+        const card = e.target.closest('.project-card');
+        if (card) {
+            const previewContainer = card.querySelector('.project-gallery-preview');
+            previewContainer.innerHTML = ''; // Clear preview images on mouse out
+        }
+    });
 });
