@@ -1,40 +1,40 @@
 [
   {
-    "id": "p1",
+    "id": "project-ec",
     "title": "E-Commerce Sales Insights",
-    "description": "Comprehensive analysis of e-commerce order data with insights into cancellation drivers and sales performance optimization.",
-    "thumbnail": "Projects/Projectec/1.png",
-    "gallery": [
+    "short": "Order cancellations, delivery & sales optimization dashboard.",
+    "description": "A Power BI dashboard analyzing orders, cancellations and delivery partner performance to reveal cost-quality trade-offs and actionable recommendations.",
+    "images": [
       "Projects/Projectec/1.png",
       "Projects/Projectec/2.png",
       "Projects/Projectec/3.png",
       "Projects/Projectec/4.png"
-    ]
+    ],
+    "download": ""
   },
   {
-    "id": "p2",
+    "id": "project-crypto",
     "title": "Crypto Market Risk Dashboard",
-    "description": "Power BI dashboard analyzing cryptocurrency volatility and market sentiment to assess risk factors and investment opportunities.",
-    "thumbnail": "Projects/Projectcrypto/1.png",
-    "gallery": [
+    "short": "Volatility & sentiment scoring for crypto assets.",
+    "description": "Dashboard and risk model combining volatility, volume, and sentiment to prioritize watchlist and risk exposures.",
+    "images": [
       "Projects/Projectcrypto/1.png",
       "Projects/Projectcrypto/2.png",
       "Projects/Projectcrypto/3.png"
-    ]
+    ],
+    "download": ""
   },
   {
-    "id": "p3",
-    "title": "Agile Project Coordination & UAT",
-    "description": "Managed User Acceptance Testing (UAT) for a key project, ensuring requirements were met through rigorous testing and stakeholder communication.",
-    "thumbnail": "Projects/P3ABC/1.png",
-    "gallery": [
+    "id": "project-p3abc",
+    "title": "P3ABC — Process Improvement",
+    "short": "UAT, test cases, sprint artifacts & reporting.",
+    "description": "A project focused on process optimisation and UAT lifecycle with artifacts, results and test coverage insights.",
+    "images": [
       "Projects/P3ABC/1.png",
       "Projects/P3ABC/Sprint.png",
-      "Projects/P3ABC/test_case.png",
       "Projects/P3ABC/UAT.png",
-      "Projects/P3ABC/UAT Results.png",
-      "Projects/P3ABC/UAT Scenario.png",
-      "Projects/P3ABC/UAT Signoff.png"
-    ]
+      "Projects/P3ABC/UAT Results.png"
+    ],
+    "download": ""
   }
 ]
