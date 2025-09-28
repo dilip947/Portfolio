@@ -12,7 +12,8 @@
     <link rel="stylesheet" href="css/style.css">
     <!-- GSAP for animations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <!-- Three.js for 3D globe -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
+    <!-- Three.js for 3D -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <!-- Howler.js for sounds -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
@@ -20,34 +21,71 @@
 <body>
     <!-- Preloader -->
     <div id="preloader">
-        <div class="glass-orb"></div>
+        <canvas id="preloader-canvas" class="nebula-swirl"></canvas>
         <p id="progress">0%</p>
     </div>
 
-    <!-- Animated Background with Glassmorphism and Parallax Layers -->
-    <div class="glass-bg parallax-layer" data-speed="0.5"></div>
-    <div class="glass-overlay parallax-layer" data-speed="0.3"></div>
-    <div class="floating-elements parallax-layer" data-speed="0.2" id="floatingElements"></div>
+    <!-- Cosmic Background Canvas -->
+    <canvas id="cosmic-background" class="parallax-layer" data-speed="0.1"></canvas>
+
+    <!-- Parallax Layers -->
+    <div class="parallax-layer stars-layer" data-speed="0.3"></div>
+    <div class="parallax-layer nebula-overlay" data-speed="0.5"></div>
 
     <!-- Custom Cursor -->
-    <div class="custom-cursor" id="customCursor"></div>
-    <div class="cursor-trail" id="cursorTrail"></div>
+    <div class="custom-cursor glowing-orb" id="customCursor"></div>
+    <canvas id="particle-trail" class="cursor-trail"></canvas>
 
-    <!-- Mobile Navigation -->
-    <div class="mobile-nav" id="mobileNav">
-        <a href="#home" class="mobile-nav-link">Home</a>
-        <a href="#about" class="mobile-nav-link">About</a>
-        <a href="#skills" class="mobile-nav-link">Skills</a>
-        <a href="#projects" class="mobile-nav-link">Projects</a>
-        <a href="#resume" class="mobile-nav-link">Resume</a>
-        <a href="#contact" class="mobile-nav-link">Contact</a>
+    <!-- Floating Elements (Particles) -->
+    <div class="floating-elements" id="floatingElements"></div>
+
+    <!-- Mute Toggle -->
+    <button id="muteToggle" class="floating-button mute-toggle" aria-label="Toggle Sound">
+        <i class="fas fa-volume-up"></i>
+    </button>
+
+    <!-- Reduced Motion Switch -->
+    <button id="reducedMotionToggle" class="floating-button reduced-motion-toggle" aria-label="Toggle Reduced Motion">
+        <i class="fas fa-running"></i>
+    </button>
+
+    <!-- Back to Top -->
+    <button id="backToTop" class="floating-button back-to-top" aria-label="Back to Top">
+        <i class="fas fa-rocket"></i>
+    </button>
+
+    <!-- Share URL -->
+    <button id="shareUrl" class="floating-button share-url" aria-label="Share URL">
+        <i class="fas fa-share-alt"></i>
+    </button>
+
+    <!-- Keyboard Help Overlay -->
+    <div id="keyboardHelp" class="modal-overlay">
+        <div class="modal-content glass-card">
+            <h3>Keyboard Shortcuts</h3>
+            <ul>
+                <li>? - Show this help</li>
+                <li>Esc - Close modals</li>
+                <li>Konami Code - xAI Trivia Easter Egg</li>
+            </ul>
+            <button class="close-modal">Close</button>
+        </div>
     </div>
 
-    <!-- Header -->
-    <header id="header">
+    <!-- Easter Egg Modal -->
+    <div id="easterEggModal" class="modal-overlay">
+        <div class="modal-content glass-card">
+            <h3>xAI Trivia</h3>
+            <p>Grok is built by xAI to understand the universe!</p>
+            <button class="close-modal">Close</button>
+        </div>
+    </div>
+
+    <!-- Header (Sticky, Compact on Scroll) -->
+    <header id="header" class="glass-header">
         <div class="container nav-container">
             <a href="#" class="logo">
-                <img src="Image/Profile.JPG" alt="Dilip Choudhary" class="logo-img">
+                <img src="Image/Profile.JPG" alt="Dilip Choudhary" class="logo-img glowing-avatar" id="headerAvatar">
                 <span>Dilip Choudhary</span>
             </a>
 
@@ -59,59 +97,64 @@
                 <a href="#home" class="nav-link active">Home</a>
                 <a href="#about" class="nav-link">About</a>
                 <a href="#skills" class="nav-link">Skills</a>
-                <div class="dropdown">
-                    <a href="#projects" class="nav-link">Projects ▾</a>
-                    <div class="dropdown-menu">
-                        <a href="#project1" class="dropdown-item">E-Commerce Sales Insights</a>
-                        <a href="#project2" class="dropdown-item">Crypto Market Risk Dashboard</a>
-                        <a href="#project3" class="dropdown-item">P3ABC Project</a>
-                    </div>
-                </div>
-                <a href="#resume" class="nav-link">Resume</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#achievements" class="nav-link">Achievements & Services</a>
+                <a href="#philosophy" class="nav-link">Philosophy & Resume</a>
                 <a href="#contact" class="nav-link">Contact</a>
                 <button class="theme-toggle" id="themeToggle">
-                    <i class="fas fa-sun"></i>
+                    <i class="fas fa-moon"></i>
                 </button>
             </nav>
         </div>
     </header>
 
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav glass-card" id="mobileNav">
+        <a href="#home" class="mobile-nav-link">Home</a>
+        <a href="#about" class="mobile-nav-link">About</a>
+        <a href="#skills" class="mobile-nav-link">Skills</a>
+        <a href="#projects" class="mobile-nav-link">Projects</a>
+        <a href="#achievements" class="mobile-nav-link">Achievements & Services</a>
+        <a href="#philosophy" class="mobile-nav-link">Philosophy & Resume</a>
+        <a href="#contact" class="mobile-nav-link">Contact</a>
+    </div>
+
     <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="container hero-container">
-            <div class="hero-content">
-                <h1 class="hero-title" id="heroTitle">Dilip Choudhary</h1>
-                <p class="hero-description">Business Analytics professional specializing in financial markets, risk analysis, and data-driven decision-making.</p>
-                <div class="hero-buttons">
-                    <a href="#contact" class="btn btn-primary">
-                        <i class="fas fa-paper-plane"></i> Get In Touch
-                    </a>
-                    <a href="#projects" class="btn btn-secondary">
-                        <i class="fas fa-eye"></i> View My Work
-                    </a>
-                </div>
+    <section id="home" class="hero full-viewport">
+        <div class="hero-content">
+            <h1 class="massive-name" id="heroName">Dilip Choudhary</h1>
+            <p class="tagline typewriter">Business Analytics Specialist – Transforming Data into Insights</p>
+            <div class="ctas">
+                <button class="neon-button magnetic-button" id="exploreCapabilities">Explore Capabilities</button>
+                <button class="neon-button magnetic-button" id="simulateQuery">Simulate Query</button>
             </div>
-            <div class="hero-image">
-                <div class="hero-img-container glass-edge">
-                    <img src="Image/Profile.JPG" alt="Dilip Choudhary" class="hero-img">
-                </div>
+        </div>
+        <div class="glowing-avatar-container">
+            <img src="Image/Profile.JPG" alt="Dilip Choudhary" class="glowing-avatar tilt-3d" id="heroAvatar">
+            <div class="orbiting-icons">
+                <!-- Orbiting nav icons -->
+                <a href="#about" class="orbit-icon"><i class="fas fa-user"></i></a>
+                <a href="#skills" class="orbit-icon"><i class="fas fa-brain"></i></a>
+                <a href="#projects" class="orbit-icon"><i class="fas fa-project-diagram"></i></a>
             </div>
         </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="section about">
-        <div class="container about-container">
-            <div class="about-content">
+    <section id="about" class="section">
+        <div class="container about-grid">
+            <div class="origin-story">
                 <h2 class="section-title">About Me</h2>
-                <p class="about-text animate-on-scroll">I'm a Business Analytics student focused on financial markets, risk analysis, and data-driven decision-making. I transform messy datasets into clear insights and dashboards that empower stakeholders to act.</p>
-                <p class="about-text animate-on-scroll">My expertise includes financial modeling, data visualization, and creating interactive dashboards that tell compelling stories with data. I'm passionate about using analytics to solve complex business problems and drive strategic decisions.</p>
-                <a href="#contact" class="btn btn-primary glass-edge">
-                    <i class="fas fa-comment"></i> Let's Discuss
-                </a>
+                <p class="typewriter">I'm a Business Analytics professional...</p>
+                <div class="timeline">
+                    <!-- Timeline items with draw animation -->
+                </div>
             </div>
-            <div class="about-image">
-                <img src="Image/Profile.JPG" alt="Dilip Choudhary" style="width: 100%; height: 400px; object-fit: cover; border-radius: var(--border-radius); border: 1px solid var(--border);" class="glass-edge">
+            <div class="interactive-model">
+                <canvas id="about3dModel"></canvas>
+            </div>
+            <div class="philosophy-paragraphs">
+                <p class="scroll-reveal">My expertise includes...</p>
             </div>
         </div>
     </section>
@@ -119,128 +162,74 @@
     <!-- Skills Section -->
     <section id="skills" class="section">
         <div class="container">
-            <div class="section-header center">
-                <h2 class="section-title">Skills</h2>
-            </div>
-            <div id="skills-globe"></div>
+            <h2 class="section-title">Skills</h2>
+            <div class="fusion-orb" id="fusionOrb"></div>
+            <canvas id="skillsGlobe" class="skills-globe"></canvas>
             <div class="skills-list" id="skillsList"></div>
         </div>
     </section>
 
     <!-- Projects Section -->
-    <section id="projects" class="section projects">
+    <section id="projects" class="section">
         <div class="container">
-            <div class="section-header center">
-                <h2 class="section-title">Featured Projects</h2>
-            </div>
-            <div class="projects-grid" id="projectsGrid"></div>
+            <h2 class="section-title">Portfolio Projects</h2>
+            <div class="projects-arc" id="projectsArc"></div>
         </div>
     </section>
 
-    <!-- Resume Section -->
-    <section id="resume" class="section">
-        <div class="container resume-container">
-            <div class="section-header center">
-                <h2 class="section-title">My Resume</h2>
-                <p class="text-lead">Download my complete resume to learn more about my experience, education, and skills</p>
+    <!-- Achievements & Services -->
+    <section id="achievements" class="section">
+        <div class="container">
+            <h2 class="section-title">Achievements & Services</h2>
+            <div class="services-cards">
+                <!-- Glass cards with morphs -->
             </div>
-            <a href="resume.pdf" download class="resume-download glass-edge">
-                <i class="fas fa-download"></i> Download Resume
-            </a>
+            <div class="achievements-timeline">
+                <!-- Vertical timeline -->
+            </div>
+            <div class="stats-counters">
+                <!-- Count-up -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Philosophy & Resume -->
+    <section id="philosophy" class="section">
+        <div class="container">
+            <h2 class="section-title">Philosophy & Resume</h2>
+            <p class="manifesto scroll-shimmer">My view on data...</p>
+            <button class="magnetic-button resume-button" id="resumeButton">Download Resume</button>
+            <div id="resumePreviewModal" class="modal-overlay">
+                <!-- Animated PDF preview -->
+            </div>
         </div>
     </section>
 
     <!-- Contact Section -->
     <section id="contact" class="section">
         <div class="container">
-            <div class="section-header center">
-                <h2 class="section-title">Get In Touch</h2>
-                <p class="text-lead">Let's discuss how data analytics can transform your business decisions</p>
+            <h2 class="section-title">Contact</h2>
+            <button class="floating-plus magnetic-button" id="contactPlus">+</button>
+            <div class="contact-tray glass-card" id="contactTray">
+                <a href="mailto:choudharydilip947@gmail.com" class="contact-icon"><i class="fas fa-envelope"></i></a>
+                <a href="tel:+919346053750" class="contact-icon"><i class="fas fa-phone"></i></a>
+                <a href="https://linkedin.com/in/dilip-choudhary-analytics" class="contact-icon"><i class="fab fa-linkedin"></i></a>
             </div>
-            <div class="contact-container">
-                <div class="contact-info">
-                    <div class="contact-item animate-on-scroll">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h3>Email</h3>
-                            <a href="mailto:choudharydilip947@gmail.com">choudharydilip947@gmail.com</a>
-                        </div>
-                    </div>
-                    <div class="contact-item animate-on-scroll">
-                        <div class="contact-icon">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h3>Phone</h3>
-                            <a href="tel:+919346053750">+91 9346053750</a>
-                        </div>
-                    </div>
-                    <div class="contact-item animate-on-scroll">
-                        <div class="contact-icon">
-                            <i class="fab fa-linkedin"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h3>LinkedIn</h3>
-                            <a href="https://linkedin.com/in/dilip-choudhary-analytics" target="_blank">linkedin.com/in/dilip-choudhary-analytics</a>
-                        </div>
-                    </div>
-                    <div class="contact-item animate-on-scroll">
-                        <div class="contact-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h3>Location</h3>
-                            <p>India</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="contact-form glass-card animate-on-scroll">
-                    <form id="contactForm">
-                        <div class="form-group">
-                            <label for="name" class="form-label">Your Name</label>
-                            <input type="text" id="name" class="form-input" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email" class="form-label">Your Email</label>
-                            <input type="email" id="email" class="form-input" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="message" class="form-label">Your Message</label>
-                            <textarea id="message" class="form-input" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary glass-edge" style="width: 100%;">
-                            <i class="fas fa-paper-plane"></i> Send Message
-                        </button>
-                    </form>
-                </div>
-            </div>
+            <form id="contactForm" class="contact-form glass-card">
+                <input type="text" placeholder="Name" class="floating-label">
+                <input type="email" placeholder="Email" class="floating-label">
+                <textarea placeholder="Message" class="floating-label"></textarea>
+                <button type="submit" class="neon-button magnetic-button">Send</button>
+            </form>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer>
+    <footer class="cosmic-fade">
         <div class="container">
-            <div class="footer-content">
-                <div class="logo">
-                    <img src="Image/Profile.JPG" alt="Dilip Choudhary" class="logo-img">
-                    <span>Dilip Choudhary</span>
-                </div>
-                <div class="social-links">
-                    <a href="mailto:choudharydilip947@gmail.com" class="social-link glass-edge">
-                        <i class="fas fa-envelope"></i>
-                    </a>
-                    <a href="https://linkedin.com/in/dilip-choudhary-analytics" class="social-link glass-edge" target="_blank">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="resume.pdf" class="social-link glass-edge" target="_blank">
-                        <i class="fas fa-file-pdf"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>© 2025 Dilip Choudhary. All rights reserved.</p>
+            <p>&copy; 2025 Dilip Choudhary. All rights reserved.</p>
+            <div class="social-quick-links">
+                <!-- Duplicated from contact -->
             </div>
         </div>
     </footer>
