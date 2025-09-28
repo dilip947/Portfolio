@@ -1,145 +1,177 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const skillsGrid = document.getElementById('skillsGrid');
-    const projectsGrid = document.getElementById('projectsGrid');
+/* js/main.js
+   Master interactive behavior for the site.
+   - High-quality implementation with accessibility & performance in mind.
+   - Uses vanilla JS only. No dependencies.
+*/
 
-    // --- Dynamic Content Loading ---
-    async function loadSkills() {
-        try {
-            const response = await fetch('data/skills.json');
-            const skills = await response.json();
-            skillsGrid.innerHTML = skills.map(skill => `
-                <div class="skill-card glass-card">${skill}</div>
-            `).join('');
-        } catch (error) {
-            console.error('Error loading skills:', error);
-            skillsGrid.innerHTML = '<p>Could not load skills.</p>';
-        }
+(() => {
+  'use strict';
+
+  /* ---------------- Utilities ---------------- */
+  const $ = (sel, ctx = document) => ctx.querySelector(sel);
+  const $$ = (sel, ctx = document) => Array.from((ctx || document).querySelectorAll(sel));
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const qId = id => document.getElementById(id);
+
+  /* ---------------- Theme toggle & persistence ---------------- */
+  const themeToggle = qId('themeToggle');
+  const mobileTheme = qId('mobileTheme');
+
+  function setTheme(light, manual = false) {
+    if (light) {
+      document.body.classList.add('light-mode');
+      localStorage.setItem('theme', 'light');
+    } else {
+      document.body.classList.remove('light-mode');
+      localStorage.setItem('theme', 'dark');
     }
-
-    async function loadProjects() {
-        try {
-            const response = await fetch('data/projects.json');
-            const projects = await response.json();
-            projectsGrid.innerHTML = projects.map((project, index) => {
-                 // Determine animation class based on position
-                let animationClass = 'animate-fade';
-                if (index % 3 === 0) animationClass = 'animate-left';
-                if (index % 3 === 2) animationClass = 'animate-right';
-
-                return `
-                <div class="project-card glass-card ${animationClass}" data-project-id="${project.id}">
-                    <img src="${project.thumbnail}" alt="${project.title}" class="project-card-thumbnail">
-                    <div class="project-card-content">
-                        <h3 class="project-card-title">${project.title}</h3>
-                    </div>
-                    <div class="project-gallery-preview"></div>
-                </div>
-            `}).join('');
-            
-            // Re-initialize project event listeners after loading
-            initializeProjectListeners();
-
-        } catch (error) {
-            console.error('Error loading projects:', error);
-            projectsGrid.innerHTML = '<p>Could not load projects.</p>';
-        }
+    if (manual) localStorage.setItem('themeManual', '1');
+    // Update icon
+    const icon = themeToggle.querySelector('i');
+    const micon = mobileTheme && mobileTheme.querySelector('i');
+    if (light) {
+      if (icon) icon.className = 'fa-regular fa-moon';
+      if (micon) micon.className = 'fa-regular fa-moon';
+    } else {
+      if (icon) icon.className = 'fa-regular fa-sun';
+      if (micon) micon.className = 'fa-regular fa-sun';
     }
-    
-    // Initial Load
-    loadSkills();
-    loadProjects();
+  }
 
-    // --- Theme Toggler ---
-    const themeToggle = document.getElementById('themeToggle');
-    const themeIcon = themeToggle.querySelector('i');
+  (function initTheme() {
+    const stored = localStorage.getItem('theme');
+    const manual = localStorage.getItem('themeManual') === '1';
+    if (stored === 'light') setTheme(true, manual);
+    else if (stored === 'dark') setTheme(false, manual);
+    else { /* default: leave as dark, intro will decide */ setTheme(false, false); }
+  })();
 
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light') {
-        document.body.classList.add('light-mode');
-        themeIcon.classList.replace('fa-sun', 'fa-moon');
-    }
+  themeToggle && themeToggle.addEventListener('click', () => {
+    const isLight = document.body.classList.contains('light-mode');
+    setTheme(!isLight, true);
+  });
+  mobileTheme && mobileTheme.addEventListener('click', () => {
+    const isLight = document.body.classList.contains('light-mode');
+    setTheme(!isLight, true);
+  });
 
-    themeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('light-mode');
-        const isLight = document.body.classList.contains('light-mode');
-        localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        themeIcon.classList.toggle('fa-sun', !isLight);
-        themeIcon.classList.toggle('fa-moon', isLight);
+  /* ---------------- Mobile Nav ---------------- */
+  const mobileBtn = qId('mobileMenuBtn');
+  const mobileNav = qId('mobileNav');
+  if (mobileBtn && mobileNav) {
+    mobileBtn.addEventListener('click', () => {
+      const open = mobileNav.style.right === '0px';
+      mobileNav.style.right = open ? '-100%' : '0px';
+      mobileNav.setAttribute('aria-hidden', open ? 'true' : 'false');
     });
-    
-    // --- Resume Modal ---
-    const resumeBtn = document.getElementById('resumeBtn');
-    const resumeModal = document.getElementById('resumeModal');
-    const closeResumeBtn = document.getElementById('closeResumeBtn');
+    // Close on link click
+    $$('a.mobile-link').forEach(a => a.addEventListener('click', () => {
+      mobileNav.style.right = '-100%';
+      mobileNav.setAttribute('aria-hidden', 'true');
+    }));
+  }
 
-    resumeBtn.addEventListener('click', () => resumeModal.classList.add('visible'));
-    closeResumeBtn.addEventListener('click', () => resumeModal.classList.remove('visible'));
-    resumeModal.addEventListener('click', (e) => {
-        if (e.target === resumeModal) resumeModal.classList.remove('visible');
-    });
+  /* ---------------- Hero morph logic ----------------
+     The effect: as the user scrolls up through hero,
+     - profile square shrinks and fades,
+     - hero name scales/shrinks based on scroll progress,
+     - when progress near 1, name snaps to header position
+  --------------------------------------------------*/
+  const heroEl = qId('home');
+  const heroName = qId('heroName');
+  const profileSquare = qId('profileSquare');
+  const header = qId('siteHeader');
+  const brandName = document.querySelector('.brand-name');
 
-    // --- Contact Form ---
-    const contactForm = document.getElementById('contactForm');
-    contactForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const projectName = document.getElementById('projectName').value;
-        const projectType = document.getElementById('projectType').value;
-        const description = document.getElementById('projectDescription').value;
+  // ensure uppercase
+  if (heroName) heroName.textContent = heroName.textContent.toUpperCase();
 
-        const subject = `Project Inquiry: ${projectName} (${projectType})`;
-        const body = `Project Name: ${projectName}\nProject Type: ${projectType}\n\nDescription:\n${description}`;
-        
-        window.location.href = `mailto:choudharydilip947@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    });
+  // Compute progress of transition:
+  function heroProgress() {
+    if (!heroEl) return 1;
+    const rect = heroEl.getBoundingClientRect();
+    // progress: 0 when hero bottom at viewport bottom; 1 when hero bottom has moved above a threshold
+    const vh = window.innerHeight;
+    const start = vh * 0.72;
+    const end = vh * 0.20;
+    const progress = clamp((start - rect.bottom) / (start - end), 0, 1);
+    return progress;
+  }
 
-    // --- Project Gallery Modal ---
-    const galleryModal = document.getElementById('galleryModal');
-    const galleryContent = document.getElementById('galleryContent');
-    let currentProject = null;
-    let currentImageIndex = 0;
+  function applyHeroTransform() {
+    const p = heroProgress(); // 0..1
+    // The user requested roughly 10% shrink per mm scrolled — we approximate with exponential scaling
+    // Name scale: start 1, peak 1.18 (slightly larger), then settle down to header-size via hero-shrunk class
+    const scale = 1 + (p * 0.18);
+    // For an iOS-haptic feel, ease using cubic function
+    const eased = Math.pow(p, 0.92);
 
-    async function openGallery(projectId) {
-        const response = await fetch('data/projects.json');
-        const projects = await response.json();
-        currentProject = projects.find(p => p.id === projectId);
-        if (!currentProject) return;
-
-        currentImageIndex = 0;
-        updateGalleryView();
-        galleryModal.classList.add('visible');
+    if (heroName) {
+      // as p increases, we move name up and shrink; we simulate "every mm shrink by 10%" by mapping p to scale
+      const nameTranslateY = - (eased * 46); // move up to ~46px
+      heroName.style.transform = `translateY(${nameTranslateY}px) scale(${1 - eased * 0.16})`;
+      heroName.style.opacity = `${1 - eased * 0.06}`;
     }
 
-    function updateGalleryView() {
-        galleryContent.innerHTML = `
-            <button class="close-modal-btn" id="closeGalleryBtn">&times;</button>
-            <img src="${currentProject.gallery[currentImageIndex]}" alt="Project Image" class="gallery-main-image">
-            ${currentProject.gallery.length > 1 ? `
-                <button class="gallery-nav prev"><i class="fas fa-chevron-left"></i></button>
-                <button class="gallery-nav next"><i class="fas fa-chevron-right"></i></button>
-            ` : ''}
-        `;
+    if (profileSquare) {
+      const sqScale = clamp(1 - eased * 0.66, 0.32, 1);
+      profileSquare.style.transform = `scale(${sqScale}) translateY(${ - eased * 28}px)`;
+      profileSquare.style.opacity = `${1 - eased * 1.05}`;
     }
-    
-    galleryModal.addEventListener('click', (e) => {
-        if (e.target === galleryModal || e.target.closest('#closeGalleryBtn')) {
-            galleryModal.classList.remove('visible');
-        }
-        if (e.target.closest('.gallery-nav.next')) {
-            currentImageIndex = (currentImageIndex + 1) % currentProject.gallery.length;
-            updateGalleryView();
-        }
-        if (e.target.closest('.gallery-nav.prev')) {
-            currentImageIndex = (currentImageIndex - 1 + currentProject.gallery.length) % currentProject.gallery.length;
-            updateGalleryView();
-        }
-    });
 
-    // This function is separate so it can be called after projects are loaded
-    function initializeProjectListeners() {
-        document.querySelectorAll('.project-card').forEach(card => {
-            card.addEventListener('click', () => {
-                openGallery(card.dataset.projectId);
-            });
-        });
+    // Once largely scrolled, set body class to hero-shrunk to finalize header state
+    if (p > 0.92) {
+      document.body.classList.add('hero-shrunk');
+      header.classList.add('scrolled');
+      if (brandName) brandName.style.transform = 'translateX(6px)';
+    } else {
+      document.body.classList.remove('hero-shrunk');
+      header.classList.remove('scrolled');
+      if (brandName) brandName.style.transform = '';
     }
-});
+
+    // Automatic dark mode if not manual — dark after progress > 0.55
+    if (localStorage.getItem('themeManual') !== '1') {
+      if (p > 0.55) setTheme(false, false);
+    }
+  }
+
+  // Bind scroll/resize events
+  window.addEventListener('scroll', throttle(applyHeroTransform, 16), { passive: true });
+  window.addEventListener('resize', throttle(applyHeroTransform, 60));
+
+  // Also react to 'intro:morph' event to gently scroll
+  window.addEventListener('intro:morph', () => {
+    // tiny smooth nudge to trigger scroll transformations
+    setTimeout(() => window.scrollTo({ top: 1, behavior: 'smooth' }), 260);
+  });
+
+  /* ---------------- IntersectionObserver for reveals ---------------- */
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(ent => {
+      if (ent.isIntersecting) {
+        ent.target.classList.add('visible');
+        io.unobserve(ent.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    $$('.animate-on-scroll').forEach(el => io.observe(el));
+  });
+
+  /* ---------------- Load dynamic data (projects & skills) ---------------- */
+  async function fetchJSON(path) {
+    try {
+      const res = await fetch(path, { cache: 'no-store' });
+      if (!res.ok) throw new Error('fetch failed ' + path);
+      return res.json();
+    } catch (err) {
+      console.warn('Could not load', path, err);
+      return null;
+    }
+  }
+
+  // populate skills
+  (async function loadSkills() {
+    const skillsData = await fe
