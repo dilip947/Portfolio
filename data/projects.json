@@ -2,21 +2,38 @@
   {
     "id": "project1",
     "title": "E-Commerce Sales Insights",
+    "short": "Order cancellations & delivery insights",
     "description": "Comprehensive analysis of e-commerce order data with insights into cancellation drivers and sales performance optimization.",
-    "images": ["Projects/Projectec/1.png", "Projects/Projectec/2.png", "Projects/Projectec/3.png", "Projects/Projectec/4.png"],
+    "images": [
+      "Image/Projectec/1.png",
+      "Image/Projectec/2.png",
+      "Image/Projectec/3.png",
+      "Image/Projectec/4.png"
+    ],
     "download": "https://drive.google.com/drive/folders/1ujHD_MZVCvIBBHDwB72kwxqbdRDrXSyg"
   },
   {
     "id": "project2",
     "title": "Crypto Market Risk Dashboard",
+    "short": "Volatility & sentiment risk scoring",
     "description": "Power BI dashboard analyzing cryptocurrency volatility and market sentiment to assess risk factors and investment opportunities.",
-    "images": ["Projects/Projectcrypto/1.png", "Projects/Projectcrypto/2.png", "Projects/Projectcrypto/3.png"],
+    "images": [
+      "Image/Projectcrypto/1.png",
+      "Image/Projectcrypto/2.png",
+      "Image/Projectcrypto/3.png"
+    ],
     "download": "https://drive.google.com/drive/folders/1cvIZ0nbRI022NNEHhLUcRlc6VFNQEGCo"
   },
   {
     "id": "project3",
-    "title": "P3ABC Project",
-    "description": "Analytics dashboard for project management, including sprint tracking, UAT scenarios, test cases, results, and sign-offs for efficient software development and testing.",
-    "images": ["Projects/P3ABC/1.png", "Projects/P3ABC/Sprint.png", "Projects/P3ABC/UAT Results.png", "Projects/P3ABC/UAT Scenario.png", "Projects/P3ABC/UAT Signoff.png", "Projects/P3ABC/UAT.png", "Projects/P3ABC/test_case.png"]
+    "title": "P3ABC — Process Improvement",
+    "short": "UAT, test cases & sprint artifacts",
+    "description": "Project focused on process optimization, user acceptance testing, and sprint reporting.",
+    "images": [
+      "Image/Projects/P3ABC/1.png",
+      "Image/Projects/P3ABC/Sprint.png",
+      "Image/Projects/P3ABC/UAT.png"
+    ],
+    "download": ""
   }
 ]
