@@ -1,416 +1,624 @@
-/* js/main.js
-   Main site JS: loads data, handles header morph, navigation, skills tile interactions,
-   project placement animation, project hover -> thumbnails, theme toggle, responsive details.
-*/
-
-(async function () {
-  const $ = (s, ctx = document) => ctx.querySelector(s);
-  const $$ = (s, ctx = document) => Array.from((ctx || document).querySelectorAll(s));
-
-  /* ---------- Load JSON data ---------- */
-  async function fetchJSON(path) {
-    try {
-      const res = await fetch(path, { cache: 'no-store' });
-      if (!res.ok) throw new Error('Failed to load ' + path);
-      return await res.json();
-    } catch (err) {
-      console.warn(err);
-      return null;
+// Main JavaScript for Dilip Choudhary Portfolio
+class Portfolio {
+    constructor() {
+        this.scrollPosition = 0;
+        this.isLoading = true;
+        this.darkModeProgress = 0;
+        this.projects = [];
+        this.skills = [];
+        this.timeline = [];
+        
+        this.init();
     }
-  }
-
-  const projectsData = await fetchJSON('data/projects.json') || [];
-  const skillsData = await fetchJSON('data/skills.json') || {};
-
-  /* ---------- Theme toggle ---------- */
-  const themeToggleBtn = document.getElementById('themeToggle');
-  const themeIcon = themeToggleBtn?.querySelector('i');
-
-  function setThemeLight(isLight) {
-    if (isLight) {
-      document.body.classList.add('light-mode');
-      localStorage.setItem('theme', 'light');
-      if (themeIcon) { themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon'); }
-    } else {
-      document.body.classList.remove('light-mode');
-      localStorage.setItem('theme', 'dark');
-      if (themeIcon) { themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun'); }
-    }
-  }
-  // init
-  const stored = localStorage.getItem('theme');
-  if (stored === 'light' || (!stored && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches)) {
-    setThemeLight(true);
-  } else {
-    setThemeLight(false);
-  }
-  themeToggleBtn?.addEventListener('click', () => setThemeLight(!document.body.classList.contains('light-mode')));
-
-  /* ---------- Header morph: when intro signals to morph, move name to header & shrink hero image ---------- */
-  function morphHeroToHeader() {
-    const hero = document.querySelector('.hero');
-    const heroImgContainer = document.querySelector('.hero-img-container');
-    const header = document.getElementById('header');
-    const logo = document.querySelector('.logo span');
-    const heroTitle = document.getElementById('heroTitle');
-
-    // step 1: shrink profile image and animate heroTitle scale
-    // animate hero image out
-    if (heroImgContainer) {
-      heroImgContainer.style.transition = 'transform 0.9s ease, opacity 0.9s ease';
-      heroImgContainer.style.transform = 'scale(0.4) translateY(-30px)';
-      heroImgContainer.style.opacity = '0';
-    }
-
-    // step 2: make heroTitle grow and move to top-left - we add a class so CSS handles final placement
-    heroTitle.style.transition = 'transform 0.9s cubic-bezier(.2,.9,.24,1), font-size 0.9s';
-    heroTitle.style.transformOrigin = 'left center';
-    heroTitle.style.transform = 'translateY(-30px) scale(1.16)';
-    // after transition, make it small and left in header
-    setTimeout(() => {
-      // convert to header logo
-      header.classList.add('scrolled'); // ensure header reduced padding
-      // move text into left logo area: we'll add a small class to position logo span
-      const logoSpan = document.querySelector('.logo span');
-      if (logoSpan) {
-        logoSpan.style.transition = 'transform 0.6s ease, color 0.6s ease';
-        logoSpan.style.transform = 'translateX(6px)';
-      }
-
-      // make nav visible with fade-ins
-      $$('.nav-link').forEach((el, i) => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(8px)';
-        el.style.transition = `opacity 0.5s ${0.15 * i + 0.2}s ease, transform 0.5s ${0.15 * i + 0.2}s ease`;
-        el.style.opacity = '1';
-        el.style.transform = 'translateY(0)';
-      });
-
-      // set dark-mode fade (as user requested: the sequence slowly fades to dark)
-      document.body.classList.remove('light-mode'); // ensure dark
-    }, 900);
-
-    // remove hero tiles if present
-    const tileWrap = document.getElementById('tileWrap');
-    if (tileWrap) {
-      tileWrap.style.transition = 'opacity 0.6s ease';
-      tileWrap.style.opacity = '0';
-      setTimeout(() => tileWrap.remove(), 700);
-    }
-  }
-
-  window.addEventListener('intro:morph', morphHeroToHeader);
-
-  /* ---------- Populate Skills as glass tiles ---------- */
-  function injectSkills(skills) {
-    const skillsParent = document.querySelector('.about-skills');
-    if (!skillsParent) return;
-
-    const flat = [];
-    ['tools','analysis','soft'].forEach(k => {
-      if (Array.isArray(skills[k])) flat.push(...skills[k]);
-    });
-    // fallback: if JSON is object of skill groups
-    if (flat.length === 0) {
-      Object.values(skills).forEach(group => {
-        if (Array.isArray(group)) flat.push(...group);
-      });
-    }
-
-    skillsParent.innerHTML = '';
-    flat.forEach(skill => {
-      const s = document.createElement('button');
-      s.className = 'skill glass-card';
-      s.textContent = skill;
-      s.style.cursor = 'pointer';
-      s.setAttribute('aria-label', skill);
-      // hover / touch glass cursor effect handled in CSS, but we enhance with a micro pop
-      s.addEventListener('mouseenter', () => {
-        s.style.transform = 'translateY(-6px) scale(1.02)';
-        s.style.boxShadow = '0 10px 20px rgba(0,0,0,0.2)';
-      });
-      s.addEventListener('mouseleave', () => {
-        s.style.transform = '';
-        s.style.boxShadow = '';
-      });
-      s.addEventListener('touchstart', () => {
-        s.style.transform = 'translateY(-6px) scale(1.02)';
-      }, {passive:true});
-      s.addEventListener('touchend', () => {
-        s.style.transform = '';
-      });
-      skillsParent.appendChild(s);
-    });
-  }
-  injectSkills(skillsData);
-
-  /* ---------- Projects: dynamic load and center/left/right animation ---------- */
-  const projectsGrid = document.getElementById('projectsGrid');
-
-  function createProjectCard(p, idx) {
-    // base card (we will keep structure similar to your HTML but created dynamically)
-    const card = document.createElement('div');
-    card.id = p.id;
-    card.className = 'project-card glass-card animate-on-scroll';
-    card.style.opacity = '0';
-    card.dataset.index = idx;
-
-    const imageWrap = document.createElement('div');
-    imageWrap.className = 'project-image';
-    imageWrap.style.position = 'relative';
-    imageWrap.style.height = '220px';
-    imageWrap.style.overflow = 'hidden';
-
-    const img = document.createElement('img');
-    img.className = 'project-img';
-    img.src = p.images && p.images[0] ? p.images[0] : 'Image/Profile.JPG';
-    img.alt = p.title;
-    img.style.width = '100%';
-    img.style.height = '100%';
-    img.style.objectFit = 'cover';
-    imageWrap.appendChild(img);
-
-    // overlay with button
-    const overlay = document.createElement('div');
-    overlay.className = 'project-overlay';
-    overlay.style.display = 'flex';
-    overlay.style.alignItems = 'center';
-    overlay.style.justifyContent = 'center';
-    overlay.innerHTML = `<button class="btn btn-primary view-project-btn" data-project="${p.id}"><i class="fas fa-external-link-alt"></i> View Project</button>`;
-    imageWrap.appendChild(overlay);
-
-    const content = document.createElement('div');
-    content.className = 'project-content';
-    content.innerHTML = `<h3 class="project-title">${p.title}</h3>
-                         <p class="project-description">${p.short || p.description}</p>
-                         <div class="project-actions">
-                           <button class="btn btn-primary view-project-btn" data-project="${p.id}"><i class="fas fa-eye"></i> View Project</button>
-                           ${p.download ? `<a class="btn btn-secondary" href="${p.download}" target="_blank"><i class="fas fa-download"></i> Download</a>` : ''}
-                         </div>`;
-
-    // thumbnails bar placeholder (hidden)
-    const thumbStrip = document.createElement('div');
-    thumbStrip.className = 'project-thumbs';
-    thumbStrip.style.display = 'none';
-    thumbStrip.style.padding = '8px';
-    thumbStrip.style.gap = '8px';
-    thumbStrip.style.alignItems = 'center';
-    thumbStrip.style.justifyContent = 'center';
-    thumbStrip.style.position = 'absolute';
-    thumbStrip.style.left = '0';
-    thumbStrip.style.right = '0';
-    thumbStrip.style.bottom = '-60px';
-    thumbStrip.style.transition = 'bottom 0.35s ease, opacity 0.35s ease';
-    thumbStrip.style.opacity = '0';
-    thumbStrip.style.pointerEvents = 'none';
-    thumbStrip.style.display = 'flex';
-
-    if (Array.isArray(p.images)) {
-      p.images.forEach(src => {
-        const t = document.createElement('img');
-        t.src = src;
-        t.style.width = '78px';
-        t.style.height = '50px';
-        t.style.objectFit = 'cover';
-        t.style.borderRadius = '8px';
-        t.style.boxShadow = '0 6px 18px rgba(0,0,0,0.25)';
-        t.style.cursor = 'pointer';
-        thumbStrip.appendChild(t);
-      });
-    }
-
-    card.appendChild(imageWrap);
-    card.appendChild(content);
-    card.appendChild(thumbStrip);
-
-    // hover behaviour
-    let hoverTimer = null;
-    card.addEventListener('mouseenter', () => {
-      // micro haptic pop
-      card.style.transform = 'translateY(-8px)';
-      card.style.boxShadow = '0 20px 40px rgba(0,0,0,0.25)';
-      // show small thumbnail after 1s
-      hoverTimer = setTimeout(() => {
-        thumbStrip.style.display = 'flex';
+    
+    async init() {
+        // Load data
+        await this.loadData();
+        
+        // Initialize components
+        this.setupWelcomeSequence();
+        this.setupScrollEffects();
+        this.setupThemeToggle();
+        this.setupNavigation();
+        this.setupProjectModal();
+        this.setupForm();
+        
+        // Populate content
+        this.populateProjects();
+        this.populateSkills();
+        this.populateTimeline();
+        this.populateProjectsDropdown();
+        
+        // Setup intersection observers
+        this.setupIntersectionObservers();
+        
+        // Hide loading overlay
         setTimeout(() => {
-          thumbStrip.style.bottom = '12px';
-          thumbStrip.style.opacity = '1';
-          thumbStrip.style.pointerEvents = 'auto';
-        }, 10);
-      }, 1000);
-    });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-      card.style.boxShadow = '';
-      clearTimeout(hoverTimer);
-      // hide thumbnails
-      thumbStrip.style.bottom = '-60px';
-      thumbStrip.style.opacity = '0';
-      thumbStrip.style.pointerEvents = 'none';
-      setTimeout(() => thumbStrip.style.display = 'none', 350);
-    });
-
-    return card;
-  }
-
-  // populate grid with 3 project cards arranged left-center-right animation
-  function populateProjects(projects) {
-    if (!projectsGrid) return;
-    projectsGrid.innerHTML = '';
-
-    // take first three (or pad)
-    const list = projects.slice(0, 3);
-    while (list.length < 3) list.push({
-      id: 'placeholder-' + list.length,
-      title: 'Coming Soon',
-      short: 'New project coming',
-      images: ['Image/Profile.JPG'],
-      download: ''
-    });
-
-    list.forEach((p, i) => {
-      const card = createProjectCard(p, i);
-      // set initial translate for animation: left, center, right
-      card.style.transform = i === 0 ? 'translateX(-120%)' : (i === 1 ? 'translateY(40px) scale(0.98)' : 'translateX(120%)');
-      card.style.opacity = '0';
-      card.style.transition = 'transform 0.9s cubic-bezier(.2,.9,.24,1), opacity 0.9s';
-      projectsGrid.appendChild(card);
-      // final animate after small delay
-      setTimeout(() => {
-        card.style.transform = 'translateX(0)';
-        card.style.opacity = '1';
-      }, 240 + i * 140);
-    });
-  }
-
-  populateProjects(projectsData);
-
-  /* ---------- Project View buttons open gallery modal (existing markup uses project-gallery divs)
-       If your page has project gallery modals in HTML already, prefer toggling them.
-       But we also add a lightweight in-page modal to show thumbs on view.
-  ---------- */
-
-  // lightweight gallery modal for dynamic projects
-  function createLightbox() {
-    if (document.getElementById('siteLightbox')) return;
-    const modal = document.createElement('div');
-    modal.id = 'siteLightbox';
-    Object.assign(modal.style, {
-      position: 'fixed',
-      inset: '0',
-      display: 'none',
-      zIndex: 4000,
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: 'rgba(0,0,0,0.75)'
-    });
-
-    const box = document.createElement('div');
-    box.style.maxWidth = '920px';
-    box.style.width = '94%';
-    box.style.maxHeight = '86vh';
-    box.style.overflow = 'auto';
-    box.style.borderRadius = '14px';
-    box.style.padding = '18px';
-    box.style.background = 'var(--card-bg)';
-    box.style.backdropFilter = 'blur(12px)';
-    box.style.boxShadow = '0 30px 80px rgba(0,0,0,0.6)';
-
-    const header = document.createElement('div');
-    header.style.display = 'flex';
-    header.style.justifyContent = 'space-between';
-    header.style.alignItems = 'center';
-    header.style.gap = '12px';
-    header.innerHTML = '<h3 id="lightboxTitle" style="margin:0"></h3><button id="lightboxClose" class="close-gallery" style="font-size:20px;background:none;border:none;color:var(--text);cursor:pointer">&times;</button>';
-    const gallery = document.createElement('div');
-    gallery.id = 'lightboxGallery';
-    gallery.style.display = 'grid';
-    gallery.style.gridTemplateColumns = 'repeat(auto-fit,minmax(200px,1fr))';
-    gallery.style.gap = '12px';
-    gallery.style.marginTop = '12px';
-
-    box.appendChild(header);
-    box.appendChild(gallery);
-    modal.appendChild(box);
-    document.body.appendChild(modal);
-
-    document.getElementById('lightboxClose').addEventListener('click', () => {
-      modal.style.display = 'none';
-      document.body.style.overflow = '';
-    });
-
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.style.display = 'none';
-        document.body.style.overflow = '';
-      }
-    });
-  }
-  createLightbox();
-
-  // delegate view project clicks
-  document.body.addEventListener('click', (e) => {
-    const btn = e.target.closest('.view-project-btn');
-    if (!btn) return;
-    const id = btn.dataset.project;
-    const p = projectsData.find(x => x.id === id);
-    if (!p) return;
-    const modal = document.getElementById('siteLightbox');
-    if (!modal) return;
-    const gallery = document.getElementById('lightboxGallery');
-    gallery.innerHTML = '';
-    document.getElementById('lightboxTitle').textContent = p.title;
-    (p.images || []).forEach(src => {
-      const img = document.createElement('img');
-      img.src = src;
-      img.style.width = '100%';
-      img.style.borderRadius = '10px';
-      img.style.objectFit = 'cover';
-      img.style.maxHeight = '420px';
-      img.style.boxShadow = '0 8px 30px rgba(0,0,0,0.3)';
-      gallery.appendChild(img);
-    });
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-  });
-
-  /* ---------- Scroll reveal (intersection observer) ---------- */
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.12 });
-
-  $$('.animate-on-scroll').forEach(el => io.observe(el));
-
-  /* ---------- Mobile menu & nav link sticky highlight (already present) ---------- */
-  // mobile menu button
-  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-  const mobileNav = document.getElementById('mobileNav');
-  mobileMenuBtn?.addEventListener('click', () => {
-    mobileNav.classList.toggle('active');
-    if (mobileNav.classList.contains('active')) {
-      mobileMenuBtn.innerHTML = '<i class="fas fa-times"></i>';
-      document.body.style.overflow = 'hidden';
-    } else {
-      mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-      document.body.style.overflow = '';
+            document.getElementById('loadingOverlay').classList.add('hidden');
+            this.isLoading = false;
+        }, 1000);
     }
-  });
+    
+    async loadData() {
+        try {
+            // Load projects data
+            const projectsResponse = await fetch('data/projects.json');
+            this.projects = await projectsResponse.json();
+            
+            // Load skills data
+            const skillsResponse = await fetch('data/skills.json');
+            this.skills = await skillsResponse.json();
+            
+            // Timeline data (embedded for now)
+            this.timeline = [
+                {
+                    year: '2023',
+                    title: 'Started Business Analytics Journey',
+                    description: 'Enrolled in Bachelor of Business Analytics with Finance Specialization at Avinash College of Commerce. Discovered passion for data-driven decision making.'
+                },
+                {
+                    year: '2024',
+                    title: 'Skill Development & First Projects',
+                    description: 'Mastered Power BI, Excel, and financial modeling. Completed first major project analyzing customer payment insights with 100% UAT success rate.'
+                },
+                {
+                    year: '2025',
+                    title: 'Portfolio Expansion & Recognition',
+                    description: 'Developed comprehensive analytics dashboards, earned multiple certifications, and established online presence. Ready to make impact in business analytics field.'
+                }
+            ];
+        } catch (error) {
+            console.error('Error loading data:', error);
+            // Fallback data if fetch fails
+            this.setFallbackData();
+        }
+    }
+    
+    setFallbackData() {
+        this.projects = [
+            {
+                id: 'project1',
+                title: 'Customer Payment & Revenue Insights',
+                description: 'Comprehensive Power BI dashboard analyzing customer payments and revenue streams with advanced DAX formulas.',
+                images: ['Projects/P3ABC/1.png', 'Projects/P3ABC/Sprint.png', 'Projects/P3ABC/UAT Results.png'],
+                technologies: ['Power BI', 'Excel', 'DAX', 'Power Query'],
+                folder: 'P3ABC'
+            },
+            {
+                id: 'project2',
+                title: 'E-Commerce Sales Insights',
+                description: 'Analysis of 128,000+ orders identifying cancellation patterns and optimization opportunities.',
+                images: ['Projects/Projectec/1.png', 'Projects/Projectec/2.png', 'Projects/Projectec/3.png', 'Projects/Projectec/4.png'],
+                technologies: ['Power BI', 'Power Query', 'Excel', 'DAX'],
+                folder: 'Projectec'
+            },
+            {
+                id: 'project3',
+                title: 'Crypto Market Risk Dashboard',
+                description: 'Advanced cryptocurrency market analysis with volatility tracking and risk assessment metrics.',
+                images: ['Projects/Projectcrypto/1.png', 'Projects/Projectcrypto/2.png', 'Projects/Projectcrypto/3.png'],
+                technologies: ['Power BI', 'Financial Modeling', 'Risk Analysis'],
+                folder: 'Projectcrypto'
+            }
+        ];
+        
+        this.skills = [
+            {
+                category: 'Business Analysis',
+                icon: 'fas fa-chart-line',
+                skills: ['Requirements Gathering', 'Stakeholder Management', 'UAT Coordination', 'Process Optimization'],
+                description: 'Expert in translating business needs into actionable insights'
+            },
+            {
+                category: 'Data Analysis',
+                icon: 'fas fa-database',
+                skills: ['Financial Modeling', 'Risk Assessment', 'KPI Development', 'Trend Analysis'],
+                description: 'Advanced analytical skills for complex data interpretation'
+            },
+            {
+                category: 'Visualization Tools',
+                icon: 'fas fa-chart-pie',
+                skills: ['Power BI', 'Tableau', 'Excel Advanced', 'DAX Formulas'],
+                description: 'Creating compelling visual stories from raw data'
+            },
+            {
+                category: 'Project Management',
+                icon: 'fas fa-tasks',
+                skills: ['Agile Methodologies', 'Sprint Planning', 'Documentation', 'Quality Assurance'],
+                description: 'Efficient project delivery with stakeholder satisfaction'
+            }
+        ];
+    }
+    
+    setupWelcomeSequence() {
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const chessBackground = document.getElementById('chessBackground');
+        const profileImage = document.getElementById('profileImage');
+        const profileName = document.getElementById('profileName');
+        const profileRoles = document.getElementById('profileRoles');
+        const mainContent = document.getElementById('mainContent');
+        
+        // Welcome sequence timeline
+        setTimeout(() => {
+            welcomeScreen.classList.add('hidden');
+        }, 3000);
+        
+        setTimeout(() => {
+            mainContent.classList.add('visible');
+            profileImage.classList.add('visible');
+        }, 4000);
+        
+        setTimeout(() => {
+            profileName.classList.add('visible');
+        }, 4500);
+        
+        setTimeout(() => {
+            profileRoles.classList.add('visible');
+        }, 5000);
+        
+        setTimeout(() => {
+            chessBackground.classList.add('hidden');
+        }, 6000);
+    }
+    
+    setupScrollEffects() {
+        let ticking = false;
+        
+        const updateScrollEffects = () => {
+            this.scrollPosition = window.pageYOffset;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+            
+            // Calculate dark mode progress based on scroll
+            this.darkModeProgress = Math.min(this.scrollPosition / (windowHeight * 0.5), 1);
+            
+            // Progressive dark mode transition
+            this.updateThemeTransition();
+            
+            // Profile image and name transformations
+            this.updateProfileTransform();
+            
+            // Navigation visibility
+            this.updateNavigationVisibility();
+            
+            ticking = false;
+        };
+        
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(updateScrollEffects);
+                ticking = true;
+            }
+        });
+    }
+    
+    updateThemeTransition() {
+        const body = document.body;
+        
+        if (this.darkModeProgress > 0.3 && !body.classList.contains('dark-mode')) {
+            body.classList.add('theme-transitioning', 'dark-mode');
+            setTimeout(() => {
+                body.classList.remove('theme-transitioning');
+            }, 2000);
+        }
+    }
+    
+    updateProfileTransform() {
+        const profileImage = document.getElementById('profileImage');
+        const profileName = document.getElementById('profileName');
+        const profileContainer = document.getElementById('profileContainer');
+        
+        const maxScroll = window.innerHeight * 0.8;
+        const scrollRatio = Math.min(this.scrollPosition / maxScroll, 1);
+        
+        if (profileImage && profileName && profileContainer) {
+            // Image shrinking and fading
+            const imageScale = 1 - (scrollRatio * 0.7);
+            const imageOpacity = 1 - (scrollRatio * 1);
+            
+            profileImage.style.transform = `scale(${Math.max(imageScale, 0.3)})`;
+            profileImage.style.opacity = Math.max(imageOpacity, 0);
+            
+            // Name scaling and positioning
+            const nameScale = 1 + (scrollRatio * 1.5);
+            const translateY = -(scrollRatio * 200);
+            const translateX = -(scrollRatio * 300);
+            
+            profileName.style.transform = `translate(${translateX}px, ${translateY}px) scale(${nameScale})`;
+            
+            // When name reaches top, position it in navbar
+            if (scrollRatio > 0.8) {
+                profileName.style.position = 'fixed';
+                profileName.style.top = '20px';
+                profileName.style.left = '20px';
+                profileName.style.zIndex = '1001';
+                profileName.style.fontSize = '1.5rem';
+                profileName.style.transform = 'none';
+            } else {
+                profileName.style.position = 'relative';
+                profileName.style.top = 'auto';
+                profileName.style.left = 'auto';
+                profileName.style.zIndex = 'auto';
+                profileName.style.fontSize = '';
+            }
+        }
+    }
+    
+    updateNavigationVisibility() {
+        const navbar = document.getElementById('navbar');
+        const scrollThreshold = window.innerHeight * 0.8;
+        
+        if (this.scrollPosition > scrollThreshold) {
+            navbar.classList.add('visible');
+        } else {
+            navbar.classList.remove('visible');
+        }
+    }
+    
+    setupThemeToggle() {
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        themeToggle.addEventListener('click', () => {
+            const body = document.body;
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                themeIcon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+        
+        // Check for saved theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeIcon.className = 'fas fa-moon';
+        }
+    }
+    
+    setupNavigation() {
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = anchor.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    const offsetTop = targetElement.offsetTop - 100;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Update active navigation
+                    this.updateActiveNavigation(targetId);
+                }
+            });
+        });
+        
+        // Update active navigation on scroll
+        window.addEventListener('scroll', () => {
+            this.updateActiveNavigationOnScroll();
+        });
+    }
+    
+    updateActiveNavigation(activeId) {
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${activeId}`) {
+                link.classList.add('active');
+            }
+        });
+    }
+    
+    updateActiveNavigationOnScroll() {
+        const sections = document.querySelectorAll('section[id]');
+        let currentSection = '';
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 150;
+            const sectionHeight = section.clientHeight;
+            
+            if (this.scrollPosition >= sectionTop && this.scrollPosition < sectionTop + sectionHeight) {
+                currentSection = section.getAttribute('id');
+            }
+        });
+        
+        if (currentSection) {
+            this.updateActiveNavigation(currentSection);
+        }
+    }
+    
+    setupProjectModal() {
+        const modal = document.getElementById('projectModal');
+        const modalClose = document.getElementById('modalClose');
+        
+        modalClose.addEventListener('click', () => {
+            this.closeProjectModal();
+        });
+        
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                this.closeProjectModal();
+            }
+        });
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('visible')) {
+                this.closeProjectModal();
+            }
+        });
+    }
+    
+    openProjectModal(projectId) {
+        const project = this.projects.find(p => p.id === projectId);
+        if (!project) return;
+        
+        const modal = document.getElementById('projectModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalImages = document.getElementById('modalImages');
+        const modalDetails = document.getElementById('modalDetails');
+        
+        modalTitle.textContent = project.title;
+        
+        // Populate images
+        modalImages.innerHTML = project.images.map(img => 
+            `<img src="${img}" alt="${project.title}" onclick="this.requestFullscreen()">`
+        ).join('');
+        
+        // Populate details
+        modalDetails.innerHTML = `
+            <h4>Project Overview</h4>
+            <p>${project.description}</p>
+            <h4>Technologies Used</h4>
+            <div class="tech-tags">
+                ${project.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
+            </div>
+        `;
+        
+        modal.classList.add('visible');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    closeProjectModal() {
+        const modal = document.getElementById('projectModal');
+        modal.classList.remove('visible');
+        document.body.style.overflow = 'auto';
+    }
+    
+    setupForm() {
+        const form = document.getElementById('projectForm');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            
+            // Simulate form submission
+            this.showNotification('Thank you for your message! I\'ll get back to you soon.', 'success');
+            form.reset();
+        });
+    }
+    
+    showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.innerHTML = `
+            <span>${message}</span>
+            <button onclick="this.parentElement.remove()">&times;</button>
+        `;
+        
+        // Add to DOM
+        document.body.appendChild(notification);
+        
+        // Remove after 5 seconds
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.remove();
+            }
+        }, 5000);
+    }
+    
+    populateProjects() {
+        const container = document.getElementById('projectsContainer');
+        if (!container) return;
+        
+        const projectElements = this.projects.map((project, index) => {
+            const animationClass = index === 0 ? 'from-left' : 
+                                 index === 1 ? 'from-center' : 'from-right';
+            
+            return `
+                <div class="project-card glass-effect haptic-effect ${animationClass}" 
+                     onclick="portfolio.openProjectModal('${project.id}')"
+                     onmouseenter="this.style.cursor='pointer'">
+                    <img src="${project.images[0]}" alt="${project.title}" class="project-image">
+                    <div class="project-content">
+                        <h3 class="project-title">${project.title}</h3>
+                        <p class="project-description">${project.description}</p>
+                    </div>
+                </div>
+            `;
+        }).join('');
+        
+        container.innerHTML = projectElements;
+    }
+    
+    populateSkills() {
+        const container = document.getElementById('skillsGrid');
+        if (!container) return;
+        
+        const skillElements = this.skills.map(skill => `
+            <div class="skill-card glass-effect fade-in-up">
+                <div class="skill-icon">
+                    <i class="${skill.icon}"></i>
+                </div>
+                <h3 class="skill-title">${skill.category}</h3>
+                <p class="skill-description">${skill.description}</p>
+                <div class="skill-list">
+                    ${skill.skills.map(s => `<span class="skill-tag">${s}</span>`).join('')}
+                </div>
+            </div>
+        `).join('');
+        
+        container.innerHTML = skillElements;
+    }
+    
+    populateTimeline() {
+        const container = document.getElementById('timelineContainer');
+        if (!container) return;
+        
+        const timelineElements = this.timeline.map((item, index) => `
+            <div class="timeline-item glass-effect fade-in-left" style="animation-delay: ${index * 0.3}s">
+                <div class="timeline-year">${item.year}</div>
+                <div class="timeline-content">
+                    <h3 class="timeline-title">${item.title}</h3>
+                    <p class="timeline-description">${item.description}</p>
+                </div>
+            </div>
+        `).join('');
+        
+        container.innerHTML = timelineElements;
+    }
+    
+    populateProjectsDropdown() {
+        const dropdown = document.getElementById('projectsDropdown');
+        if (!dropdown) return;
+        
+        const dropdownItems = this.projects.map(project => `
+            <a href="#projects" class="dropdown-item" onclick="portfolio.scrollToProject('${project.id}')">
+                ${project.title}
+            </a>
+        `).join('');
+        
+        dropdown.innerHTML = dropdownItems;
+    }
+    
+    scrollToProject(projectId) {
+        const projectsSection = document.getElementById('projects');
+        if (projectsSection) {
+            projectsSection.scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => {
+                this.openProjectModal(projectId);
+            }, 800);
+        }
+    }
+    
+    setupIntersectionObservers() {
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px 0px -100px 0px',
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Special handling for project cards
+                    if (entry.target.classList.contains('project-card')) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, 200);
+                    }
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all animated elements
+        document.querySelectorAll('.fade-in-up, .fade-in-left, .fade-in-right, .skill-card, .timeline-item, .project-card').forEach(el => {
+            observer.observe(el);
+        });
+    }
+}
 
-  /* ---------- Contact form lightweight handler ---------- */
-  const contactForm = document.getElementById('contactForm');
-  contactForm?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name = contactForm.querySelector('#name')?.value || '';
-    alert(`Thanks ${name.trim() || 'there'} — message received. (This is a demo client-side handler.)`);
-    contactForm.reset();
-  });
+// Initialize portfolio when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    window.portfolio = new Portfolio();
+});
 
-  /* ---------- small UX polish: update resume link (if Resume.pdf present) ---------- */
-  // nothing else
+// Resume button handler
+document.addEventListener('DOMContentLoaded', () => {
+    const resumeBtn = document.getElementById('viewResumeBtn');
+    if (resumeBtn) {
+        resumeBtn.addEventListener('click', () => {
+            window.open('resume.pdf', '_blank');
+        });
+    }
+});
 
-})();
+// Add CSS for notification system
+const notificationStyles = `
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--blur));
+    -webkit-backdrop-filter: blur(var(--blur));
+    color: var(--text-primary);
+    box-shadow: 0 10px 30px var(--shadow);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    animation: slideInFromRight 0.5s ease;
+}
+
+.notification button {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.notification-success {
+    border-left: 4px solid #4CAF50;
+}
+
+.notification-error {
+    border-left: 4px solid #f44336;
+}
+
+@keyframes slideInFromRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.tech-tag, .skill-tag {
+    background: var(--glass-bg);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    border: 1px solid var(--glass-bg);
+}
+
+.skill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+`;
+
+// Inject notification styles
+const styleSheet = document.createElement('style');
+styleSheet.textContent = notificationStyles;
+document.head.appendChild(styleSheet);
