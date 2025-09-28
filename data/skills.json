@@ -1,49 +1,10 @@
-{
-  "categories": [
-    {
-      "title": "Business Analysis",
-      "icon": "users",
-      "skills": [
-        { "name": "Requirements Gathering", "level": 90 },
-        { "name": "Stakeholder Management", "level": 85 },
-        { "name": "UAT Coordination", "level": 95 },
-        { "name": "Process Optimization", "level": 80 }
-      ]
-    },
-    {
-      "title": "Project Management",
-      "icon": "settings",
-      "skills": [
-        { "name": "Agile Methodologies", "level": 85 },
-        { "name": "Sprint Planning", "level": 80 },
-        { "name": "Project Documentation", "level": 90 },
-        { "name": "MS Office Suite", "level": 95 }
-      ]
-    },
-    {
-      "title": "Data Analysis",
-      "icon": "bar-chart",
-      "skills": [
-        { "name": "Financial Modeling", "level": 85 },
-        { "name": "Risk Assessment", "level": 80 },
-        { "name": "KPI Development", "level": 90 },
-        { "name": "Trend Analysis", "level": 85 }
-      ]
-    },
-    {
-      "title": "Tools & Technologies",
-      "icon": "database",
-      "skills": [
-        { "name": "Power BI (DAX, Power Query)", "level": 90 },
-        { "name": "Excel (Advanced)", "level": 95 },
-        { "name": "SQL (Basic)", "level": 70 },
-        { "name": "Tableau", "level": 75 }
-      ]
-    }
-  ],
-  "achievements": [
-    { "value": "100%", "label": "UAT Success Rate" },
-    { "value": "40%", "label": "Reduction in Manual Work" },
-    { "value": "₹38.6L", "label": "Revenue Tracked & Analyzed" }
-  ]
-}
+[
+  {"name": "Power BI", },
+  {"name": "Tableau", },
+  {"name": "Excel", },
+  {"name": "SQL", },
+  {"name": "Financial Analysis", },
+  {"name": "Data Visualization", },
+  {"name": "Dashboarding",},
+  {"name": "Risk Analysis", }
+]
