@@ -219,27 +219,46 @@ class Portfolio {
             profileImage.style.transform = `scale(${Math.max(imageScale, 0.3)})`;
             profileImage.style.opacity = Math.max(imageOpacity, 0);
             
-            // Name scaling and positioning
-            const nameScale = 1 + (scrollRatio * 1.5);
-            const translateY = -(scrollRatio * 200);
-            const translateX = -(scrollRatio * 300);
-            
-            profileName.style.transform = `translate(${translateX}px, ${translateY}px) scale(${nameScale})`;
-            
-            // When name reaches top, position it in navbar
-            if (scrollRatio > 0.8) {
+            // Name animation - smooth transition from center to top-left
+            if (scrollRatio < 0.3) {
+                // Initial phase - name in center, growing slightly
+                const centerScale = 1 + (scrollRatio * 0.2);
+                profileName.style.transform = `scale(${centerScale})`;
+                profileName.style.position = 'relative';
+                profileName.style.top = 'auto';
+                profileName.style.left = 'auto';
+                profileName.style.fontSize = '';
+                profileName.style.textAlign = 'center';
+            } else if (scrollRatio < 0.7) {
+                // Transition phase - moving upward
+                const moveProgress = (scrollRatio - 0.3) / 0.4; // 0 to 1
+                const translateY = -moveProgress * 300; // Move up 300px
+                const scale = 1.2 - (moveProgress * 0.2); // Scale from 1.2 to 1
+                
+                profileName.style.transform = `translateY(${translateY}px) scale(${scale})`;
+                profileName.style.position = 'relative';
+                profileName.style.textAlign = 'center';
+            } else {
+                // Final phase - settled in top-left
                 profileName.style.position = 'fixed';
                 profileName.style.top = '20px';
                 profileName.style.left = '20px';
                 profileName.style.zIndex = '1001';
-                profileName.style.fontSize = '1.5rem';
+                profileName.style.fontSize = '1.8rem';
                 profileName.style.transform = 'none';
-            } else {
-                profileName.style.position = 'relative';
-                profileName.style.top = 'auto';
-                profileName.style.left = 'auto';
-                profileName.style.zIndex = 'auto';
-                profileName.style.fontSize = '';
+                profileName.style.textAlign = 'left';
+                profileName.style.color = 'var(--text-primary)';
+                profileName.style.fontWeight = '700';
+                profileName.style.letterSpacing = '0.1em';
+                profileName.style.textTransform = 'uppercase';
+                
+                // Add glass effect to name when fixed
+                profileName.style.background = 'rgba(255, 255, 255, 0.1)';
+                profileName.style.backdropFilter = 'blur(20px)';
+                profileName.style.webkitBackdropFilter = 'blur(20px)';
+                profileName.style.padding = '0.5rem 1rem';
+                profileName.style.borderRadius = '10px';
+                profileName.style.border = '1px solid rgba(255, 255, 255, 0.2)';
             }
         }
     }
