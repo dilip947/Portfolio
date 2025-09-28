@@ -1,376 +1,431 @@
-/* js/main.js
-   Main interactivity: name/header morph, projects dynamic util, lightbox, theme persistence
-*/
-(async function () {
-  const $ = (s, ctx=document) => ctx.querySelector(s);
-  const $$ = (s, ctx=document) => Array.from((ctx||document).querySelectorAll(s));
-
-  // ---- Theme toggle / persistence ----
-  const themeToggle = $('#themeToggle');
-  const mobileTheme = document.getElementById('mobileThemeToggle');
-
-  function setLightMode(on, manual=false) {
-    if (on) {
-      document.body.classList.add('light-mode');
-      localStorage.setItem('theme', 'light');
-    } else {
-      document.body.classList.remove('light-mode');
-      localStorage.setItem('theme', 'dark');
+// Main Application
+class PortfolioApp {
+    constructor() {
+        this.animationEngine = null;
+        this.currentProjectGallery = null;
+        this.init();
     }
-    if (manual) localStorage.setItem('themeManual','1');
-  }
-  // init theme from storage; if no stored -> leave as default (animation may set)
-  const stored = localStorage.getItem('theme');
-  if (stored === 'light') setLightMode(true);
-  else if (stored === 'dark') setLightMode(false);
-
-  themeToggle?.addEventListener('click', () => {
-    const goingLight = !document.body.classList.contains('light-mode');
-    setLightMode(goingLight, true);
-  });
-  mobileTheme?.addEventListener('click', () => {
-    const goingLight = !document.body.classList.contains('light-mode');
-    setLightMode(goingLight, true);
-  });
-
-  // ---- Header & hero morph behavior ----
-  const heroTitle = $('#heroTitle');
-  const heroImgWrap = $('#heroImageWrap');
-  const header = $('#header');
-  const logoSpan = document.querySelector('.logo span');
-
-  // uppercase hero title immediately
-  if (heroTitle) heroTitle.textContent = heroTitle.textContent.toUpperCase();
-
-  // function that runs continuously on scroll to morph name to top-left and transform hero
-  function onScrollMorph() {
-    const hero = document.querySelector('.hero');
-    if (!hero || !heroTitle) return;
-    const rect = hero.getBoundingClientRect();
-    // progress from 0 (fresh) to 1 (scrolled past)
-    const start = window.innerHeight * 0.62; // when morph should start
-    const end = window.innerHeight * 0.18;   // when morph completes
-    // normalize value between 0..1 based on hero bottom to viewport
-    const progress = clamp((start - rect.bottom) / (start - end), 0, 1);
-    // transform: scale title slightly with progress and move up
-    const scale = 1 + progress * 0.28; // name grows slightly then later shrinks & moves left
-    heroTitle.style.transform = `translateY(${-progress * 36}px) scale(${scale})`;
-    heroTitle.style.opacity = `${1 - progress*0.02}`;
-
-    // shrink profile image progressively
-    if (heroImgWrap) {
-      const imgScale = clamp(1 - progress * 0.62, 0.36, 1);
-      heroImgWrap.style.transform = `scale(${imgScale}) translateY(${-progress * 32}px)`;
-      heroImgWrap.style.opacity = `${clamp(1 - progress*1.1, 0, 1)}`;
+    
+    init() {
+        this.setupEventListeners();
+        this.setupModals();
+        this.setupMobileMenu();
+        this.setupFormHandling();
+        this.setupSmoothAnimations();
     }
-
-    // once progress passes 0.92, settle into header small name
-    if (progress > 0.92) {
-      header.classList.add('scrolled');
-      document.body.classList.add('hero-shrunk');
-      // position the logo name slightly left (add small transform)
-      if (logoSpan) logoSpan.style.transform = 'translateX(6px)';
-    } else {
-      header.classList.remove('scrolled');
-      document.body.classList.remove('hero-shrunk');
-      if (logoSpan) logoSpan.style.transform = '';
-    }
-
-    // darken page gradually and if progress >0.9, auto apply dark mode if not manual
-    const manual = localStorage.getItem('themeManual') === '1';
-    if (!manual) {
-      // smoothly fade to dark by removing light-mode when cross threshold
-      if (progress > 0.55) document.body.classList.remove('light-mode');
-    }
-  }
-
-  window.addEventListener('scroll', onScrollMorph, { passive: true });
-  window.addEventListener('resize', onScrollMorph);
-
-  // clamp
-  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
-
-  // Also run morph on custom event from animation overlay
-  window.addEventListener('intro:morph', () => {
-    // tiny delay to let overlay fade
-    setTimeout(()=>{ window.scrollTo({top:1, behavior:'smooth'}); }, 260);
-  });
-
-  // ---- Projects dynamic + hover hold for thumbnails + click to open lightbox ----
-  // load projects.json (if present), else rely on static markup
-  async function fetchJSON(path) {
-    try {
-      const res = await fetch(path, {cache:'no-store'});
-      if (!res.ok) return null;
-      return await res.json();
-    } catch (e) { return null; }
-  }
-  const projectsData = await fetchJSON('data/projects.json') || [];
-
-  // create cards if none present
-  const projectsGrid = document.getElementById('projectsGrid');
-  function createProjectCard(p, idx) {
-    const card = document.createElement('div');
-    card.className = 'project-card';
-    card.id = p.id || `proj-${idx}`;
-    card.innerHTML = `
-      <div class="project-image">
-        <img class="project-img" src="${(p.images && p.images[0]) || 'Image/Profile.JPG'}" alt="${p.title||''}">
-        <div class="project-overlay"><button class="btn btn-primary view-project-btn" data-id="${p.id}"><i class="fas fa-eye"></i> View</button></div>
-      </div>
-      <div class="project-content">
-        <div class="project-title">${p.title||'Untitled'}</div>
-        <div class="project-description">${p.short || p.description || ''}</div>
-      </div>
-      <div class="project-thumbs" style="display:none"></div>
-    `;
-    // thumbs injection for hover reveal
-    const thumbStrip = card.querySelector('.project-thumbs');
-    if (p.images && p.images.length) {
-      p.images.forEach(src => {
-        const t = document.createElement('img');
-        t.src = src;
-        t.style.width = '78px';
-        t.style.height = '50px';
-        t.style.objectFit = 'cover';
-        t.style.borderRadius = '8px';
-        t.style.cursor = 'pointer';
-        t.style.boxShadow = '0 8px 28px rgba(0,0,0,0.35)';
-        t.addEventListener('click', (e) => {
-          e.stopPropagation();
-          openImageLightbox(p.images, p.images.indexOf(src));
+    
+    // Event Listeners
+    setupEventListeners() {
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                if (window.animationEngine) {
+                    window.animationEngine.toggleManualTheme();
+                }
+            });
+        }
+        
+        // Mobile Menu
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileNav = document.getElementById('mobileNav');
+        
+        if (mobileMenuBtn && mobileNav) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileNav.classList.toggle('active');
+                document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
+                
+                // Update menu icon
+                const icon = mobileMenuBtn.querySelector('i');
+                if (mobileNav.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        }
+        
+        // Close mobile menu when clicking links
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileNav.classList.remove('active');
+                document.body.style.overflow = '';
+                mobileMenuBtn.querySelector('i').classList.remove('fa-times');
+                mobileMenuBtn.querySelector('i').classList.add('fa-bars');
+            });
         });
-        thumbStrip.appendChild(t);
-      });
+        
+        // Project hover effects
+        this.setupProjectInteractions();
+        
+        // Swipe gestures for mobile
+        this.setupSwipeGestures();
     }
+    
+    // Modal System
+    setupModals() {
+        // Resume Modal
+        const resumeModal = document.getElementById('resumeModal');
+        const resumeButtons = document.querySelectorAll('.resume-popup-btn');
+        const closeModalButtons = document.querySelectorAll('.close-modal');
+        
+        // Open Resume Modal
+        resumeButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.openModal(resumeModal);
+            });
+        });
+        
+        // Close Modals
+        closeModalButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.closeModal(button.closest('.modal-overlay'));
+            });
+        });
+        
+        // Close modal on backdrop click
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    this.closeModal(modal);
+                }
+            });
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.active').forEach(modal => {
+                    this.closeModal(modal);
+                });
+            }
+        });
+        
+        // Project Gallery Modal
+        const projectGalleryModal = document.getElementById('projectGalleryModal');
+        if (projectGalleryModal) {
+            // Swipe to close
+            this.setupModalSwipe(projectGalleryModal);
+        }
+    }
+    
+    // Open Modal with Animation
+    openModal(modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        
+        // Add entrance animation
+        const modalContent = modal.querySelector('.modal-content');
+        modalContent.style.animation = 'modalSlideIn 0.4s ease';
+    }
+    
+    // Close Modal with Animation
+    closeModal(modal) {
+        const modalContent = modal.querySelector('.modal-content');
+        modalContent.style.animation = 'modalSlideOut 0.3s ease';
+        
+        setTimeout(() => {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }, 250);
+    }
+    
+    // Mobile Menu
+    setupMobileMenu() {
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            const mobileNav = document.getElementById('mobileNav');
+            if (window.innerWidth > 768 && mobileNav.classList.contains('active')) {
+                mobileNav.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    }
+    
+    // Form Handling
+    setupFormHandling() {
+        const projectForm = document.getElementById('projectForm');
+        
+        if (projectForm) {
+            projectForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Get form data
+                const formData = {
+                    name: document.getElementById('projectName').value,
+                    type: document.getElementById('projectType').value,
+                    description: document.getElementById('projectDescription').value
+                };
+                
+                // Validate
+                if (this.validateProjectForm(formData)) {
+                    this.submitProjectForm(formData);
+                }
+            });
+        }
+    }
+    
+    // Validate Project Form
+    validateProjectForm(data) {
+        if (!data.name.trim()) {
+            this.showMessage('Please enter a project name', 'error');
+            return false;
+        }
+        
+        if (!data.type) {
+            this.showMessage('Please select a project type', 'error');
+            return false;
+        }
+        
+        if (!data.description.trim()) {
+            this.showMessage('Please describe your project', 'error');
+            return false;
+        }
+        
+        return true;
+    }
+    
+    // Submit Project Form
+    submitProjectForm(data) {
+        // Show loading state
+        const submitBtn = document.querySelector('#projectForm button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        submitBtn.disabled = true;
+        
+        // Simulate API call
+        setTimeout(() => {
+            // Reset form
+            document.getElementById('projectForm').reset();
+            
+            // Show success message
+            this.showMessage('Thank you! Your project details have been submitted. I\'ll get back to you soon!', 'success');
+            
+            // Reset button
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }, 2000);
+    }
+    
+    // Show Message
+    showMessage(message, type = 'info') {
+        // Remove existing messages
+        const existingMessage = document.querySelector('.message-toast');
+        if (existingMessage) {
+            existingMessage.remove();
+        }
+        
+        // Create new message
+        const messageEl = document.createElement('div');
+        messageEl.className = `message-toast message-${type} glass-card`;
+        messageEl.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            z-index: 10000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            max-width: 300px;
+        `;
+        
+        messageEl.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                <span>${message}</span>
+            </div>
+        `;
+        
+        document.body.appendChild(messageEl);
+        
+        // Animate in
+        setTimeout(() => {
+            messageEl.style.transform = 'translateX(0)';
+        }, 100);
+        
+        // Auto remove
+        setTimeout(() => {
+            messageEl.style.transform = 'translateX(400px)';
+            setTimeout(() => messageEl.remove(), 300);
+        }, 5000);
+    }
+    
+    // Project Interactions
+    setupProjectInteractions() {
+        let hoverTimeout;
+        
+        document.addEventListener('mouseover', (e) => {
+            const projectCard = e.target.closest('.project-card');
+            
+            if (projectCard && !projectCard.hasAttribute('data-hover-handled')) {
+                projectCard.setAttribute('data-hover-handled', 'true');
+                
+                // Clear existing timeout
+                clearTimeout(hoverTimeout);
+                
+                // Add hover class with delay for smooth effect
+                hoverTimeout = setTimeout(() => {
+                    projectCard.classList.add('hover-active');
+                }, 100);
+            }
+        });
+        
+        document.addEventListener('mouseout', (e) => {
+            const projectCard = e.target.closest('.project-card');
+            
+            if (projectCard && projectCard.hasAttribute('data-hover-handled')) {
+                projectCard.removeAttribute('data-hover-handled');
+                clearTimeout(hoverTimeout);
+                projectCard.classList.remove('hover-active');
+            }
+        });
+    }
+    
+    // Swipe Gestures for Mobile
+    setupSwipeGestures() {
+        let startY = 0;
+        let currentY = 0;
+        
+        document.addEventListener('touchstart', (e) => {
+            startY = e.touches[0].clientY;
+        }, { passive: true });
+        
+        document.addEventListener('touchmove', (e) => {
+            if (!startY) return;
+            
+            currentY = e.touches[0].clientY;
+            const diff = startY - currentY;
+            
+            // Swipe down to close modals
+            if (diff < -50) {
+                const activeModal = document.querySelector('.modal-overlay.active');
+                if (activeModal) {
+                    this.closeModal(activeModal);
+                    startY = 0;
+                }
+            }
+        }, { passive: true });
+        
+        document.addEventListener('touchend', () => {
+            startY = 0;
+        });
+    }
+    
+    // Modal Swipe Gestures
+    setupModalSwipe(modal) {
+        let startY = 0;
+        let currentY = 0;
+        let isSwiping = false;
+        
+        modal.addEventListener('touchstart', (e) => {
+            startY = e.touches[0].clientY;
+            isSwiping = true;
+        }, { passive: true });
+        
+        modal.addEventListener('touchmove', (e) => {
+            if (!isSwiping) return;
+            
+            currentY = e.touches[0].clientY;
+            const diff = currentY - startY;
+            
+            if (diff > 0) {
+                const modalContent = modal.querySelector('.modal-content');
+                modalContent.style.transform = `translateY(${diff}px)`;
+            }
+        }, { passive: true });
+        
+        modal.addEventListener('touchend', (e) => {
+            if (!isSwiping) return;
+            
+            const diff = currentY - startY;
+            const modalContent = modal.querySelector('.modal-content');
+            
+            if (diff > 100) {
+                // Swipe down enough to close
+                modalContent.style.transform = 'translateY(100vh)';
+                setTimeout(() => this.closeModal(modal), 300);
+            } else {
+                // Return to position
+                modalContent.style.transform = 'translateY(0)';
+            }
+            
+            isSwiping = false;
+            startY = 0;
+            currentY = 0;
+        });
+    }
+    
+    // Smooth Animations Setup
+    setupSmoothAnimations() {
+        // Force hardware acceleration
+        document.querySelectorAll('.glass-card, .project-card, .skill-card').forEach(el => {
+            el.style.transform = 'translateZ(0)';
+        });
+        
+        // Optimize scroll performance
+        document.addEventListener('scroll', () => {
+            // Use requestAnimationFrame for smooth scrolling
+            requestAnimationFrame(() => {
+                // Scroll effects are handled by animation engine
+            });
+        }, { passive: true });
+    }
+}
 
-    // hover hold behavior
-    let hoverTimer = null;
-    const holdDelay = 900; // ms
-    card.addEventListener('mouseenter', () => {
-      card.style.transition = 'transform 0.28s cubic-bezier(.2,.9,.24,1), box-shadow 0.28s';
-      card.style.transform = 'translateY(-10px)';
-      card.style.boxShadow = '0 26px 60px rgba(0,0,0,0.45)';
-      hoverTimer = setTimeout(() => {
-        thumbStrip.style.display = 'flex';
-        thumbStrip.style.opacity = '0';
-        thumbStrip.style.transform = 'translateY(8px)';
-        setTimeout(() => { thumbStrip.style.opacity = '1'; thumbStrip.style.transform = 'translateY(0)'; }, 20);
-      }, holdDelay);
-    });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-      card.style.boxShadow = '';
-      clearTimeout(hoverTimer);
-      if (thumbStrip.style.display !== 'none') {
-        thumbStrip.style.opacity = '0';
-        thumbStrip.style.transform = 'translateY(6px)';
-        setTimeout(()=> {thumbStrip.style.display = 'none';}, 260);
-      }
-    });
+// CSS for modal swipe animation
+const swipeStyles = `
+    @keyframes modalSlideOut {
+        from {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+    }
+    
+    .project-card {
+        transform: translateZ(0);
+        will-change: transform;
+    }
+    
+    .project-card.hover-active {
+        transform: translateY(-10px) scale(1.02);
+        z-index: 10;
+    }
+    
+    .message-toast {
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+    }
+    
+    .message-success {
+        background: rgba(46, 204, 113, 0.2);
+        border-color: rgba(46, 204, 113, 0.3);
+    }
+    
+    .message-error {
+        background: rgba(231, 76, 60, 0.2);
+        border-color: rgba(231, 76, 60, 0.3);
+    }
+`;
 
-    // click to open project lightbox (all images)
-    card.addEventListener('click', (e) => {
-      const id = p.id;
-      if (p.images && p.images.length) openImageLightbox(p.images, 0, p.title);
-      e.stopPropagation();
-    });
+// Add swipe styles to document
+const styleSheet = document.createElement('style');
+styleSheet.textContent = swipeStyles;
+document.head.appendChild(styleSheet);
 
-    return card;
-  }
+// Initialize Application
+document.addEventListener('DOMContentLoaded', () => {
+    window.portfolioApp = new PortfolioApp();
+});
 
-  if (projectsGrid && projectsData.length) {
-    projectsGrid.innerHTML = '';
-    // take first three as requested
-    const list = projectsData.slice(0,3);
-    while (list.length < 3) list.push({ title: 'Coming soon', short:'More soon', images:['Image/Profile.JPG'] });
-    list.forEach((p,i) => {
-      const card = createProjectCard(p,i);
-      card.style.opacity = '0';
-      card.style.transform = (i===0 ? 'translateX(-120%)' : (i===1 ? 'translateY(30px)':'translateX(120%)'));
-      projectsGrid.appendChild(card);
-      setTimeout(()=> {
-        card.style.transition = 'transform 0.9s cubic-bezier(.2,.9,.24,1), opacity 0.9s';
-        card.style.transform = 'translateX(0)';
-        card.style.opacity = '1';
-      }, 220 + i*120);
-    });
-  }
-
-  // ---- Lightbox for images (project gallery) ----
-  // We'll create a single lightbox element and reuse it
-  function createImageLightbox() {
-    if ($('#imageLightbox')) return;
-    const overlay = document.createElement('div');
-    overlay.id = 'imageLightbox';
-    Object.assign(overlay.style, {
-      position:'fixed', inset:'0', display:'none', zIndex:6000, alignItems:'center', justifyContent:'center', background:'rgba(0,0,0,0.7)'
-    });
-
-    const box = document.createElement('div');
-    box.style.width='92%'; box.style.maxWidth='980px'; box.style.maxHeight='86vh'; box.style.background='var(--card-bg)';
-    box.style.borderRadius='12px'; box.style.padding='10px'; box.style.position='relative'; box.style.display='flex'; box.style.flexDirection='column'; box.style.gap='10px';
-    box.style.backdropFilter='blur(10px)';
-
-    const header = document.createElement('div');
-    header.style.display='flex'; header.style.justifyContent='space-between'; header.style.alignItems='center';
-    header.innerHTML = `<div id="lightboxTitle" style="font-weight:800;color:var(--text)"></div><div style="display:flex;gap:8px;align-items:center;"><button id="lightboxPrev" class="btn btn-secondary"><i class="fas fa-chevron-left"></i></button><button id="lightboxNext" class="btn btn-secondary"><i class="fas fa-chevron-right"></i></button><button id="lightboxClose" class="close-gallery" style="background:none;border:none;font-size:20px;color:var(--text)">&times;</button></div>`;
-
-    const gallery = document.createElement('div');
-    gallery.id = 'lightboxGallery';
-    gallery.style.display='flex';
-    gallery.style.gap='12px';
-    gallery.style.alignItems='center';
-    gallery.style.justifyContent='center';
-    gallery.style.overflow='hidden';
-    gallery.style.flex='1';
-
-    const imgWrap = document.createElement('div');
-    imgWrap.id = 'lightboxImageWrap';
-    imgWrap.style.display='flex';
-    imgWrap.style.gap='12px';
-    imgWrap.style.alignItems='center';
-    imgWrap.style.justifyContent='center';
-    imgWrap.style.flex='1';
-    imgWrap.style.overflow='hidden';
-
-    gallery.appendChild(imgWrap);
-    box.appendChild(header);
-    box.appendChild(gallery);
-    overlay.appendChild(box);
-    document.body.appendChild(overlay);
-
-    // close
-    $('#lightboxClose').addEventListener('click', () => closeLightbox());
-    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeLightbox(); });
-
-    // prev/next
-    $('#lightboxPrev').addEventListener('click', () => showLightboxIndex(currentIndex-1));
-    $('#lightboxNext').addEventListener('click', () => showLightboxIndex(currentIndex+1));
-
-    // keyboard nav
-    window.addEventListener('keydown', (e) => {
-      if (overlay.style.display !== 'flex') return;
-      if (e.key === 'ArrowLeft') showLightboxIndex(currentIndex-1);
-      if (e.key === 'ArrowRight') showLightboxIndex(currentIndex+1);
-      if (e.key === 'Escape') closeLightbox();
-    });
-
-    // swipe handling for touch devices inside imageWrap
-    let touchStartX = null;
-    imgWrap.addEventListener('touchstart', (e) => touchStartX = e.touches[0].clientX, {passive:true});
-    imgWrap.addEventListener('touchmove', (e) => {
-      if (touchStartX === null) return;
-      const diff = touchStartX - e.touches[0].clientX;
-      if (Math.abs(diff) > 40) {
-        if (diff > 0) showLightboxIndex(currentIndex+1); else showLightboxIndex(currentIndex-1);
-        touchStartX = null;
-      }
-    }, {passive:true});
-  }
-  createImageLightbox();
-
-  let imageList = [], currentIndex = 0;
-  function openImageLightbox(images, start=0, title='') {
-    imageList = images || [];
-    if (!imageList.length) return;
-    const overlay = $('#imageLightbox');
-    $('#lightboxTitle').textContent = title || '';
-    overlay.style.display = 'flex';
-    document.body.classList.add('modal-open'); // used for blurring background
-    currentIndex = clamp(start, 0, imageList.length-1);
-    renderLightboxImages();
-  }
-
-  function renderLightboxImages() {
-    const wrap = $('#lightboxImageWrap');
-    if (!wrap) return;
-    wrap.innerHTML = '';
-    // show single large image with subtle animation
-    const img = document.createElement('img');
-    img.src = imageList[currentIndex];
-    img.style.maxWidth = '100%';
-    img.style.maxHeight = '68vh';
-    img.style.objectFit = 'contain';
-    img.style.borderRadius = '8px';
-    img.style.boxShadow = '0 18px 60px rgba(0,0,0,0.6)';
-    img.style.transform = 'scale(.98)';
-    img.style.transition = 'transform 0.28s ease, opacity 0.28s';
-    wrap.appendChild(img);
-    setTimeout(()=> img.style.transform = 'scale(1)', 20);
-    // also pre-load neighbors for speed
-    const p = imageList[currentIndex-1]; if (p) (new Image()).src = p;
-    const n = imageList[currentIndex+1]; if (n) (new Image()).src = n;
-  }
-
-  function showLightboxIndex(i) {
-    if (!imageList.length) return;
-    if (i < 0) i = imageList.length - 1;
-    if (i >= imageList.length) i = 0;
-    currentIndex = i;
-    renderLightboxImages();
-  }
-  function closeLightbox() {
-    const overlay = $('#imageLightbox');
-    if (!overlay) return;
-    overlay.style.display = 'none';
-    document.body.classList.remove('modal-open');
-  }
-
-  // ---- Resume lightbox (embedded PDF) ----
-  function createResumeLightbox() {
-    if ($('#resumeLightbox')) return;
-    const overlay = document.createElement('div');
-    overlay.id = 'resumeLightbox';
-    Object.assign(overlay.style, { position:'fixed', inset:'0', display:'none', zIndex:7000, alignItems:'center', justifyContent:'center', background:'rgba(0,0,0,0.75)'});
-    const box = document.createElement('div');
-    box.style.width='90%'; box.style.maxWidth='1100px'; box.style.maxHeight='90vh'; box.style.borderRadius='12px'; box.style.overflow='hidden'; box.style.position='relative';
-    box.style.background='var(--card-bg)'; box.style.backdropFilter='blur(10px)';
-    const closeBtn = document.createElement('button');
-    closeBtn.innerHTML = '&times;';
-    Object.assign(closeBtn.style, { position:'absolute', top:'8px', right:'10px', background:'none', border:'none', color:'var(--text)', fontSize:'24px', zIndex:10, cursor:'pointer' });
-    const iframe = document.createElement('iframe');
-    iframe.id = 'resumeFrame';
-    iframe.src = 'Dilip_ch_resume.pdf';
-    iframe.style.width='100%'; iframe.style.height='88vh'; iframe.style.border='0';
-    box.appendChild(closeBtn);
-    box.appendChild(iframe);
-    overlay.appendChild(box);
-    document.body.appendChild(overlay);
-    closeBtn.addEventListener('click', ()=> { overlay.style.display='none'; document.body.classList.remove('modal-open'); });
-    overlay.addEventListener('click', (e)=> { if (e.target === overlay) { overlay.style.display='none'; document.body.classList.remove('modal-open'); } });
-  }
-  createResumeLightbox();
-
-  // Wire resume open buttons
-  $$('.resume-download').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const overlay = $('#resumeLightbox');
-      if (!overlay) return;
-      overlay.style.display = 'flex';
-      document.body.classList.add('modal-open');
-    });
-  });
-
-  // Wire contact quick icons
-  const mailLinks = $$('a[href^="mailto:"]');
-  mailLinks.forEach(a => a.addEventListener('click', ()=>{})); // default mailto will open
-
-  // phone link behavior
-  const phoneLinks = $$('a[href^="tel:"]');
-  phoneLinks.forEach(a => a.addEventListener('click', ()=>{}));
-
-  // linkedin action (make sure link exists in HTML)
-  // resume icon opening handled above
-
-  // small utility clamp
-  function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
-
-  // ensure lightbox / resume ready
-  createImageLightbox();
-  createResumeLightbox();
-
-  // modal-open class: add css blur in style (see CSS snippet below)
-
-})();
+// Export for global access
+window.AnimationEngine = AnimationEngine;
+window.PortfolioApp = PortfolioApp;
