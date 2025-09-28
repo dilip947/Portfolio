@@ -4,607 +4,184 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dilip Choudhary | Business Analytics Specialist</title>
+    <meta name="description" content="Dilip Choudhary - Business Analytics professional specializing in financial markets, risk analysis, and data-driven decision-making.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* CSS will go here - I'll include the full CSS inline */
-        :root {
-            --primary: #6c5ce7;
-            --primary-dark: #5649c2;
-            --primary-light: #8579e9;
-            --secondary: #0d0d12;
-            --secondary-light: #1a1a23;
-            --accent: #00cec9;
-            --accent-light: #00f5d4;
-            --text: #f5f6fa;
-            --text-light: #a5b1c2;
-            --text-lighter: #778ca3;
-            --background: #1a1b26;
-            --background-alt: #24283b;
-            --card-bg: rgba(36, 40, 59, 0.7);
-            --card-shadow: rgba(0, 0, 0, 0.3);
-            --card-shadow-hover: rgba(0, 0, 0, 0.5);
-            --header-bg: rgba(26, 27, 38, 0.85);
-            --border: rgba(255, 255, 255, 0.08);
-            --transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            --border-radius: 16px;
-            --border-radius-lg: 24px;
-            --section-spacing: 120px;
-            --glass-bg: rgba(36, 40, 59, 0.3);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-        }
-
-        .light-mode {
-            --primary: #6c5ce7;
-            --primary-dark: #5649c2;
-            --primary-light: #8579e9;
-            --secondary: #f5f6fa;
-            --secondary-light: #dfe6e9;
-            --accent: #00cec9;
-            --accent-light: #00f5d4;
-            --text: #2d3436;
-            --text-light: #636e72;
-            --text-lighter: #b2bec3;
-            --background: #ffffff;
-            --background-alt: #f5f6fa;
-            --card-bg: rgba(245, 246, 250, 0.7);
-            --card-shadow: rgba(0, 0, 0, 0.05);
-            --card-shadow-hover: rgba(0, 0, 0, 0.1);
-            --header-bg: rgba(255, 255, 255, 0.85);
-            --border: rgba(0, 0, 0, 0.06);
-            --glass-bg: rgba(245, 246, 250, 0.3);
-            --glass-border: rgba(0, 0, 0, 0.1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            font-size: 16px;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: var(--background);
-            color: var(--text);
-            line-height: 1.6;
-            overflow-x: hidden;
-            transition: var(--transition);
-            font-weight: 400;
-        }
-
-        /* Chessboard Background */
-        .chessboard-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(45deg, #000 25%, transparent 25%),
-                linear-gradient(-45deg, #000 25%, transparent 25%),
-                linear-gradient(45deg, transparent 75%, #000 75%),
-                linear-gradient(-45deg, transparent 75%, #000 75%);
-            background-size: 40px 40px;
-            background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
-            z-index: -3;
-            opacity: 0.3;
-            transition: opacity 1.5s ease;
-        }
-
-        .chessboard-bg.fade-out {
-            opacity: 0;
-        }
-
-        /* Welcome Screen */
-        .welcome-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            transition: opacity 1.5s ease, visibility 1.5s ease;
-        }
-
-        .welcome-screen.fade-out {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .welcome-content {
-            text-align: center;
-        }
-
-        .welcome-title {
-            font-size: clamp(3rem, 8vw, 8rem);
-            font-weight: 900;
-            color: white;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            animation: welcomePulse 2s ease-in-out infinite;
-        }
-
-        @keyframes welcomePulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.05); }
-        }
-
-        /* Glass Effects */
-        .glass-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            z-index: -1;
-            opacity: 0.7;
-        }
-
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--glass-shadow);
-            border-radius: var(--border-radius);
-        }
-
-        /* Header */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: var(--header-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            z-index: 1000;
-            padding: 1rem 0;
-            transition: var(--transition);
-            border-bottom: 1px solid var(--border);
-            transform: translateY(-100%);
-        }
-
-        header.visible {
-            transform: translateY(0);
-        }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .logo-name {
-            font-weight: 800;
-            font-size: 1.2rem;
-            color: var(--text);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            opacity: 0;
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            padding: 5mm;
-        }
-
-        .hero-container {
-            width: 100%;
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .hero-profile {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 2rem;
-        }
-
-        .profile-image-container {
-            width: 300px;
-            height: 300px;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
-            transition: var(--transition);
-            border: 3px solid var(--glass-border);
-            opacity: 0;
-            transform: scale(0.8);
-        }
-
-        .profile-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition);
-        }
-
-        .hero-text-content {
-            text-align: center;
-        }
-
-        .hero-name {
-            font-size: clamp(2.5rem, 8vw, 5rem);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            transition: var(--transition);
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .hero-roles {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        .role-tag {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            border: 1px solid var(--glass-border);
-            transition: var(--transition);
-        }
-
-        /* Sections */
-        .section {
-            padding: 100px 0;
-            position: relative;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-title {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 1rem;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            border-radius: 2px;
-        }
-
-        /* Buttons */
-        .btn {
-            padding: 0.875rem 1.75rem;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-            cursor: pointer;
-            border: none;
-            font-family: inherit;
-            font-size: 1rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(108, 92, 231, 0.4);
-        }
-
-        /* Simple project grid for now */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .project-card {
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            transition: var(--transition);
-        }
-
-        .project-card:hover {
-            transform: translateY(-10px);
-        }
-
-        /* Mobile responsive */
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 1.5rem;
-            }
-            
-            .profile-image-container {
-                width: 250px;
-                height: 250px;
-            }
-            
-            .hero-roles {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Chessboard Background -->
-    <div class="chessboard-bg" id="chessboardBg"></div>
-    
     <!-- Welcome Screen -->
-    <div class="welcome-screen" id="welcomeScreen">
-        <div class="welcome-content">
-            <h1 class="welcome-title">WELCOME</h1>
-        </div>
+    <div id="welcomeScreen" class="welcome-screen">
+        <h1 class="welcome-text">Welcome</h1>
     </div>
 
-    <!-- Glass Overlay -->
-    <div class="glass-overlay"></div>
-
-    <!-- Header -->
-    <header id="header">
-        <div class="nav-container">
-            <div class="logo-name" id="logoName">
-                <span>DILIP CHOUDHARY</span>
+    <!-- Navigation Header -->
+    <header id="navbar" class="navbar">
+        <div class="nav-content">
+            <div class="logo" id="navLogo">
+                <span>Portfolio</span>
+            </div>
+            <nav class="nav-links">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <div class="nav-dropdown">
+                    <a href="#projects" class="nav-link">Projects <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown-menu" id="projectsDropdown">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+                <a href="#discuss" class="nav-link">Let's Discuss</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </nav>
+            <div class="theme-controls">
+                <button id="themeToggle" class="theme-toggle">
+                    <i class="fas fa-sun"></i>
+                </button>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-container">
-            <div class="hero-profile">
-                <div class="profile-image-container" id="profileImageContainer">
-                    <img src="Image/Profile.JPG" alt="Dilip Choudhary" class="profile-img" onerror="this.src='https://via.placeholder.com/300x300/6c5ce7/ffffff?text=DC'">
+    <!-- Main Content -->
+    <main id="mainContent">
+        <!-- Hero Section -->
+        <section id="home" class="hero-section">
+            <div class="profile-container" id="profileContainer">
+                <div class="profile-image-wrapper">
+                    <img src="Image/Profile.JPG" alt="Dilip Choudhary" id="profileImage" class="profile-image">
                 </div>
-                <div class="hero-text-content">
-                    <h1 class="hero-name" id="heroName">DILIP CHOUDHARY</h1>
-                    <div class="hero-roles" id="heroRoles">
-                        <span class="role-tag">Business Analyst</span>
-                        <span class="role-tag">Data Scientist</span>
-                        <span class="role-tag">Financial Analyst</span>
+                <div class="profile-info" id="profileInfo">
+                    <h1 class="profile-name" id="profileName">Dilip Choudhary</h1>
+                    <div class="profile-roles" id="profileRoles">
+                        <span class="role">Business Analyst</span>
+                        <span class="role">Data Scientist</span>
+                        <span class="role">Finance Specialist</span>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="section">
+        <!-- Skills Section -->
+        <section id="skills" class="skills-section">
+            <div class="container">
+                <h2 class="section-title">Skills & Expertise</h2>
+                <div class="skills-grid" id="skillsGrid">
+                    <!-- Skills will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="projects-section">
+            <div class="container">
+                <h2 class="section-title">Featured Projects</h2>
+                <div class="projects-container" id="projectsContainer">
+                    <!-- Projects will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Timeline Section -->
+        <section id="timeline" class="timeline-section">
+            <div class="container">
+                <h2 class="section-title">My Journey</h2>
+                <div class="timeline-container" id="timelineContainer">
+                    <!-- Timeline will be populated by JavaScript -->
+                </div>
+                <div class="resume-section">
+                    <button id="viewResumeBtn" class="view-resume-btn glass-effect">
+                        <i class="fas fa-file-pdf"></i>
+                        View Resume
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Discussion Section -->
+        <section id="discuss" class="discuss-section">
+            <div class="container">
+                <h2 class="section-title">Let's Discuss Your Project</h2>
+                <form id="projectForm" class="project-form">
+                    <div class="form-group">
+                        <label for="projectName">Project Name</label>
+                        <input type="text" id="projectName" name="projectName" class="form-input glass-effect" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="requirements">Project Description & Requirements</label>
+                        <textarea id="requirements" name="requirements" class="form-textarea glass-effect" rows="6" required placeholder="Please describe your project requirements, goals, and any specific features you need..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Your Email Address</label>
+                        <input type="email" id="email" name="email" class="form-input glass-effect" required>
+                    </div>
+                    <button type="submit" class="submit-btn glass-effect">
+                        <i class="fas fa-paper-plane"></i>
+                        Send Project Inquiry
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section">
+            <div class="container">
+                <h2 class="section-title">Get In Touch</h2>
+                <div class="contact-links">
+                    <a href="https://linkedin.com/in/dilip-choudhary-analytics" class="contact-link glass-effect" target="_blank">
+                        <i class="fab fa-linkedin"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="mailto:choudharydilip947@gmail.com" class="contact-link glass-effect">
+                        <i class="fas fa-envelope"></i>
+                        <span>Email</span>
+                    </a>
+                    <a href="tel:+919346053750" class="contact-link glass-effect">
+                        <i class="fas fa-phone"></i>
+                        <span>Mobile</span>
+                    </a>
+                    <a href="resume.pdf" class="contact-link glass-effect" target="_blank">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>Resume</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Projects</h2>
+            <p>&copy; 2025 Dilip Choudhary. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Project Modal -->
+    <div id="projectModal" class="project-modal">
+        <div class="modal-content glass-effect">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-header">
+                <h3 id="modalTitle"></h3>
             </div>
-            <div class="projects-grid">
-                <div class="project-card glass-card">
-                    <div style="padding: 2rem;">
-                        <h3>E-Commerce Sales Insights</h3>
-                        <p>Comprehensive analysis of e-commerce order data</p>
-                    </div>
+            <div class="modal-body">
+                <div class="project-images" id="modalImages">
+                    <!-- Images will be populated by JavaScript -->
                 </div>
-                <div class="project-card glass-card">
-                    <div style="padding: 2rem;">
-                        <h3>Crypto Market Risk Dashboard</h3>
-                        <p>Power BI dashboard for cryptocurrency analysis</p>
-                    </div>
-                </div>
-                <div class="project-card glass-card">
-                    <div style="padding: 2rem;">
-                        <h3>ABC Analytics Platform</h3>
-                        <p>Comprehensive analytics platform</p>
-                    </div>
+                <div class="project-details" id="modalDetails">
+                    <!-- Details will be populated by JavaScript -->
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <script>
-        // Simple initialization that will definitely work
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Website loaded successfully!');
-            
-            const welcomeScreen = document.getElementById('welcomeScreen');
-            const chessboardBg = document.getElementById('chessboardBg');
-            const header = document.getElementById('header');
-            const profileContainer = document.getElementById('profileImageContainer');
-            const heroName = document.getElementById('heroName');
-            const heroRoles = document.getElementById('heroRoles');
-            const logoName = document.getElementById('logoName');
-            
-            // Welcome screen animation
-            setTimeout(() => {
-                if (welcomeScreen) {
-                    welcomeScreen.classList.add('fade-out');
-                }
-                
-                setTimeout(() => {
-                    if (welcomeScreen) {
-                        welcomeScreen.style.display = 'none';
-                    }
-                    if (chessboardBg) {
-                        chessboardBg.classList.add('fade-out');
-                    }
-                    
-                    // Show main content
-                    if (header) {
-                        header.classList.add('visible');
-                    }
-                    
-                    // Animate profile elements
-                    if (profileContainer) {
-                        profileContainer.style.opacity = '1';
-                        profileContainer.style.transform = 'scale(1)';
-                    }
-                    
-                    if (heroName) {
-                        heroName.style.opacity = '1';
-                        heroName.style.transform = 'translateY(0)';
-                    }
-                    
-                    if (heroRoles) {
-                        setTimeout(() => {
-                            heroRoles.style.opacity = '1';
-                            heroRoles.style.transform = 'translateY(0)';
-                        }, 500);
-                    }
-                    
-                    if (logoName) {
-                        logoName.style.opacity = '1';
-                    }
-                    
-                }, 1500);
-            }, 2000);
-            
-            // Scroll animations
-            let lastScrollY = window.scrollY;
-            
-            window.addEventListener('scroll', () => {
-                const scrollY = window.scrollY;
-                const hero = document.getElementById('home');
-                
-                if (hero) {
-                    const heroRect = hero.getBoundingClientRect();
-                    const scrollProgress = Math.max(0, Math.min(1, -heroRect.top / heroRect.height));
-                    
-                    // Profile image scaling
-                    if (profileContainer) {
-                        const scale = Math.max(0.3, 1 - scrollProgress * 0.7);
-                        profileContainer.style.transform = `scale(${scale})`;
-                        profileContainer.style.opacity = Math.max(0, 1 - scrollProgress * 1.5);
-                    }
-                    
-                    // Name text scaling and movement
-                    if (heroName) {
-                        const nameScale = Math.max(0.5, 1 + scrollProgress * 0.5);
-                        const nameTranslateX = scrollProgress * -100;
-                        
-                        heroName.style.transform = `scale(${nameScale}) translateX(${nameTranslateX}px)`;
-                        heroName.style.opacity = Math.max(0, 1 - scrollProgress * 2);
-                    }
-                    
-                    // Roles fade out
-                    if (heroRoles) {
-                        heroRoles.style.opacity = Math.max(0, 1 - scrollProgress * 3);
-                    }
-                    
-                    // Logo name appearance
-                    if (logoName && scrollProgress > 0.3) {
-                        logoName.style.opacity = Math.min(1, (scrollProgress - 0.3) * 3);
-                    }
-                    
-                    // Auto dark mode
-                    const transitionPoint = hero.offsetHeight * 0.6;
-                    if (scrollY > transitionPoint && !document.body.classList.contains('light-mode')) {
-                        document.body.classList.add('light-mode');
-                    } else if (scrollY <= transitionPoint && document.body.classList.contains('light-mode')) {
-                        document.body.classList.remove('light-mode');
-                    }
-                }
-                
-                // Header effects
-                if (scrollY > 100) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
-                
-                lastScrollY = scrollY;
-            });
-            
-            // Simple theme toggle
-            const themeToggle = document.createElement('button');
-            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-            themeToggle.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
-                background: var(--glass-bg);
-                backdrop-filter: blur(10px);
-                border: 1px solid var(--glass-border);
-                color: var(--text);
-                cursor: pointer;
-                z-index: 1001;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 1.2rem;
-            `;
-            
-            themeToggle.addEventListener('click', () => {
-                document.body.classList.toggle('light-mode');
-                const icon = themeToggle.querySelector('i');
-                if (document.body.classList.contains('light-mode')) {
-                    icon.classList.remove('fa-moon');
-                    icon.classList.add('fa-sun');
-                } else {
-                    icon.classList.remove('fa-sun');
-                    icon.classList.add('fa-moon');
-                }
-            });
-            
-            document.body.appendChild(themeToggle);
-        });
-    </script>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/animation.js"></script>
 </body>
 </html>
