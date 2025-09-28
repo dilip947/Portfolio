@@ -1,10 +1,10 @@
 [
-  {"name": "Power BI", },
-  {"name": "Tableau", },
-  {"name": "Excel", },
-  {"name": "SQL", },
-  {"name": "Financial Analysis", },
-  {"name": "Data Visualization", },
-  {"name": "Dashboarding",},
-  {"name": "Risk Analysis", }
+  {"name": "Power BI" },
+  {"name": "Tableau"},
+  {"name": "Excel" },
+  {"name": "SQL" },
+  {"name": "Financial Analysis" },
+  {"name": "Data Visualization" },
+  {"name": "Dashboarding"},
+  {"name": "Risk Analysis"}
 ]
