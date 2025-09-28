@@ -1,139 +1,46 @@
-[
-  {
-    "category": "Business Analysis",
-    "icon": "fas fa-chart-line",
-    "skills": [
-      "Requirements Gathering",
-      "Stakeholder Management", 
-      "UAT Coordination",
-      "Process Optimization",
-      "Business Process Mapping",
-      "Gap Analysis"
-    ],
-    "description": "Expert in translating business needs into actionable insights and coordinating with stakeholders for successful project delivery",
-    "proficiency": 90,
-    "experience": "2+ years",
-    "certifications": [
-      "Business Analysis Fundamentals"
-    ],
-    "projects": [
-      "Customer Payment & Revenue Insights",
-      "E-Commerce Sales Analysis"
-    ]
-  },
-  {
-    "category": "Data Analysis & Visualization",
-    "icon": "fas fa-chart-pie", 
-    "skills": [
-      "Power BI (Advanced)",
-      "Tableau",
-      "Excel (Advanced Functions)",
-      "DAX Formulas",
-      "Power Query",
-      "Data Modeling"
-    ],
-    "description": "Advanced skills in transforming complex datasets into compelling visual stories and actionable business intelligence",
-    "proficiency": 95,
-    "experience": "3+ years",
-    "certifications": [
-      "Excel Pro (ASDC)",
-      "Power BI Certification"
-    ],
-    "projects": [
-      "Crypto Market Dashboard",
-      "E-Commerce Analytics",
-      "Revenue Insights Dashboard"
-    ]
-  },
-  {
-    "category": "Financial Modeling",
-    "icon": "fas fa-calculator",
-    "skills": [
-      "Financial Analysis",
-      "Risk Assessment", 
-      "KPI Development",
-      "Valuation Models",
-      "CAGR Calculations",
-      "Volatility Analysis"
-    ],
-    "description": "Comprehensive financial modeling expertise with focus on risk analysis and investment decision support",
-    "proficiency": 85,
-    "experience": "2+ years", 
-    "certifications": [
-      "Financial Modeling (NSE Academy)",
-      "SEBI Investor Awareness",
-      "Finance & Accounting (ASDC)"
-    ],
-    "projects": [
-      "Crypto Risk Assessment",
-      "Revenue Analysis Dashboard"
-    ]
-  },
-  {
-    "category": "Project Management",
-    "icon": "fas fa-tasks",
-    "skills": [
-      "Agile Methodologies",
-      "Sprint Planning", 
-      "Project Documentation",
-      "Quality Assurance",
-      "Team Coordination",
-      "MS Office Suite"
-    ],
-    "description": "Efficient project delivery with focus on agile methodologies and stakeholder satisfaction",
-    "proficiency": 80,
-    "experience": "2+ years",
-    "certifications": [
-      "Agile Project Management"
-    ],
-    "projects": [
-      "UAT Framework Implementation",
-      "Dashboard Development Projects"
-    ]
-  },
-  {
-    "category": "Database & Query",
-    "icon": "fas fa-database",
-    "skills": [
-      "SQL (Basic to Intermediate)",
-      "Data Extraction",
-      "Data Cleaning",
-      "Database Design",
-      "Query Optimization",
-      "ETL Processes"
-    ],
-    "description": "Solid foundation in database management and SQL for data extraction and analysis",
-    "proficiency": 70,
-    "experience": "1+ years",
-    "certifications": [
-      "SQL Fundamentals"
-    ],
-    "projects": [
-      "Data Pipeline Development",
-      "Database Integration Projects"
-    ]
-  },
-  {
-    "category": "Technical Skills",
-    "icon": "fas fa-code",
-    "skills": [
-      "Advanced Excel",
-      "VBA Macros",
-      "Python (Basic)",
-      "Statistical Analysis",
-      "Data Validation",
-      "Automation"
-    ],
-    "description": "Technical proficiency in automation tools and programming languages for enhanced productivity",
-    "proficiency": 75,
-    "experience": "2+ years",
-    "certifications": [
-      "Advanced Excel Certification",
-      "Programming Fundamentals"
-    ],
-    "projects": [
-      "Automated Reporting Systems",
-      "Data Processing Scripts"
-    ]
-  }
-]
+{
+  "skills": [
+    {
+      "name": "Power BI",
+      "icon": "fas fa-chart-bar",
+      "description": "Interactive dashboard creation and business intelligence",
+      "level": "Advanced",
+      "category": "Data Visualization"
+    },
+    {
+      "name": "Tableau",
+      "icon": "fas fa-chart-pie", 
+      "description": "Data visualization and analytics platform",
+      "level": "Advanced",
+      "category": "Data Visualization"
+    },
+    {
+      "name": "Excel",
+      "icon": "fas fa-table",
+      "description": "Advanced financial modeling and data analysis", 
+      "level": "Expert",
+      "category": "Data Analysis"
+    },
+    {
+      "name": "SQL",
+      "icon": "fas fa-database",
+      "description": "Database querying and management",
+      "level": "Intermediate",
+      "category": "Data Management"
+    },
+    {
+      "name": "Financial Analysis", 
+      "icon": "fas fa-chart-line",
+      "description": "Risk assessment and financial modeling",
+      "level": "Advanced",
+      "category": "Business Analysis"
+    },
+    {
+      "name": "Data Visualization",
+      "icon": "fas fa-eye",
+      "description": "Creating compelling data stories",
+      "level": "Advanced", 
+      "category": "Data Presentation"
+    }
+  ]
+}
