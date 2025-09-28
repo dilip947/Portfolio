@@ -445,7 +445,7 @@
     resumeModal.innerHTML = `
       <div class="resume-shell" role="dialog" aria-modal="true" aria-label="Resume" style="max-width:1100px;width:94%;max-height:88vh;">
         <div style="display:flex;justify-content:flex-end;padding:8px"><button id="resumeClose" class="btn btn-secondary"><i class="fas fa-times"></i></button></div>
-        <iframe id="resumeIframe" src="Dilip_ch_resume.pdf" style="width:100%;height:80vh;border-radius:10px;border:0;box-shadow:0 40px 120px rgba(0,0,0,0.6)"></iframe>
+        <iframe id="resumeIframe" src="resume.pdf" style="width:100%;height:80vh;border-radius:10px;border:0;box-shadow:0 40px 120px rgba(0,0,0,0.6)"></iframe>
       </div>
     `;
     $('#resumeClose', resumeModal).addEventListener('click', closeResume);
