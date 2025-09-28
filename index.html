@@ -3,185 +3,1172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dilip Choudhary | Business Analytics Specialist</title>
-    <meta name="description" content="Dilip Choudhary - Business Analytics professional specializing in financial markets, risk analysis, and data-driven decision-making.">
+    <title>Dilip Choudhary | Business Analytics</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <style>
+        :root {
+            --primary: #007AFF;
+            --primary-dark: #0056CC;
+            --primary-light: #66AFFF;
+            --accent: #5856D6;
+            --text: #1D1D1F;
+            --text-light: #86868B;
+            --background: #FFFFFF;
+            --background-alt: #F5F5F7;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.8);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .dark-mode {
+            --primary: #0A84FF;
+            --primary-dark: #0066CC;
+            --primary-light: #409CFF;
+            --accent: #5E5CE6;
+            --text: #FFFFFF;
+            --text-light: #AEAEB2;
+            --background: #000000;
+            --background-alt: #1C1C1E;
+            --glass-bg: rgba(28, 28, 30, 0.7);
+            --glass-border: rgba(44, 44, 46, 0.8);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: var(--transition);
+            font-weight: 400;
+        }
+
+        /* Welcome Screen - Ultra Fast */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--background);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: welcomeFade 0.8s ease-in-out forwards;
+        }
+
+        @keyframes welcomeFade {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+
+        .welcome-content {
+            text-align: center;
+        }
+
+        .welcome-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 900;
+            color: var(--text);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* Glass Morphism */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            border-radius: 20px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: var(--transition);
+            border-bottom: 1px solid transparent;
+            opacity: 0;
+            transform: translateY(-100%);
+        }
+
+        header.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo-name {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .logo-name.visible {
+            opacity: 1;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--text-light);
+            text-decoration: none;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--text);
+        }
+
+        .theme-toggle {
+            background: transparent;
+            border: none;
+            color: var(--text);
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background: var(--background-alt);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding: 0 5mm;
+        }
+
+        .hero-container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .hero-profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3rem;
+            padding-top: 2rem;
+        }
+
+        .profile-image-container {
+            width: 280px;
+            height: 280px;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.15);
+            transition: var(--transition);
+            border: 1px solid var(--glass-border);
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        .profile-image-container.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .hero-text-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .hero-name {
+            font-size: clamp(2.8rem, 8vw, 5.5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .hero-name.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero-roles {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+
+        .hero-roles.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .role-tag {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border: 1px solid var(--glass-border);
+            transition: var(--transition);
+            color: var(--text);
+        }
+
+        /* Sections */
+        .section {
+            padding: 120px 0;
+            position: relative;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: var(--transition);
+        }
+
+        .section-title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-card {
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .skill-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        .skill-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            font-size: 2rem;
+            transition: var(--transition);
+        }
+
+        .skill-card:hover .skill-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* Projects Section */
+        .projects-showcase {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        .project-card {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            transition: var(--transition);
+            cursor: pointer;
+            height: 400px;
+            opacity: 0;
+        }
+
+        .project-card.left {
+            transform: translateX(-100px);
+        }
+
+        .project-card.center {
+            transform: translateY(100px);
+        }
+
+        .project-card.right {
+            transform: translateX(100px);
+        }
+
+        .project-card.visible {
+            opacity: 1;
+            transform: translate(0, 0) !important;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .project-card:hover .project-img {
+            transform: scale(1.1);
+        }
+
+        .project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(transparent 40%, rgba(0, 0, 0, 0.8));
+            display: flex;
+            align-items: flex-end;
+            padding: 2rem;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+
+        .project-info h3 {
+            color: white;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .project-info p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+        }
+
+        /* Project Gallery Preview */
+        .project-preview {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            background: var(--glass-bg);
+            backdrop-filter: blur(40px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: var(--glass-shadow);
+            border: 1px solid var(--glass-border);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+            z-index: 100;
+            width: 400px;
+        }
+
+        .project-card:hover .project-preview {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) scale(1);
+            bottom: calc(100% + 20px);
+        }
+
+        .preview-images {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+
+        .preview-img {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+
+        .preview-img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Contact Section */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .contact-form {
+            padding: 3rem;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            color: var(--text);
+            transition: var(--transition);
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .contact-buttons {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .contact-btn {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            text-decoration: none;
+            color: var(--text);
+            transition: var(--transition);
+            cursor: pointer;
+            border-radius: 16px;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-5px);
+            background: var(--glass-bg);
+        }
+
+        .contact-btn i {
+            font-size: 1.5rem;
+            width: 30px;
+            color: var(--primary);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 122, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 122, 255, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--background-alt);
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Utility Classes */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: var(--transition);
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 1024px) {
+            .projects-showcase {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .project-card.left,
+            .project-card.center,
+            .project-card.right {
+                transform: translateY(50px);
+            }
+            
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .profile-image-container {
+                width: 240px;
+                height: 240px;
+            }
+            
+            .hero-roles {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .contact-form {
+                padding: 2rem;
+            }
+            
+            .project-preview {
+                width: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .profile-image-container {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .hero-name {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Welcome Screen -->
-    <div id="welcomeScreen" class="welcome-screen">
-        <h1 class="welcome-text">Welcome</h1>
+    <!-- Welcome Screen - Ultra Fast -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-content">
+            <h1 class="welcome-title">WELCOME</h1>
+        </div>
     </div>
 
-    <!-- Navigation Header -->
-    <header id="navbar" class="navbar">
-        <div class="nav-content">
-            <div class="logo" id="navLogo">
-                <span>Portfolio</span>
-            </div>
+    <!-- Header -->
+    <header id="header">
+        <div class="nav-container">
+            <div class="logo-name" id="logoName">DILIP CHOUDHARY</div>
             <nav class="nav-links">
                 <a href="#home" class="nav-link active">Home</a>
                 <a href="#about" class="nav-link">About</a>
                 <a href="#skills" class="nav-link">Skills</a>
-                <div class="nav-dropdown">
-                    <a href="#projects" class="nav-link">Projects <i class="fas fa-chevron-down"></i></a>
-                    <div class="dropdown-menu" id="projectsDropdown">
-                        <!-- Will be populated by JavaScript -->
-                    </div>
-                </div>
-                <a href="#discuss" class="nav-link">Let's Discuss</a>
+                <a href="#projects" class="nav-link">Projects</a>
                 <a href="#contact" class="nav-link">Contact</a>
-            </nav>
-            <div class="theme-controls">
-                <button id="themeToggle" class="theme-toggle">
-                    <i class="fas fa-sun"></i>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
                 </button>
-            </div>
+            </nav>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main id="mainContent">
-        <!-- Hero Section -->
-        <section id="home" class="hero-section">
-            <div class="profile-container" id="profileContainer">
-                <div class="profile-image-wrapper">
-                    <img src="Image/Profile.JPG" alt="Dilip Choudhary" id="profileImage" class="profile-image">
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-profile">
+                <div class="profile-image-container" id="profileImageContainer">
+                    <img src="Image/Profile.JPG" alt="Dilip Choudhary" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face'">
                 </div>
-                <div class="profile-info" id="profileInfo">
-                    <h1 class="profile-name" id="profileName">Dilip Choudhary</h1>
-                    <div class="profile-roles" id="profileRoles">
-                        <span class="role">Business Analyst</span>
-                        <span class="role">Data Scientist</span>
-                        <span class="role">Finance Specialist</span>
+                <div class="hero-text-content">
+                    <h1 class="hero-name" id="heroName">DILIP CHOUDHARY</h1>
+                    <div class="hero-roles" id="heroRoles">
+                        <span class="role-tag">Business Analyst</span>
+                        <span class="role-tag">Finance</span>
+                        <span class="role-tag">Data Science</span>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Skills Section -->
-        <section id="skills" class="skills-section">
-            <div class="container">
-                <h2 class="section-title">Skills & Expertise</h2>
-                <div class="skills-grid" id="skillsGrid">
-                    <!-- Skills will be populated by JavaScript -->
-                </div>
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title animate-on-scroll">About Me</h2>
             </div>
-        </section>
-
-        <!-- Projects Section -->
-        <section id="projects" class="projects-section">
-            <div class="container">
-                <h2 class="section-title">Featured Projects</h2>
-                <div class="projects-container" id="projectsContainer">
-                    <!-- Projects will be populated by JavaScript -->
-                </div>
+            <div class="about-content glass-card" style="padding: 3rem; max-width: 800px; margin: 0 auto;">
+                <p style="font-size: 1.2rem; line-height: 1.8; color: var(--text-light); text-align: center;" class="animate-on-scroll">
+                    I transform complex data into actionable insights through advanced analytics and visualization. 
+                    Specializing in financial markets, risk analysis, and data-driven decision-making.
+                </p>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Timeline Section -->
-        <section id="timeline" class="timeline-section">
-            <div class="container">
-                <h2 class="section-title">My Journey</h2>
-                <div class="timeline-container" id="timelineContainer">
-                    <!-- Timeline will be populated by JavaScript -->
-                </div>
-                <div class="resume-section">
-                    <button id="viewResumeBtn" class="view-resume-btn glass-effect">
-                        <i class="fas fa-file-pdf"></i>
-                        View Resume
-                    </button>
-                </div>
+    <!-- Skills Section -->
+    <section id="skills" class="section" style="background: var(--background-alt);">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title animate-on-scroll">Skills & Expertise</h2>
             </div>
-        </section>
-
-        <!-- Discussion Section -->
-        <section id="discuss" class="discuss-section">
-            <div class="container">
-                <h2 class="section-title">Let's Discuss Your Project</h2>
-                <form id="projectForm" class="project-form">
-                    <div class="form-group">
-                        <label for="projectName">Project Name</label>
-                        <input type="text" id="projectName" name="projectName" class="form-input glass-effect" required>
+            <div class="skills-grid">
+                <div class="skill-card glass-card animate-on-scroll">
+                    <div class="skill-icon">
+                        <i class="fas fa-chart-bar"></i>
                     </div>
-                    <div class="form-group">
-                        <label for="requirements">Project Description & Requirements</label>
-                        <textarea id="requirements" name="requirements" class="form-textarea glass-effect" rows="6" required placeholder="Please describe your project requirements, goals, and any specific features you need..."></textarea>
+                    <h3>Power BI</h3>
+                    <p>Interactive dashboard creation and business intelligence</p>
+                </div>
+                <div class="skill-card glass-card animate-on-scroll">
+                    <div class="skill-icon">
+                        <i class="fas fa-chart-pie"></i>
                     </div>
-                    <div class="form-group">
-                        <label for="email">Your Email Address</label>
-                        <input type="email" id="email" name="email" class="form-input glass-effect" required>
+                    <h3>Tableau</h3>
+                    <p>Data visualization and analytics platform</p>
+                </div>
+                <div class="skill-card glass-card animate-on-scroll">
+                    <div class="skill-icon">
+                        <i class="fas fa-table"></i>
                     </div>
-                    <button type="submit" class="submit-btn glass-effect">
-                        <i class="fas fa-paper-plane"></i>
-                        Send Project Inquiry
-                    </button>
-                </form>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="contact-section">
-            <div class="container">
-                <h2 class="section-title">Get In Touch</h2>
-                <div class="contact-links">
-                    <a href="https://linkedin.com/in/dilip-choudhary-analytics" class="contact-link glass-effect" target="_blank">
-                        <i class="fab fa-linkedin"></i>
-                        <span>LinkedIn</span>
-                    </a>
-                    <a href="mailto:choudharydilip947@gmail.com" class="contact-link glass-effect">
-                        <i class="fas fa-envelope"></i>
-                        <span>Email</span>
-                    </a>
-                    <a href="tel:+919346053750" class="contact-link glass-effect">
-                        <i class="fas fa-phone"></i>
-                        <span>Mobile</span>
-                    </a>
-                    <a href="resume.pdf" class="contact-link glass-effect" target="_blank">
-                        <i class="fas fa-file-pdf"></i>
-                        <span>Resume</span>
-                    </a>
+                    <h3>Excel</h3>
+                    <p>Advanced financial modeling and analysis</p>
+                </div>
+                <div class="skill-card glass-card animate-on-scroll">
+                    <div class="skill-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>SQL</h3>
+                    <p>Database querying and management</p>
+                </div>
+                <div class="skill-card glass-card animate-on-scroll">
+                    <div class="skill-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Financial Analysis</h3>
+                    <p>Risk assessment and financial modeling</p>
+                </div>
+                <div class="skill-card glass-card animate-on-scroll">
+                    <div class="skill-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Data Visualization</h3>
+                    <p>Creating compelling data stories</p>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title animate-on-scroll">Featured Projects</h2>
+            </div>
+            <div class="projects-showcase">
+                <!-- Project 1 - From Left -->
+                <div class="project-card glass-card left animate-on-scroll">
+                    <div class="project-image">
+                        <img src="Image/Projectec/1.png" alt="E-Commerce Dashboard" class="project-img" onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=400&fit=crop'">
+                        <div class="project-overlay">
+                            <div class="project-info">
+                                <h3>E-Commerce Sales Insights</h3>
+                                <p>Comprehensive sales analysis dashboard</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-preview">
+                        <div class="preview-images">
+                            <img src="Image/Projectec/1.png" alt="Preview 1" class="preview-img" onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=200&h=100&fit=crop'">
+                            <img src="Image/Projectec/2.png" alt="Preview 2" class="preview-img" onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=200&h=100&fit=crop'">
+                            <img src="Image/Projectec/3.png" alt="Preview 3" class="preview-img" onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=200&h=100&fit=crop'">
+                            <img src="Image/Projectec/4.png" alt="Preview 4" class="preview-img" onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=200&h=100&fit=crop'">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 - From Center -->
+                <div class="project-card glass-card center animate-on-scroll">
+                    <div class="project-image">
+                        <img src="Image/Projectcrypto/1.png" alt="Crypto Dashboard" class="project-img" onerror="this.src='https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=500&h=400&fit=crop'">
+                        <div class="project-overlay">
+                            <div class="project-info">
+                                <h3>Crypto Market Risk</h3>
+                                <p>Cryptocurrency volatility analysis</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-preview">
+                        <div class="preview-images">
+                            <img src="Image/Projectcrypto/1.png" alt="Preview 1" class="preview-img" onerror="this.src='https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=200&h=100&fit=crop'">
+                            <img src="Image/Projectcrypto/2.png" alt="Preview 2" class="preview-img" onerror="this.src='https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=200&h=100&fit=crop'">
+                            <img src="Image/Projectcrypto/3.png" alt="Preview 3" class="preview-img" onerror="this.src='https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=200&h=100&fit=crop'">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 - From Right -->
+                <div class="project-card glass-card right animate-on-scroll">
+                    <div class="project-image">
+                        <img src="Image/Projects/P3ABC/1.png" alt="ABC Platform" class="project-img" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&h=400&fit=crop'">
+                        <div class="project-overlay">
+                            <div class="project-info">
+                                <h3>ABC Analytics Platform</h3>
+                                <p>Comprehensive business intelligence</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-preview">
+                        <div class="preview-images">
+                            <img src="Image/Projects/P3ABC/1.png" alt="Preview 1" class="preview-img" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=200&h=100&fit=crop'">
+                            <img src="Image/Projects/P3ABC/Sprint.png" alt="Preview 2" class="preview-img" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=200&h=100&fit=crop'">
+                            <img src="Image/Projects/P3ABC/UAT.png" alt="Preview 3" class="preview-img" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=200&h=100&fit=crop'">
+                            <img src="Image/Projects/P3ABC/test_case.png" alt="Preview 4" class="preview-img" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=200&h=100&fit=crop'">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section" style="background: var(--background-alt);">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title animate-on-scroll">Let's Discuss Your Project</h2>
+            </div>
+            <div class="contact-container">
+                <div class="contact-form glass-card animate-on-scroll">
+                    <form id="projectForm">
+                        <div class="form-group">
+                            <label for="projectName" class="form-label">Project Name</label>
+                            <input type="text" id="projectName" class="form-input" required placeholder="Enter your project name">
+                        </div>
+                        <div class="form-group">
+                            <label for="projectType" class="form-label">Type of Project</label>
+                            <select id="projectType" class="form-select" required>
+                                <option value="">Select project type</option>
+                                <option value="data-analysis">Data Analysis</option>
+                                <option value="dashboard">Dashboard Development</option>
+                                <option value="financial-modeling">Financial Modeling</option>
+                                <option value="risk-analysis">Risk Analysis</option>
+                                <option value="business-intelligence">Business Intelligence</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="projectDescription" class="form-label">Project Description</label>
+                            <textarea id="projectDescription" class="form-textarea" required placeholder="Describe your project requirements..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <i class="fas fa-paper-plane"></i> Submit Project
+                        </button>
+                    </form>
+                </div>
+                <div class="contact-info animate-on-scroll">
+                    <div class="contact-buttons">
+                        <a href="https://linkedin.com/in/dilip-choudhary-analytics" class="contact-btn glass-card" target="_blank">
+                            <i class="fab fa-linkedin"></i>
+                            <span>LinkedIn Profile</span>
+                        </a>
+                        <a href="mailto:choudharydilip947@gmail.com" class="contact-btn glass-card">
+                            <i class="fas fa-envelope"></i>
+                            <span>Send Email</span>
+                        </a>
+                        <a href="tel:+919346053750" class="contact-btn glass-card">
+                            <i class="fas fa-phone"></i>
+                            <span>Call Now</span>
+                        </a>
+                        <a href="resume.pdf" class="contact-btn glass-card" download>
+                            <i class="fas fa-file-pdf"></i>
+                            <span>Download Resume</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer>
         <div class="container">
-            <p>&copy; 2025 Dilip Choudhary. All rights reserved.</p>
+            <p style="color: var(--text-light);">© 2025 Dilip Choudhary. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- Project Modal -->
-    <div id="projectModal" class="project-modal">
-        <div class="modal-content glass-effect">
-            <button class="modal-close" id="modalClose">&times;</button>
-            <div class="modal-header">
-                <h3 id="modalTitle"></h3>
-            </div>
-            <div class="modal-body">
-                <div class="project-images" id="modalImages">
-                    <!-- Images will be populated by JavaScript -->
-                </div>
-                <div class="project-details" id="modalDetails">
-                    <!-- Details will be populated by JavaScript -->
-                </div>
-            </div>
-        </div>
-    </div>
+    <script>
+        // Ultra Smooth Animation Engine
+        class SmoothPortfolio {
+            constructor() {
+                this.scrollY = 0;
+                this.lastScrollY = 0;
+                this.heroElements = {};
+                this.init();
+            }
 
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="loading-overlay">
-        <div class="loader"></div>
-    </div>
+            init() {
+                this.setupWelcomeAnimation();
+                this.setupScrollAnimations();
+                this.setupSmoothScrolling();
+                this.setupThemeToggle();
+                this.setupIntersectionObserver();
+                this.setupFormHandling();
+            }
 
-    <!-- Scripts -->
-    <script src="js/main.js"></script>
-    <script src="js/animation.js"></script>
+            setupWelcomeAnimation() {
+                const welcomeScreen = document.getElementById('welcomeScreen');
+                
+                // Ultra fast welcome - fade out in 0.8s total
+                setTimeout(() => {
+                    welcomeScreen.style.display = 'none';
+                    this.startMainAnimations();
+                }, 800);
+            }
+
+            startMainAnimations() {
+                this.heroElements = {
+                    profile: document.getElementById('profileImageContainer'),
+                    name: document.getElementById('heroName'),
+                    roles: document.getElementById('heroRoles'),
+                    header: document.getElementById('header'),
+                    logo: document.getElementById('logoName')
+                };
+
+                // Stagger animations with smooth delays
+                setTimeout(() => this.heroElements.profile.classList.add('visible'), 100);
+                setTimeout(() => this.heroElements.name.classList.add('visible'), 400);
+                setTimeout(() => this.heroElements.roles.classList.add('visible'), 700);
+                setTimeout(() => {
+                    this.heroElements.header.classList.add('visible');
+                    this.heroElements.header.style.borderBottomColor = 'var(--glass-border)';
+                }, 1000);
+            }
+
+            setupScrollAnimations() {
+                let ticking = false;
+
+                const updateAnimations = () => {
+                    this.scrollY = window.scrollY;
+                    this.updateHeroSection();
+                    this.updateHeaderLogo();
+                    this.lastScrollY = this.scrollY;
+                    ticking = false;
+                };
+
+                const requestTick = () => {
+                    if (!ticking) {
+                        requestAnimationFrame(updateAnimations);
+                        ticking = true;
+                    }
+                };
+
+                window.addEventListener('scroll', requestTick, { passive: true });
+            }
+
+            updateHeroSection() {
+                const hero = document.getElementById('home');
+                if (!hero || !this.heroElements.profile) return;
+
+                const heroRect = hero.getBoundingClientRect();
+                const scrollProgress = Math.max(0, Math.min(1, -heroRect.top / heroRect.height));
+
+                // Ultra smooth profile image scaling
+                if (this.heroElements.profile) {
+                    const scale = Math.max(0.3, 1 - scrollProgress * 0.7);
+                    const opacity = Math.max(0, 1 - scrollProgress * 1.5);
+                    
+                    this.heroElements.profile.style.transform = `scale(${scale})`;
+                    this.heroElements.profile.style.opacity = opacity;
+                }
+
+                // Name animation - shrink and move to left
+                if (this.heroElements.name) {
+                    const nameScale = Math.max(0.4, 1 - scrollProgress * 0.6); // Shrink gradually
+                    const nameTranslateX = scrollProgress * -100; // Move left
+                    const nameOpacity = Math.max(0, 1 - scrollProgress * 2);
+                    
+                    this.heroElements.name.style.transform = `scale(${nameScale}) translateX(${nameTranslateX}px)`;
+                    this.heroElements.name.style.opacity = nameOpacity;
+                }
+
+                // Roles fade out
+                if (this.heroElements.roles) {
+                    this.heroElements.roles.style.opacity = Math.max(0, 1 - scrollProgress * 3);
+                }
+            }
+
+            updateHeaderLogo() {
+                const hero = document.getElementById('home');
+                if (!hero || !this.heroElements.logo) return;
+
+                const heroRect = hero.getBoundingClientRect();
+                const scrollProgress = Math.max(0, Math.min(1, -heroRect.top / heroRect.height));
+
+                // Show logo name when name is almost at top
+                if (scrollProgress > 0.4) {
+                    this.heroElements.logo.classList.add('visible');
+                } else {
+                    this.heroElements.logo.classList.remove('visible');
+                }
+            }
+
+            setupSmoothScrolling() {
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const targetId = anchor.getAttribute('href');
+                        if (targetId === '#') return;
+
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            const headerHeight = document.getElementById('header').offsetHeight;
+                            const targetPosition = targetElement.offsetTop - headerHeight - 20;
+
+                            window.scrollTo({
+                                top: targetPosition,
+                                behavior: 'smooth'
+                            });
+                        }
+                    });
+                });
+            }
+
+            setupThemeToggle() {
+                const themeToggle = document.getElementById('themeToggle');
+                const themeIcon = themeToggle.querySelector('i');
+
+                // Check for saved theme
+                if (localStorage.getItem('theme') === 'dark') {
+                    document.body.classList.add('dark-mode');
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                }
+
+                themeToggle.addEventListener('click', () => {
+                    document.body.classList.toggle('dark-mode');
+                    
+                    if (document.body.classList.contains('dark-mode')) {
+                        localStorage.setItem('theme', 'dark');
+                        themeIcon.classList.remove('fa-moon');
+                        themeIcon.classList.add('fa-sun');
+                    } else {
+                        localStorage.setItem('theme', 'light');
+                        themeIcon.classList.remove('fa-sun');
+                        themeIcon.classList.add('fa-moon');
+                    }
+                });
+            }
+
+            setupIntersectionObserver() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                });
+
+                // Observe all animate-on-scroll elements
+                document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+                document.querySelectorAll('.section-title').forEach(el => observer.observe(el));
+                document.querySelectorAll('.skill-card').forEach(el => observer.observe(el));
+                document.querySelectorAll('.project-card').forEach(el => observer.observe(el));
+            }
+
+            setupFormHandling() {
+                const projectForm = document.getElementById('projectForm');
+                
+                projectForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    
+                    // Get form data
+                    const formData = {
+                        name: document.getElementById('projectName').value,
+                        type: document.getElementById('projectType').value,
+                        description: document.getElementById('projectDescription').value
+                    };
+
+                    // Simple validation
+                    if (!formData.name || !formData.type || !formData.description) {
+                        alert('Please fill in all fields');
+                        return;
+                    }
+
+                    // Show success message
+                    alert('Thank you! Your project details have been submitted. I\'ll get back to you soon!');
+                    projectForm.reset();
+                });
+            }
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new SmoothPortfolio();
+        });
+    </script>
 </body>
 </html>
