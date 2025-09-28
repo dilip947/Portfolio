@@ -3,125 +3,261 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dilip Choudhary | Business & Data Analyst</title>
-    <meta name="description" content="Portfolio of Dilip Choudhary, a specialist in Business Analytics, Finance, and Data Visualization.">
-
+    <title>Dilip Choudhary | Business Analytics</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <link rel="stylesheet" href="css/style.css">
-
-    <script src="js/projects.js" defer></script>
-    <script src="js/animations.js" defer></script>
-    <script src="js/main.js" defer></script>
-
 </head>
 <body>
+    <!-- Welcome Screen - Ultra Fast -->
     <div class="welcome-screen" id="welcomeScreen">
-        <div class="welcome-text">Welcome</div>
+        <div class="welcome-content">
+            <h1 class="welcome-title">WELCOME</h1>
+        </div>
     </div>
 
+    <!-- Header -->
     <header id="header">
-        <nav class="container">
-            <a href="#" class="header-logo" id="headerLogo">DILIP CHOUDHARY</a>
-            <div class="nav-links">
-                <a href="#home">Home</a>
-                <a href="#about">About</a>
-                <a href="#skills">Skills</a>
-                <a href="#projects">Projects</a>
-                <a href="#contact">Contact</a>
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle Theme">
-                    <i class="fas fa-sun"></i>
+        <div class="nav-container">
+            <div class="logo-name" id="logoName">DILIP CHOUDHARY</div>
+            <nav class="nav-links">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#contact" class="nav-link">Contact</a>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
                 </button>
-            </div>
-        </nav>
+            </nav>
+        </div>
     </header>
 
-    <main>
-        <section id="home" class="hero-section">
-            <div class="hero-content">
-                <img src="Image/Profile.JPG" alt="Dilip Choudhary" class="hero-profile-img" id="heroProfileImg">
-                <h1 id="heroName">DILIP CHOUDHARY</h1>
-                <p id="heroSubtitle">Business Analyst | Finance | Data</p>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-profile">
+                <div class="profile-image-container" id="profileImageContainer">
+                    <img src="Image/Profile.JPG" alt="Dilip Choudhary" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face'">
+                </div>
+                <div class="hero-text-content">
+                    <h1 class="hero-name" id="heroName">DILIP CHOUDHARY</h1>
+                    <div class="hero-roles" id="heroRoles">
+                        <span class="role-tag">Business Analyst</span>
+                        <span class="role-tag">Finance</span>
+                        <span class="role-tag">Data Science</span>
+                    </div>
+                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="about" class="section-padding">
-            <div class="container animate-on-scroll">
-                <h2 class="section-title">About Me</h2>
-                <p class="section-text">
-                    I am a dedicated Business Analytics professional specializing in financial markets, risk analysis, and data-driven decision-making. My passion lies in transforming complex, raw data into clear, actionable insights and interactive dashboards that empower stakeholders to achieve their strategic goals.
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title animate-on-scroll">About Me</h2>
+            </div>
+            <div class="about-content glass-card" style="padding: 3rem; max-width: 800px; margin: 0 auto;">
+                <p style="font-size: 1.2rem; line-height: 1.8; color: var(--text-light); text-align: center;" class="animate-on-scroll">
+                    I transform complex data into actionable insights through advanced analytics and visualization. 
+                    Specializing in financial markets, risk analysis, and data-driven decision-making.
                 </p>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="skills" class="section-padding">
-            <div class="container animate-on-scroll">
-                <h2 class="section-title">Core Skills</h2>
-                <div class="skills-grid" id="skillsGrid">
-                    </div>
-            </div>
-        </section>
-
-        <section id="projects" class="section-padding">
-            <div class="container">
-                <h2 class="section-title animate-on-scroll">Featured Projects</h2>
-                <div class="projects-grid" id="projectsGrid">
-                    </div>
-            </div>
-        </section>
-        
-        <section id="contact" class="section-padding">
-            <div class="container animate-on-scroll">
-                <h2 class="section-title">Let's Discuss Your Project</h2>
-                <form id="contactForm" class="contact-form glass-card">
-                    <div class="form-group">
-                        <input type="text" id="projectName" name="projectName" placeholder="Project Name" required>
-                    </div>
-                    <div class="form-group">
-                        <select id="projectType" name="projectType" required>
-                            <option value="" disabled selected>Select Project Type</option>
-                            <option value="data-visualization">Data Visualization & Dashboarding</option>
-                            <option value="financial-analysis">Financial Analysis & Modeling</option>
-                            <option value="business-intelligence">Business Intelligence Consulting</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <textarea id="projectDescription" name="projectDescription" rows="6" placeholder="Briefly describe your project..." required></textarea>
-                    </div>
-                    <button type="submit" class="btn-submit">Send Inquiry</button>
-                </form>
-            </div>
-        </section>
-
-    </main>
-    
-    <footer class="footer-section">
+    <!-- Skills Section -->
+    <section id="skills" class="section" style="background: var(--background-alt);">
         <div class="container">
-            <div class="footer-links">
-                <a href="https://linkedin.com/in/dilip-choudhary-analytics" target="_blank" class="footer-link glass-card" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                <a href="mailto:choudharydilip947@gmail.com" class="footer-link glass-card" aria-label="Email"><i class="fas fa-envelope"></i></a>
-                <a href="tel:+919346053750" class="footer-link glass-card" aria-label="Phone"><i class="fas fa-phone"></i></a>
-                <button id="resumeBtn" class="footer-link glass-card" aria-label="View Resume"><i class="fas fa-file-alt"></i></button>
+            <div class="section-header">
+                <h2 class="section-title animate-on-scroll">Skills & Expertise</h2>
             </div>
-            <p>&copy; 2025 Dilip Choudhary. All rights reserved.</p>
+            <div class="skills-grid">
+                <div class="skill-card glass-card animate-on-scroll">
+                    <div class="skill-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Power BI</h3>
+                    <p>Interactive dashboard creation and business intelligence</p>
+                </div>
+                <div class="skill-card glass-card animate-on-scroll">
+                    <div class="skill-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3>Tableau</h3>
+                    <p>Data visualization and analytics platform</p>
+                </div>
+                <div class="skill-card glass-card animate-on-scroll">
+                    <div class="skill-icon">
+                        <i class="fas fa-table"></i>
+                    </div>
+                    <h3>Excel</h3>
+                    <p>Advanced financial modeling and analysis</p>
+                </div>
+                <div class="skill-card glass-card animate-on-scroll">
+                    <div class="skill-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>SQL</h3>
+                    <p>Database querying and management</p>
+                </div>
+                <div class="skill-card glass-card animate-on-scroll">
+                    <div class="skill-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Financial Analysis</h3>
+                    <p>Risk assessment and financial modeling</p>
+                </div>
+                <div class="skill-card glass-card animate-on-scroll">
+                    <div class="skill-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Data Visualization</h3>
+                    <p>Creating compelling data stories</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title animate-on-scroll">Featured Projects</h2>
+            </div>
+            <div class="projects-showcase">
+                <!-- Project 1 - From Left -->
+                <div class="project-card glass-card left animate-on-scroll">
+                    <div class="project-image">
+                        <img src="Image/Projectec/1.png" alt="E-Commerce Dashboard" class="project-img" onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=400&fit=crop'">
+                        <div class="project-overlay">
+                            <div class="project-info">
+                                <h3>E-Commerce Sales Insights</h3>
+                                <p>Comprehensive sales analysis dashboard</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-preview">
+                        <div class="preview-images">
+                            <img src="Image/Projectec/1.png" alt="Preview 1" class="preview-img" onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=200&h=100&fit=crop'">
+                            <img src="Image/Projectec/2.png" alt="Preview 2" class="preview-img" onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=200&h=100&fit=crop'">
+                            <img src="Image/Projectec/3.png" alt="Preview 3" class="preview-img" onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=200&h=100&fit=crop'">
+                            <img src="Image/Projectec/4.png" alt="Preview 4" class="preview-img" onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=200&h=100&fit=crop'">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 - From Center -->
+                <div class="project-card glass-card center animate-on-scroll">
+                    <div class="project-image">
+                        <img src="Image/Projectcrypto/1.png" alt="Crypto Dashboard" class="project-img" onerror="this.src='https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=500&h=400&fit=crop'">
+                        <div class="project-overlay">
+                            <div class="project-info">
+                                <h3>Crypto Market Risk</h3>
+                                <p>Cryptocurrency volatility analysis</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-preview">
+                        <div class="preview-images">
+                            <img src="Image/Projectcrypto/1.png" alt="Preview 1" class="preview-img" onerror="this.src='https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=200&h=100&fit=crop'">
+                            <img src="Image/Projectcrypto/2.png" alt="Preview 2" class="preview-img" onerror="this.src='https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=200&h=100&fit=crop'">
+                            <img src="Image/Projectcrypto/3.png" alt="Preview 3" class="preview-img" onerror="this.src='https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=200&h=100&fit=crop'">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 - From Right -->
+                <div class="project-card glass-card right animate-on-scroll">
+                    <div class="project-image">
+                        <img src="Image/Projects/P3ABC/1.png" alt="ABC Platform" class="project-img" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&h=400&fit=crop'">
+                        <div class="project-overlay">
+                            <div class="project-info">
+                                <h3>ABC Analytics Platform</h3>
+                                <p>Comprehensive business intelligence</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-preview">
+                        <div class="preview-images">
+                            <img src="Image/Projects/P3ABC/1.png" alt="Preview 1" class="preview-img" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=200&h=100&fit=crop'">
+                            <img src="Image/Projects/P3ABC/Sprint.png" alt="Preview 2" class="preview-img" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=200&h=100&fit=crop'">
+                            <img src="Image/Projects/P3ABC/UAT.png" alt="Preview 3" class="preview-img" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=200&h=100&fit=crop'">
+                            <img src="Image/Projects/P3ABC/test_case.png" alt="Preview 4" class="preview-img" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=200&h=100&fit=crop'">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section" style="background: var(--background-alt);">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title animate-on-scroll">Let's Discuss Your Project</h2>
+            </div>
+            <div class="contact-container">
+                <div class="contact-form glass-card animate-on-scroll">
+                    <form id="projectForm">
+                        <div class="form-group">
+                            <label for="projectName" class="form-label">Project Name</label>
+                            <input type="text" id="projectName" class="form-input" required placeholder="Enter your project name">
+                        </div>
+                        <div class="form-group">
+                            <label for="projectType" class="form-label">Type of Project</label>
+                            <select id="projectType" class="form-select" required>
+                                <option value="">Select project type</option>
+                                <option value="data-analysis">Data Analysis</option>
+                                <option value="dashboard">Dashboard Development</option>
+                                <option value="financial-modeling">Financial Modeling</option>
+                                <option value="risk-analysis">Risk Analysis</option>
+                                <option value="business-intelligence">Business Intelligence</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="projectDescription" class="form-label">Project Description</label>
+                            <textarea id="projectDescription" class="form-textarea" required placeholder="Describe your project requirements..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <i class="fas fa-paper-plane"></i> Submit Project
+                        </button>
+                    </form>
+                </div>
+                <div class="contact-info animate-on-scroll">
+                    <div class="contact-buttons">
+                        <a href="https://linkedin.com/in/dilip-choudhary-analytics" class="contact-btn glass-card" target="_blank">
+                            <i class="fab fa-linkedin"></i>
+                            <span>LinkedIn Profile</span>
+                        </a>
+                        <a href="mailto:choudharydilip947@gmail.com" class="contact-btn glass-card">
+                            <i class="fas fa-envelope"></i>
+                            <span>Send Email</span>
+                        </a>
+                        <a href="tel:+919346053750" class="contact-btn glass-card">
+                            <i class="fas fa-phone"></i>
+                            <span>Call Now</span>
+                        </a>
+                        <a href="resume.pdf" class="contact-btn glass-card" download>
+                            <i class="fas fa-file-pdf"></i>
+                            <span>Download Resume</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p style="color: var(--text-light);">© 2025 Dilip Choudhary. All rights reserved.</p>
         </div>
     </footer>
 
-    <div class="modal-container" id="resumeModal">
-        <div class="resume-content">
-            <button class="close-modal-btn" id="closeResumeBtn">&times;</button>
-            <iframe src="resume.pdf" frameborder="0"></iframe>
-        </div>
-    </div>
-
-    <div class="modal-container" id="galleryModal">
-        <div class="gallery-content" id="galleryContent">
-             </div>
-    </div>
+    <script src="js/script.js"></script>
 </body>
 </html>
