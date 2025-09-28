@@ -1,643 +1,376 @@
-// Main JavaScript for Dilip Choudhary Portfolio
-class Portfolio {
-    constructor() {
-        this.scrollPosition = 0;
-        this.isLoading = true;
-        this.darkModeProgress = 0;
-        this.projects = [];
-        this.skills = [];
-        this.timeline = [];
-        
-        this.init();
-    }
-    
-    async init() {
-        // Load data
-        await this.loadData();
-        
-        // Initialize components
-        this.setupWelcomeSequence();
-        this.setupScrollEffects();
-        this.setupThemeToggle();
-        this.setupNavigation();
-        this.setupProjectModal();
-        this.setupForm();
-        
-        // Populate content
-        this.populateProjects();
-        this.populateSkills();
-        this.populateTimeline();
-        this.populateProjectsDropdown();
-        
-        // Setup intersection observers
-        this.setupIntersectionObservers();
-        
-        // Hide loading overlay
-        setTimeout(() => {
-            document.getElementById('loadingOverlay').classList.add('hidden');
-            this.isLoading = false;
-        }, 1000);
-    }
-    
-    async loadData() {
-        try {
-            // Load projects data
-            const projectsResponse = await fetch('data/projects.json');
-            this.projects = await projectsResponse.json();
-            
-            // Load skills data
-            const skillsResponse = await fetch('data/skills.json');
-            this.skills = await skillsResponse.json();
-            
-            // Timeline data (embedded for now)
-            this.timeline = [
-                {
-                    year: '2023',
-                    title: 'Started Business Analytics Journey',
-                    description: 'Enrolled in Bachelor of Business Analytics with Finance Specialization at Avinash College of Commerce. Discovered passion for data-driven decision making.'
-                },
-                {
-                    year: '2024',
-                    title: 'Skill Development & First Projects',
-                    description: 'Mastered Power BI, Excel, and financial modeling. Completed first major project analyzing customer payment insights with 100% UAT success rate.'
-                },
-                {
-                    year: '2025',
-                    title: 'Portfolio Expansion & Recognition',
-                    description: 'Developed comprehensive analytics dashboards, earned multiple certifications, and established online presence. Ready to make impact in business analytics field.'
-                }
-            ];
-        } catch (error) {
-            console.error('Error loading data:', error);
-            // Fallback data if fetch fails
-            this.setFallbackData();
-        }
-    }
-    
-    setFallbackData() {
-        this.projects = [
-            {
-                id: 'project1',
-                title: 'Customer Payment & Revenue Insights',
-                description: 'Comprehensive Power BI dashboard analyzing customer payments and revenue streams with advanced DAX formulas.',
-                images: ['Projects/P3ABC/1.png', 'Projects/P3ABC/Sprint.png', 'Projects/P3ABC/UAT Results.png'],
-                technologies: ['Power BI', 'Excel', 'DAX', 'Power Query'],
-                folder: 'P3ABC'
-            },
-            {
-                id: 'project2',
-                title: 'E-Commerce Sales Insights',
-                description: 'Analysis of 128,000+ orders identifying cancellation patterns and optimization opportunities.',
-                images: ['Projects/Projectec/1.png', 'Projects/Projectec/2.png', 'Projects/Projectec/3.png', 'Projects/Projectec/4.png'],
-                technologies: ['Power BI', 'Power Query', 'Excel', 'DAX'],
-                folder: 'Projectec'
-            },
-            {
-                id: 'project3',
-                title: 'Crypto Market Risk Dashboard',
-                description: 'Advanced cryptocurrency market analysis with volatility tracking and risk assessment metrics.',
-                images: ['Projects/Projectcrypto/1.png', 'Projects/Projectcrypto/2.png', 'Projects/Projectcrypto/3.png'],
-                technologies: ['Power BI', 'Financial Modeling', 'Risk Analysis'],
-                folder: 'Projectcrypto'
-            }
-        ];
-        
-        this.skills = [
-            {
-                category: 'Business Analysis',
-                icon: 'fas fa-chart-line',
-                skills: ['Requirements Gathering', 'Stakeholder Management', 'UAT Coordination', 'Process Optimization'],
-                description: 'Expert in translating business needs into actionable insights'
-            },
-            {
-                category: 'Data Analysis',
-                icon: 'fas fa-database',
-                skills: ['Financial Modeling', 'Risk Assessment', 'KPI Development', 'Trend Analysis'],
-                description: 'Advanced analytical skills for complex data interpretation'
-            },
-            {
-                category: 'Visualization Tools',
-                icon: 'fas fa-chart-pie',
-                skills: ['Power BI', 'Tableau', 'Excel Advanced', 'DAX Formulas'],
-                description: 'Creating compelling visual stories from raw data'
-            },
-            {
-                category: 'Project Management',
-                icon: 'fas fa-tasks',
-                skills: ['Agile Methodologies', 'Sprint Planning', 'Documentation', 'Quality Assurance'],
-                description: 'Efficient project delivery with stakeholder satisfaction'
-            }
-        ];
-    }
-    
-    setupWelcomeSequence() {
-        const welcomeScreen = document.getElementById('welcomeScreen');
-        const chessBackground = document.getElementById('chessBackground');
-        const profileImage = document.getElementById('profileImage');
-        const profileName = document.getElementById('profileName');
-        const profileRoles = document.getElementById('profileRoles');
-        const mainContent = document.getElementById('mainContent');
-        
-        // Welcome sequence timeline
-        setTimeout(() => {
-            welcomeScreen.classList.add('hidden');
-        }, 3000);
-        
-        setTimeout(() => {
-            mainContent.classList.add('visible');
-            profileImage.classList.add('visible');
-        }, 4000);
-        
-        setTimeout(() => {
-            profileName.classList.add('visible');
-        }, 4500);
-        
-        setTimeout(() => {
-            profileRoles.classList.add('visible');
-        }, 5000);
-        
-        setTimeout(() => {
-            chessBackground.classList.add('hidden');
-        }, 6000);
-    }
-    
-    setupScrollEffects() {
-        let ticking = false;
-        
-        const updateScrollEffects = () => {
-            this.scrollPosition = window.pageYOffset;
-            const windowHeight = window.innerHeight;
-            const documentHeight = document.documentElement.scrollHeight;
-            
-            // Calculate dark mode progress based on scroll
-            this.darkModeProgress = Math.min(this.scrollPosition / (windowHeight * 0.5), 1);
-            
-            // Progressive dark mode transition
-            this.updateThemeTransition();
-            
-            // Profile image and name transformations
-            this.updateProfileTransform();
-            
-            // Navigation visibility
-            this.updateNavigationVisibility();
-            
-            ticking = false;
-        };
-        
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                requestAnimationFrame(updateScrollEffects);
-                ticking = true;
-            }
-        });
-    }
-    
-    updateThemeTransition() {
-        const body = document.body;
-        
-        if (this.darkModeProgress > 0.3 && !body.classList.contains('dark-mode')) {
-            body.classList.add('theme-transitioning', 'dark-mode');
-            setTimeout(() => {
-                body.classList.remove('theme-transitioning');
-            }, 2000);
-        }
-    }
-    
-    updateProfileTransform() {
-        const profileImage = document.getElementById('profileImage');
-        const profileName = document.getElementById('profileName');
-        const profileContainer = document.getElementById('profileContainer');
-        
-        const maxScroll = window.innerHeight * 0.8;
-        const scrollRatio = Math.min(this.scrollPosition / maxScroll, 1);
-        
-        if (profileImage && profileName && profileContainer) {
-            // Image shrinking and fading
-            const imageScale = 1 - (scrollRatio * 0.7);
-            const imageOpacity = 1 - (scrollRatio * 1);
-            
-            profileImage.style.transform = `scale(${Math.max(imageScale, 0.3)})`;
-            profileImage.style.opacity = Math.max(imageOpacity, 0);
-            
-            // Name animation - smooth transition from center to top-left
-            if (scrollRatio < 0.3) {
-                // Initial phase - name in center, growing slightly
-                const centerScale = 1 + (scrollRatio * 0.2);
-                profileName.style.transform = `scale(${centerScale})`;
-                profileName.style.position = 'relative';
-                profileName.style.top = 'auto';
-                profileName.style.left = 'auto';
-                profileName.style.fontSize = '';
-                profileName.style.textAlign = 'center';
-            } else if (scrollRatio < 0.7) {
-                // Transition phase - moving upward
-                const moveProgress = (scrollRatio - 0.3) / 0.4; // 0 to 1
-                const translateY = -moveProgress * 300; // Move up 300px
-                const scale = 1.2 - (moveProgress * 0.2); // Scale from 1.2 to 1
-                
-                profileName.style.transform = `translateY(${translateY}px) scale(${scale})`;
-                profileName.style.position = 'relative';
-                profileName.style.textAlign = 'center';
-            } else {
-                // Final phase - settled in top-left
-                profileName.style.position = 'fixed';
-                profileName.style.top = '20px';
-                profileName.style.left = '20px';
-                profileName.style.zIndex = '1001';
-                profileName.style.fontSize = '1.8rem';
-                profileName.style.transform = 'none';
-                profileName.style.textAlign = 'left';
-                profileName.style.color = 'var(--text-primary)';
-                profileName.style.fontWeight = '700';
-                profileName.style.letterSpacing = '0.1em';
-                profileName.style.textTransform = 'uppercase';
-                
-                // Add glass effect to name when fixed
-                profileName.style.background = 'rgba(255, 255, 255, 0.1)';
-                profileName.style.backdropFilter = 'blur(20px)';
-                profileName.style.webkitBackdropFilter = 'blur(20px)';
-                profileName.style.padding = '0.5rem 1rem';
-                profileName.style.borderRadius = '10px';
-                profileName.style.border = '1px solid rgba(255, 255, 255, 0.2)';
-            }
-        }
-    }
-    
-    updateNavigationVisibility() {
-        const navbar = document.getElementById('navbar');
-        const scrollThreshold = window.innerHeight * 0.8;
-        
-        if (this.scrollPosition > scrollThreshold) {
-            navbar.classList.add('visible');
-        } else {
-            navbar.classList.remove('visible');
-        }
-    }
-    
-    setupThemeToggle() {
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = themeToggle.querySelector('i');
-        
-        themeToggle.addEventListener('click', () => {
-            const body = document.body;
-            body.classList.toggle('dark-mode');
-            
-            if (body.classList.contains('dark-mode')) {
-                themeIcon.className = 'fas fa-moon';
-                localStorage.setItem('theme', 'dark');
-            } else {
-                themeIcon.className = 'fas fa-sun';
-                localStorage.setItem('theme', 'light');
-            }
-        });
-        
-        // Check for saved theme
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            document.body.classList.add('dark-mode');
-            themeIcon.className = 'fas fa-moon';
-        }
-    }
-    
-    setupNavigation() {
-        // Smooth scroll for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = anchor.getAttribute('href').substring(1);
-                const targetElement = document.getElementById(targetId);
-                
-                if (targetElement) {
-                    const offsetTop = targetElement.offsetTop - 100;
-                    window.scrollTo({
-                        top: offsetTop,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Update active navigation
-                    this.updateActiveNavigation(targetId);
-                }
-            });
-        });
-        
-        // Update active navigation on scroll
-        window.addEventListener('scroll', () => {
-            this.updateActiveNavigationOnScroll();
-        });
-    }
-    
-    updateActiveNavigation(activeId) {
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${activeId}`) {
-                link.classList.add('active');
-            }
-        });
-    }
-    
-    updateActiveNavigationOnScroll() {
-        const sections = document.querySelectorAll('section[id]');
-        let currentSection = '';
-        
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop - 150;
-            const sectionHeight = section.clientHeight;
-            
-            if (this.scrollPosition >= sectionTop && this.scrollPosition < sectionTop + sectionHeight) {
-                currentSection = section.getAttribute('id');
-            }
-        });
-        
-        if (currentSection) {
-            this.updateActiveNavigation(currentSection);
-        }
-    }
-    
-    setupProjectModal() {
-        const modal = document.getElementById('projectModal');
-        const modalClose = document.getElementById('modalClose');
-        
-        modalClose.addEventListener('click', () => {
-            this.closeProjectModal();
-        });
-        
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                this.closeProjectModal();
-            }
-        });
-        
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.classList.contains('visible')) {
-                this.closeProjectModal();
-            }
-        });
-    }
-    
-    openProjectModal(projectId) {
-        const project = this.projects.find(p => p.id === projectId);
-        if (!project) return;
-        
-        const modal = document.getElementById('projectModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalImages = document.getElementById('modalImages');
-        const modalDetails = document.getElementById('modalDetails');
-        
-        modalTitle.textContent = project.title;
-        
-        // Populate images
-        modalImages.innerHTML = project.images.map(img => 
-            `<img src="${img}" alt="${project.title}" onclick="this.requestFullscreen()">`
-        ).join('');
-        
-        // Populate details
-        modalDetails.innerHTML = `
-            <h4>Project Overview</h4>
-            <p>${project.description}</p>
-            <h4>Technologies Used</h4>
-            <div class="tech-tags">
-                ${project.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
-            </div>
-        `;
-        
-        modal.classList.add('visible');
-        document.body.style.overflow = 'hidden';
-    }
-    
-    closeProjectModal() {
-        const modal = document.getElementById('projectModal');
-        modal.classList.remove('visible');
-        document.body.style.overflow = 'auto';
-    }
-    
-    setupForm() {
-        const form = document.getElementById('projectForm');
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
-            
-            // Simulate form submission
-            this.showNotification('Thank you for your message! I\'ll get back to you soon.', 'success');
-            form.reset();
-        });
-    }
-    
-    showNotification(message, type = 'info') {
-        // Create notification element
-        const notification = document.createElement('div');
-        notification.className = `notification notification-${type}`;
-        notification.innerHTML = `
-            <span>${message}</span>
-            <button onclick="this.parentElement.remove()">&times;</button>
-        `;
-        
-        // Add to DOM
-        document.body.appendChild(notification);
-        
-        // Remove after 5 seconds
-        setTimeout(() => {
-            if (notification.parentElement) {
-                notification.remove();
-            }
-        }, 5000);
-    }
-    
-    populateProjects() {
-        const container = document.getElementById('projectsContainer');
-        if (!container) return;
-        
-        const projectElements = this.projects.map((project, index) => {
-            const animationClass = index === 0 ? 'from-left' : 
-                                 index === 1 ? 'from-center' : 'from-right';
-            
-            return `
-                <div class="project-card glass-effect haptic-effect ${animationClass}" 
-                     onclick="portfolio.openProjectModal('${project.id}')"
-                     onmouseenter="this.style.cursor='pointer'">
-                    <img src="${project.images[0]}" alt="${project.title}" class="project-image">
-                    <div class="project-content">
-                        <h3 class="project-title">${project.title}</h3>
-                        <p class="project-description">${project.description}</p>
-                    </div>
-                </div>
-            `;
-        }).join('');
-        
-        container.innerHTML = projectElements;
-    }
-    
-    populateSkills() {
-        const container = document.getElementById('skillsGrid');
-        if (!container) return;
-        
-        const skillElements = this.skills.map(skill => `
-            <div class="skill-card glass-effect fade-in-up">
-                <div class="skill-icon">
-                    <i class="${skill.icon}"></i>
-                </div>
-                <h3 class="skill-title">${skill.category}</h3>
-                <p class="skill-description">${skill.description}</p>
-                <div class="skill-list">
-                    ${skill.skills.map(s => `<span class="skill-tag">${s}</span>`).join('')}
-                </div>
-            </div>
-        `).join('');
-        
-        container.innerHTML = skillElements;
-    }
-    
-    populateTimeline() {
-        const container = document.getElementById('timelineContainer');
-        if (!container) return;
-        
-        const timelineElements = this.timeline.map((item, index) => `
-            <div class="timeline-item glass-effect fade-in-left" style="animation-delay: ${index * 0.3}s">
-                <div class="timeline-year">${item.year}</div>
-                <div class="timeline-content">
-                    <h3 class="timeline-title">${item.title}</h3>
-                    <p class="timeline-description">${item.description}</p>
-                </div>
-            </div>
-        `).join('');
-        
-        container.innerHTML = timelineElements;
-    }
-    
-    populateProjectsDropdown() {
-        const dropdown = document.getElementById('projectsDropdown');
-        if (!dropdown) return;
-        
-        const dropdownItems = this.projects.map(project => `
-            <a href="#projects" class="dropdown-item" onclick="portfolio.scrollToProject('${project.id}')">
-                ${project.title}
-            </a>
-        `).join('');
-        
-        dropdown.innerHTML = dropdownItems;
-    }
-    
-    scrollToProject(projectId) {
-        const projectsSection = document.getElementById('projects');
-        if (projectsSection) {
-            projectsSection.scrollIntoView({ behavior: 'smooth' });
-            setTimeout(() => {
-                this.openProjectModal(projectId);
-            }, 800);
-        }
-    }
-    
-    setupIntersectionObservers() {
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px 0px -100px 0px',
-            threshold: 0.1
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    
-                    // Special handling for project cards
-                    if (entry.target.classList.contains('project-card')) {
-                        setTimeout(() => {
-                            entry.target.classList.add('visible');
-                        }, 200);
-                    }
-                }
-            });
-        }, observerOptions);
-        
-        // Observe all animated elements
-        document.querySelectorAll('.fade-in-up, .fade-in-left, .fade-in-right, .skill-card, .timeline-item, .project-card').forEach(el => {
-            observer.observe(el);
-        });
-    }
-}
+/* js/main.js
+   Main interactivity: name/header morph, projects dynamic util, lightbox, theme persistence
+*/
+(async function () {
+  const $ = (s, ctx=document) => ctx.querySelector(s);
+  const $$ = (s, ctx=document) => Array.from((ctx||document).querySelectorAll(s));
 
-// Initialize portfolio when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    window.portfolio = new Portfolio();
-});
+  // ---- Theme toggle / persistence ----
+  const themeToggle = $('#themeToggle');
+  const mobileTheme = document.getElementById('mobileThemeToggle');
 
-// Resume button handler
-document.addEventListener('DOMContentLoaded', () => {
-    const resumeBtn = document.getElementById('viewResumeBtn');
-    if (resumeBtn) {
-        resumeBtn.addEventListener('click', () => {
-            window.open('resume.pdf', '_blank');
-        });
+  function setLightMode(on, manual=false) {
+    if (on) {
+      document.body.classList.add('light-mode');
+      localStorage.setItem('theme', 'light');
+    } else {
+      document.body.classList.remove('light-mode');
+      localStorage.setItem('theme', 'dark');
     }
-});
+    if (manual) localStorage.setItem('themeManual','1');
+  }
+  // init theme from storage; if no stored -> leave as default (animation may set)
+  const stored = localStorage.getItem('theme');
+  if (stored === 'light') setLightMode(true);
+  else if (stored === 'dark') setLightMode(false);
 
-// Add CSS for notification system
-const notificationStyles = `
-.notification {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 1rem 2rem;
-    border-radius: 10px;
-    background: var(--glass-bg);
-    backdrop-filter: blur(var(--blur));
-    -webkit-backdrop-filter: blur(var(--blur));
-    color: var(--text-primary);
-    box-shadow: 0 10px 30px var(--shadow);
-    z-index: 10000;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    animation: slideInFromRight 0.5s ease;
-}
+  themeToggle?.addEventListener('click', () => {
+    const goingLight = !document.body.classList.contains('light-mode');
+    setLightMode(goingLight, true);
+  });
+  mobileTheme?.addEventListener('click', () => {
+    const goingLight = !document.body.classList.contains('light-mode');
+    setLightMode(goingLight, true);
+  });
 
-.notification button {
-    background: none;
-    border: none;
-    color: var(--text-primary);
-    font-size: 1.2rem;
-    cursor: pointer;
-}
+  // ---- Header & hero morph behavior ----
+  const heroTitle = $('#heroTitle');
+  const heroImgWrap = $('#heroImageWrap');
+  const header = $('#header');
+  const logoSpan = document.querySelector('.logo span');
 
-.notification-success {
-    border-left: 4px solid #4CAF50;
-}
+  // uppercase hero title immediately
+  if (heroTitle) heroTitle.textContent = heroTitle.textContent.toUpperCase();
 
-.notification-error {
-    border-left: 4px solid #f44336;
-}
+  // function that runs continuously on scroll to morph name to top-left and transform hero
+  function onScrollMorph() {
+    const hero = document.querySelector('.hero');
+    if (!hero || !heroTitle) return;
+    const rect = hero.getBoundingClientRect();
+    // progress from 0 (fresh) to 1 (scrolled past)
+    const start = window.innerHeight * 0.62; // when morph should start
+    const end = window.innerHeight * 0.18;   // when morph completes
+    // normalize value between 0..1 based on hero bottom to viewport
+    const progress = clamp((start - rect.bottom) / (start - end), 0, 1);
+    // transform: scale title slightly with progress and move up
+    const scale = 1 + progress * 0.28; // name grows slightly then later shrinks & moves left
+    heroTitle.style.transform = `translateY(${-progress * 36}px) scale(${scale})`;
+    heroTitle.style.opacity = `${1 - progress*0.02}`;
 
-@keyframes slideInFromRight {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-}
+    // shrink profile image progressively
+    if (heroImgWrap) {
+      const imgScale = clamp(1 - progress * 0.62, 0.36, 1);
+      heroImgWrap.style.transform = `scale(${imgScale}) translateY(${-progress * 32}px)`;
+      heroImgWrap.style.opacity = `${clamp(1 - progress*1.1, 0, 1)}`;
+    }
 
-.tech-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 1rem;
-}
+    // once progress passes 0.92, settle into header small name
+    if (progress > 0.92) {
+      header.classList.add('scrolled');
+      document.body.classList.add('hero-shrunk');
+      // position the logo name slightly left (add small transform)
+      if (logoSpan) logoSpan.style.transform = 'translateX(6px)';
+    } else {
+      header.classList.remove('scrolled');
+      document.body.classList.remove('hero-shrunk');
+      if (logoSpan) logoSpan.style.transform = '';
+    }
 
-.tech-tag, .skill-tag {
-    background: var(--glass-bg);
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    border: 1px solid var(--glass-bg);
-}
+    // darken page gradually and if progress >0.9, auto apply dark mode if not manual
+    const manual = localStorage.getItem('themeManual') === '1';
+    if (!manual) {
+      // smoothly fade to dark by removing light-mode when cross threshold
+      if (progress > 0.55) document.body.classList.remove('light-mode');
+    }
+  }
 
-.skill-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 1rem;
-}
-`;
+  window.addEventListener('scroll', onScrollMorph, { passive: true });
+  window.addEventListener('resize', onScrollMorph);
 
-// Inject notification styles
-const styleSheet = document.createElement('style');
-styleSheet.textContent = notificationStyles;
-document.head.appendChild(styleSheet);
+  // clamp
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+  // Also run morph on custom event from animation overlay
+  window.addEventListener('intro:morph', () => {
+    // tiny delay to let overlay fade
+    setTimeout(()=>{ window.scrollTo({top:1, behavior:'smooth'}); }, 260);
+  });
+
+  // ---- Projects dynamic + hover hold for thumbnails + click to open lightbox ----
+  // load projects.json (if present), else rely on static markup
+  async function fetchJSON(path) {
+    try {
+      const res = await fetch(path, {cache:'no-store'});
+      if (!res.ok) return null;
+      return await res.json();
+    } catch (e) { return null; }
+  }
+  const projectsData = await fetchJSON('data/projects.json') || [];
+
+  // create cards if none present
+  const projectsGrid = document.getElementById('projectsGrid');
+  function createProjectCard(p, idx) {
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    card.id = p.id || `proj-${idx}`;
+    card.innerHTML = `
+      <div class="project-image">
+        <img class="project-img" src="${(p.images && p.images[0]) || 'Image/Profile.JPG'}" alt="${p.title||''}">
+        <div class="project-overlay"><button class="btn btn-primary view-project-btn" data-id="${p.id}"><i class="fas fa-eye"></i> View</button></div>
+      </div>
+      <div class="project-content">
+        <div class="project-title">${p.title||'Untitled'}</div>
+        <div class="project-description">${p.short || p.description || ''}</div>
+      </div>
+      <div class="project-thumbs" style="display:none"></div>
+    `;
+    // thumbs injection for hover reveal
+    const thumbStrip = card.querySelector('.project-thumbs');
+    if (p.images && p.images.length) {
+      p.images.forEach(src => {
+        const t = document.createElement('img');
+        t.src = src;
+        t.style.width = '78px';
+        t.style.height = '50px';
+        t.style.objectFit = 'cover';
+        t.style.borderRadius = '8px';
+        t.style.cursor = 'pointer';
+        t.style.boxShadow = '0 8px 28px rgba(0,0,0,0.35)';
+        t.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openImageLightbox(p.images, p.images.indexOf(src));
+        });
+        thumbStrip.appendChild(t);
+      });
+    }
+
+    // hover hold behavior
+    let hoverTimer = null;
+    const holdDelay = 900; // ms
+    card.addEventListener('mouseenter', () => {
+      card.style.transition = 'transform 0.28s cubic-bezier(.2,.9,.24,1), box-shadow 0.28s';
+      card.style.transform = 'translateY(-10px)';
+      card.style.boxShadow = '0 26px 60px rgba(0,0,0,0.45)';
+      hoverTimer = setTimeout(() => {
+        thumbStrip.style.display = 'flex';
+        thumbStrip.style.opacity = '0';
+        thumbStrip.style.transform = 'translateY(8px)';
+        setTimeout(() => { thumbStrip.style.opacity = '1'; thumbStrip.style.transform = 'translateY(0)'; }, 20);
+      }, holdDelay);
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+      card.style.boxShadow = '';
+      clearTimeout(hoverTimer);
+      if (thumbStrip.style.display !== 'none') {
+        thumbStrip.style.opacity = '0';
+        thumbStrip.style.transform = 'translateY(6px)';
+        setTimeout(()=> {thumbStrip.style.display = 'none';}, 260);
+      }
+    });
+
+    // click to open project lightbox (all images)
+    card.addEventListener('click', (e) => {
+      const id = p.id;
+      if (p.images && p.images.length) openImageLightbox(p.images, 0, p.title);
+      e.stopPropagation();
+    });
+
+    return card;
+  }
+
+  if (projectsGrid && projectsData.length) {
+    projectsGrid.innerHTML = '';
+    // take first three as requested
+    const list = projectsData.slice(0,3);
+    while (list.length < 3) list.push({ title: 'Coming soon', short:'More soon', images:['Image/Profile.JPG'] });
+    list.forEach((p,i) => {
+      const card = createProjectCard(p,i);
+      card.style.opacity = '0';
+      card.style.transform = (i===0 ? 'translateX(-120%)' : (i===1 ? 'translateY(30px)':'translateX(120%)'));
+      projectsGrid.appendChild(card);
+      setTimeout(()=> {
+        card.style.transition = 'transform 0.9s cubic-bezier(.2,.9,.24,1), opacity 0.9s';
+        card.style.transform = 'translateX(0)';
+        card.style.opacity = '1';
+      }, 220 + i*120);
+    });
+  }
+
+  // ---- Lightbox for images (project gallery) ----
+  // We'll create a single lightbox element and reuse it
+  function createImageLightbox() {
+    if ($('#imageLightbox')) return;
+    const overlay = document.createElement('div');
+    overlay.id = 'imageLightbox';
+    Object.assign(overlay.style, {
+      position:'fixed', inset:'0', display:'none', zIndex:6000, alignItems:'center', justifyContent:'center', background:'rgba(0,0,0,0.7)'
+    });
+
+    const box = document.createElement('div');
+    box.style.width='92%'; box.style.maxWidth='980px'; box.style.maxHeight='86vh'; box.style.background='var(--card-bg)';
+    box.style.borderRadius='12px'; box.style.padding='10px'; box.style.position='relative'; box.style.display='flex'; box.style.flexDirection='column'; box.style.gap='10px';
+    box.style.backdropFilter='blur(10px)';
+
+    const header = document.createElement('div');
+    header.style.display='flex'; header.style.justifyContent='space-between'; header.style.alignItems='center';
+    header.innerHTML = `<div id="lightboxTitle" style="font-weight:800;color:var(--text)"></div><div style="display:flex;gap:8px;align-items:center;"><button id="lightboxPrev" class="btn btn-secondary"><i class="fas fa-chevron-left"></i></button><button id="lightboxNext" class="btn btn-secondary"><i class="fas fa-chevron-right"></i></button><button id="lightboxClose" class="close-gallery" style="background:none;border:none;font-size:20px;color:var(--text)">&times;</button></div>`;
+
+    const gallery = document.createElement('div');
+    gallery.id = 'lightboxGallery';
+    gallery.style.display='flex';
+    gallery.style.gap='12px';
+    gallery.style.alignItems='center';
+    gallery.style.justifyContent='center';
+    gallery.style.overflow='hidden';
+    gallery.style.flex='1';
+
+    const imgWrap = document.createElement('div');
+    imgWrap.id = 'lightboxImageWrap';
+    imgWrap.style.display='flex';
+    imgWrap.style.gap='12px';
+    imgWrap.style.alignItems='center';
+    imgWrap.style.justifyContent='center';
+    imgWrap.style.flex='1';
+    imgWrap.style.overflow='hidden';
+
+    gallery.appendChild(imgWrap);
+    box.appendChild(header);
+    box.appendChild(gallery);
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+
+    // close
+    $('#lightboxClose').addEventListener('click', () => closeLightbox());
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeLightbox(); });
+
+    // prev/next
+    $('#lightboxPrev').addEventListener('click', () => showLightboxIndex(currentIndex-1));
+    $('#lightboxNext').addEventListener('click', () => showLightboxIndex(currentIndex+1));
+
+    // keyboard nav
+    window.addEventListener('keydown', (e) => {
+      if (overlay.style.display !== 'flex') return;
+      if (e.key === 'ArrowLeft') showLightboxIndex(currentIndex-1);
+      if (e.key === 'ArrowRight') showLightboxIndex(currentIndex+1);
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    // swipe handling for touch devices inside imageWrap
+    let touchStartX = null;
+    imgWrap.addEventListener('touchstart', (e) => touchStartX = e.touches[0].clientX, {passive:true});
+    imgWrap.addEventListener('touchmove', (e) => {
+      if (touchStartX === null) return;
+      const diff = touchStartX - e.touches[0].clientX;
+      if (Math.abs(diff) > 40) {
+        if (diff > 0) showLightboxIndex(currentIndex+1); else showLightboxIndex(currentIndex-1);
+        touchStartX = null;
+      }
+    }, {passive:true});
+  }
+  createImageLightbox();
+
+  let imageList = [], currentIndex = 0;
+  function openImageLightbox(images, start=0, title='') {
+    imageList = images || [];
+    if (!imageList.length) return;
+    const overlay = $('#imageLightbox');
+    $('#lightboxTitle').textContent = title || '';
+    overlay.style.display = 'flex';
+    document.body.classList.add('modal-open'); // used for blurring background
+    currentIndex = clamp(start, 0, imageList.length-1);
+    renderLightboxImages();
+  }
+
+  function renderLightboxImages() {
+    const wrap = $('#lightboxImageWrap');
+    if (!wrap) return;
+    wrap.innerHTML = '';
+    // show single large image with subtle animation
+    const img = document.createElement('img');
+    img.src = imageList[currentIndex];
+    img.style.maxWidth = '100%';
+    img.style.maxHeight = '68vh';
+    img.style.objectFit = 'contain';
+    img.style.borderRadius = '8px';
+    img.style.boxShadow = '0 18px 60px rgba(0,0,0,0.6)';
+    img.style.transform = 'scale(.98)';
+    img.style.transition = 'transform 0.28s ease, opacity 0.28s';
+    wrap.appendChild(img);
+    setTimeout(()=> img.style.transform = 'scale(1)', 20);
+    // also pre-load neighbors for speed
+    const p = imageList[currentIndex-1]; if (p) (new Image()).src = p;
+    const n = imageList[currentIndex+1]; if (n) (new Image()).src = n;
+  }
+
+  function showLightboxIndex(i) {
+    if (!imageList.length) return;
+    if (i < 0) i = imageList.length - 1;
+    if (i >= imageList.length) i = 0;
+    currentIndex = i;
+    renderLightboxImages();
+  }
+  function closeLightbox() {
+    const overlay = $('#imageLightbox');
+    if (!overlay) return;
+    overlay.style.display = 'none';
+    document.body.classList.remove('modal-open');
+  }
+
+  // ---- Resume lightbox (embedded PDF) ----
+  function createResumeLightbox() {
+    if ($('#resumeLightbox')) return;
+    const overlay = document.createElement('div');
+    overlay.id = 'resumeLightbox';
+    Object.assign(overlay.style, { position:'fixed', inset:'0', display:'none', zIndex:7000, alignItems:'center', justifyContent:'center', background:'rgba(0,0,0,0.75)'});
+    const box = document.createElement('div');
+    box.style.width='90%'; box.style.maxWidth='1100px'; box.style.maxHeight='90vh'; box.style.borderRadius='12px'; box.style.overflow='hidden'; box.style.position='relative';
+    box.style.background='var(--card-bg)'; box.style.backdropFilter='blur(10px)';
+    const closeBtn = document.createElement('button');
+    closeBtn.innerHTML = '&times;';
+    Object.assign(closeBtn.style, { position:'absolute', top:'8px', right:'10px', background:'none', border:'none', color:'var(--text)', fontSize:'24px', zIndex:10, cursor:'pointer' });
+    const iframe = document.createElement('iframe');
+    iframe.id = 'resumeFrame';
+    iframe.src = 'Dilip_ch_resume.pdf';
+    iframe.style.width='100%'; iframe.style.height='88vh'; iframe.style.border='0';
+    box.appendChild(closeBtn);
+    box.appendChild(iframe);
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+    closeBtn.addEventListener('click', ()=> { overlay.style.display='none'; document.body.classList.remove('modal-open'); });
+    overlay.addEventListener('click', (e)=> { if (e.target === overlay) { overlay.style.display='none'; document.body.classList.remove('modal-open'); } });
+  }
+  createResumeLightbox();
+
+  // Wire resume open buttons
+  $$('.resume-download').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const overlay = $('#resumeLightbox');
+      if (!overlay) return;
+      overlay.style.display = 'flex';
+      document.body.classList.add('modal-open');
+    });
+  });
+
+  // Wire contact quick icons
+  const mailLinks = $$('a[href^="mailto:"]');
+  mailLinks.forEach(a => a.addEventListener('click', ()=>{})); // default mailto will open
+
+  // phone link behavior
+  const phoneLinks = $$('a[href^="tel:"]');
+  phoneLinks.forEach(a => a.addEventListener('click', ()=>{}));
+
+  // linkedin action (make sure link exists in HTML)
+  // resume icon opening handled above
+
+  // small utility clamp
+  function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
+
+  // ensure lightbox / resume ready
+  createImageLightbox();
+  createResumeLightbox();
+
+  // modal-open class: add css blur in style (see CSS snippet below)
+
+})();
