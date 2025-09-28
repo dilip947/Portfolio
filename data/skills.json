@@ -1,46 +1,14 @@
-{
-  "skills": [
-    {
-      "name": "Power BI",
-      "icon": "fas fa-chart-bar",
-      "description": "Interactive dashboard creation and business intelligence",
-      "level": "Advanced",
-      "category": "Data Visualization"
-    },
-    {
-      "name": "Tableau",
-      "icon": "fas fa-chart-pie", 
-      "description": "Data visualization and analytics platform",
-      "level": "Advanced",
-      "category": "Data Visualization"
-    },
-    {
-      "name": "Excel",
-      "icon": "fas fa-table",
-      "description": "Advanced financial modeling and data analysis", 
-      "level": "Expert",
-      "category": "Data Analysis"
-    },
-    {
-      "name": "SQL",
-      "icon": "fas fa-database",
-      "description": "Database querying and management",
-      "level": "Intermediate",
-      "category": "Data Management"
-    },
-    {
-      "name": "Financial Analysis", 
-      "icon": "fas fa-chart-line",
-      "description": "Risk assessment and financial modeling",
-      "level": "Advanced",
-      "category": "Business Analysis"
-    },
-    {
-      "name": "Data Visualization",
-      "icon": "fas fa-eye",
-      "description": "Creating compelling data stories",
-      "level": "Advanced", 
-      "category": "Data Presentation"
-    }
-  ]
-}
+[
+  "Power BI",
+  "Tableau",
+  "Advanced Excel",
+  "SQL",
+  "Financial Modeling",
+  "Agile Methodologies",
+  "UAT Coordination",
+  "Requirements Gathering",
+  "Stakeholder Communication",
+  "Data Visualization",
+  "Risk Analysis",
+  "KPI Development"
+]
