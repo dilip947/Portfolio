@@ -1,81 +1,22 @@
-{
-  "projects": [
-    {
-      "id": "P3ABC",
-      "title": "Customer Payment & Revenue Insights Dashboard",
-      "description": "Comprehensive revenue analysis dashboard tracking payments, risks, and profitability with 100% accuracy",
-      "category": "Revenue Analytics",
-      "tools": ["Power BI", "Excel", "Power Query", "DAX", "BRD", "UAT"],
-      "achievements": [
-        "Analyzed 100+ invoices with ₹38,64,000 revenue tracking",
-        "Identified ₹8,13,500 at-risk revenue for proactive management",
-        "Achieved 100% UAT success rate, saving revision time",
-        "Created BRD with 5 key requirements for improved project clarity"
-      ],
-      "metrics": {
-        "revenue": "₹38.6L",
-        "accuracy": "100%",
-        "riskIdentified": "₹8.1L"
-      },
-      "images": [
-        "projects/P3ABC/1.png",
-        "projects/P3ABC/sprint.png",
-        "projects/P3ABC/uat_results.png",
-        "projects/P3ABC/uat_scenario.png",
-        "projects/P3ABC/uat_signoff.png",
-        "projects/P3ABC/uat.png",
-        "projects/P3ABC/test_case.png"
-      ],
-      "featured": true
-    },
-    {
-      "id": "project_ec",
-      "title": "E-Commerce Sales & Order Insights Dashboard",
-      "description": "Advanced order analysis system identifying patterns and optimization opportunities in e-commerce operations",
-      "category": "E-Commerce Analytics",
-      "tools": ["Power BI", "Power Query", "Excel", "DAX"],
-      "achievements": [
-        "Analyzed 128,000+ orders for comprehensive insights",
-        "Discovered 20% higher cancellation rate in specific segments",
-        "Improved process efficiency through data-driven recommendations",
-        "Implemented automated reporting for real-time monitoring"
-      ],
-      "metrics": {
-        "orders": "128K+",
-        "cancellationRate": "20%",
-        "efficiency": "Improved"
-      },
-      "images": [
-        "projects/project_ec/1.png",
-        "projects/project_ec/2.png",
-        "projects/project_ec/3.png",
-        "projects/project_ec/4.png"
-      ],
-      "featured": true
-    },
-    {
-      "id": "project_crypto",
-      "title": "Crypto Market Risk & Sentiment Dashboard",
-      "description": "Sophisticated cryptocurrency market analysis tool with automated KPI tracking and risk assessment",
-      "category": "Financial Analytics",
-      "tools": ["Power BI", "Power Query", "Excel", "DAX"],
-      "achievements": [
-        "Designed comprehensive KPIs including CAGR and volatility metrics",
-        "Reduced manual analysis work by 40% through automation",
-        "Enhanced decision-making with real-time market sentiment tracking",
-        "Improved focus on strategic analysis through workflow optimization"
-      ],
-      "metrics": {
-        "automation": "40%",
-        "kpis": "Multiple",
-        "efficiency": "Enhanced"
-      },
-      "images": [
-        "projects/project_crypto/1.png",
-        "projects/project_crypto/2.png",
-        "projects/project_crypto/3.png"
-      ],
-      "featured": true
-    }
-  ]
-}
+[
+  {
+    "id": "project1",
+    "title": "E-Commerce Sales Insights",
+    "description": "Comprehensive analysis of e-commerce order data with insights into cancellation drivers and sales performance optimization.",
+    "images": ["Projects/Projectec/1.png", "Projects/Projectec/2.png", "Projects/Projectec/3.png", "Projects/Projectec/4.png"],
+    "download": "https://drive.google.com/drive/folders/1ujHD_MZVCvIBBHDwB72kwxqbdRDrXSyg"
+  },
+  {
+    "id": "project2",
+    "title": "Crypto Market Risk Dashboard",
+    "description": "Power BI dashboard analyzing cryptocurrency volatility and market sentiment to assess risk factors and investment opportunities.",
+    "images": ["Projects/Projectcrypto/1.png", "Projects/Projectcrypto/2.png", "Projects/Projectcrypto/3.png"],
+    "download": "https://drive.google.com/drive/folders/1cvIZ0nbRI022NNEHhLUcRlc6VFNQEGCo"
+  },
+  {
+    "id": "project3",
+    "title": "P3ABC Project",
+    "description": "Analytics dashboard for project management, including sprint tracking, UAT scenarios, test cases, results, and sign-offs for efficient software development and testing.",
+    "images": ["Projects/P3ABC/1.png", "Projects/P3ABC/Sprint.png", "Projects/P3ABC/UAT Results.png", "Projects/P3ABC/UAT Scenario.png", "Projects/P3ABC/UAT Signoff.png", "Projects/P3ABC/UAT.png", "Projects/P3ABC/test_case.png"]
+  }
+]
