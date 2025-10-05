@@ -4,7 +4,6 @@
     { "name": "Excel (Advanced)", "category": "Tools" },
     { "name": "Tableau", "category": "Tools" },
     { "name": "SQL (Intermediate)", "category": "Languages" },
-    { "name": "Python (Pandas)", "category": "Languages" },
     { "name": "Financial Modeling", "category": "Domain" },
     { "name": "Risk Assessment", "category": "Domain" },
     { "name": "KPI Development", "category": "Domain" },
