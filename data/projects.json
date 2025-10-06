@@ -23,15 +23,6 @@
     ]
   },
   {
-    "id": "Portfolio Analysis",
-    "title": "Portfolio & Risk Analysis",
-    "short": "Volatility & VaR",
-    "description": "Custom Dashboard to manage Personal portfolio and Performnce Visualization",
-    "images": [
-      "Projects/Portfolio Analysis/1.png"
-    ]
-  },
-  {
     "id": "project-p3abc",
     "title": "P3ABC — Process Improvement",
     "short": "UAT, sprint, and test artifacts",
@@ -41,6 +32,15 @@
       "Projects/P3ABC/Sprint.png",
       "Projects/P3ABC/UAT.png",
       "Projects/P3ABC/UAT Results.png"
+    ]
+  },
+  {
+ "id": "Portfolio Analysis",
+    "title": "Portfolio & Risk Analysis",
+    "short": "Volatility & VaR",
+    "description": "Custom Dashboard to manage Personal portfolio and Performnce Visualization",
+    "images": [
+      "Projects/Portfolio Analysis/1.png"
     ]
   }
 ]
